@@ -3,13 +3,10 @@ package emse.mobisocial.goalz.model
 import android.arch.persistence.room.*
 
 /**
- * Created by dtoni on 3/25/2018.
+ * Created by MobiSocial EMSE Team on 3/27/2018.
  */
-
-private const val NEW_USER_ID = 0
-
 @Entity(tableName = "user_details", foreignKeys = [(
-        ForeignKey(entity = UserBasic::class,
+        ForeignKey(entity = User::class,
             parentColumns = [("user_id")],
             childColumns = [("user_id")],
             onDelete = ForeignKey.CASCADE)

@@ -5,7 +5,7 @@ import emse.mobisocial.goalz.model.Gender
 import java.util.*
 
 /**
- * Created by dtoni on 3/26/2018.
+ * Created by MobiSocial EMSE Team on 3/27/2018.
  */
 class GenderConverter {
     @TypeConverter

@@ -2,13 +2,12 @@ package emse.mobisocial.goalz.model
 
 import java.util.*
 
-/**
- * Created by dtoni on 3/25/2018.
- */
-
 private const val NEW_GOAL_ID = 0
 private const val NEW_GOAL_STATUS = 0
 
+/**
+ * Created by MobiSocial EMSE Team on 3/27/2018.
+ */
 data class Goal private constructor(
         var id : Int, var userId : Int, var parentId : Int,
         var title : String, var topic : String, var description : String) {

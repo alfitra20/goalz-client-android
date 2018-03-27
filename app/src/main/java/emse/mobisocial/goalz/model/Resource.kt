@@ -1,21 +1,26 @@
 package emse.mobisocial.goalz.model
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
+
 /**
- * Created by dtoni on 3/25/2018.
+ * Created by MobiSocial EMSE Team on 3/27/2018.
  */
-
-private const val NEW_RESOURCE_ID = 0
-private const val NEW_RESOURCE_RATING : Double = 0.0
-private const val NEW_AVG_REQ_TIME = -1
-
-data class Resource private constructor(
+@Entity(tableName = "resources")
+data class Resource constructor(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
-        var id : Int, var link : String, var title : String,
-        var topic : String, var rating : Double, var avgReqTime : Int) {
-
-    constructor(
-        // This constructor should be used by the application logic to create new goals
-        link : String, title : String, topic : String
-    ) : this(NEW_RESOURCE_ID, link, title, topic, NEW_RESOURCE_RATING, NEW_AVG_REQ_TIME)
-
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "resource_id")
+        var id : Int,
+        @ColumnInfo(name = "link")
+        var link : String,
+        @ColumnInfo(name = "title")
+        var title : String,
+        @ColumnInfo(name = "topic")
+        var topic : String,
+        @ColumnInfo(name = "rating")
+        var rating : Double,
+        @ColumnInfo(name = "avg_req_time")
+        var avgReqTime : Int) {
 }

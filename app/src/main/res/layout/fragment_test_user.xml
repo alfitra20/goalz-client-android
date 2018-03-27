@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="emse.mobisocial.goalz.test.UserTestActivity">
+    tools:context="emse.mobisocial.goalz.test.fragments.TestUserFragment">
 
     <ListView
-        android:id="@+id/user_test_activity_user_list_view"
+        android:id="@+id/user_test_fragment_user_list_view"
         android:layout_width="0dp"
         android:layout_height="364dp"
         android:layout_marginBottom="8dp"
@@ -17,11 +16,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_test_activity_update_btn"
+        app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_update_btn"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/user_test_activity_selected_user_details_view"
+        android:id="@+id/user_test_fragment_selected_user_details_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -33,36 +32,36 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/user_test_activity_delete_btn"
+        android:id="@+id/user_test_fragment_delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/user_test_activity_update_btn"
-        app:layout_constraintTop_toBottomOf="@+id/user_test_activity_selected_user_details_view" />
+        app:layout_constraintStart_toEndOf="@+id/user_test_fragment_update_btn"
+        app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_selected_user_details_view" />
 
     <Button
-        android:id="@+id/user_test_activity_update_btn"
+        android:id="@+id/user_test_fragment_update_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="UPDATE"
-        app:layout_constraintEnd_toStartOf="@+id/user_test_activity_delete_btn"
-        app:layout_constraintStart_toEndOf="@+id/user_test_activity_insert_btn"
-        app:layout_constraintTop_toBottomOf="@+id/user_test_activity_selected_user_details_view" />
+        app:layout_constraintEnd_toStartOf="@+id/user_test_fragment_delete_btn"
+        app:layout_constraintStart_toEndOf="@+id/user_test_fragment_insert_btn"
+        app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_selected_user_details_view" />
 
     <Button
-        android:id="@+id/user_test_activity_insert_btn"
+        android:id="@+id/user_test_fragment_insert_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="INSERT"
-        app:layout_constraintEnd_toStartOf="@+id/user_test_activity_update_btn"
+        app:layout_constraintEnd_toStartOf="@+id/user_test_fragment_update_btn"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_test_activity_selected_user_details_view" />
+        app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_selected_user_details_view" />
 
 </android.support.constraint.ConstraintLayout>

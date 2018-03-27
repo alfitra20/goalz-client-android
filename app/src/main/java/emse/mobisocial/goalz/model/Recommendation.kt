@@ -1,12 +1,11 @@
 package emse.mobisocial.goalz.model
 
-/**
- * Created by dtoni on 3/25/2018.
- */
-
 private const val NEW_REC_ID = 0
 private const val NEW_REC_RATING : Double = 0.0
 
+/**
+ * Created by MobiSocial EMSE Team on 3/27/2018.
+ */
 data class Recommendation(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
         var id : Int, var resourceId : Int, var goalId : Int, var userId : Int,

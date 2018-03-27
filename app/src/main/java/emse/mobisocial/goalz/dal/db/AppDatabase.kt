@@ -33,20 +33,18 @@ import android.content.Context
 import emse.mobisocial.goalz.AppExecutors
 import emse.mobisocial.goalz.dal.converter.DateConverter
 import emse.mobisocial.goalz.dal.converter.GenderConverter
-import emse.mobisocial.goalz.dal.db.dao.GoalDao
 import emse.mobisocial.goalz.dal.db.dao.ResourceDao
 import emse.mobisocial.goalz.dal.db.dao.UserDao
 import emse.mobisocial.goalz.model.*
 
-/**
- * Created by dtoni on 3/25/2018.
- */
-
 private const val APP_DATABASE_NAME : String = "GoalzDatabase"
 
+/**
+ * Created by MobiSocial EMSE Team on 3/27/2018.
+ */
 @Database(
     entities = [
-        (UserBasic::class), (UserDetails::class)],
+        (User::class), (UserDetails::class), (Resource::class)],
     version = 1)
 @TypeConverters(DateConverter::class, GenderConverter::class)
 abstract class AppDatabase : RoomDatabase(){
@@ -60,7 +58,7 @@ abstract class AppDatabase : RoomDatabase(){
 
     //abstract fun goalDao(): GoalDao
 
-    //abstract fun resourceDao(): ResourceDao
+    abstract fun resourceDao(): ResourceDao
 
     //abstract fun recommendationDao(): UserDao
 
@@ -100,8 +98,9 @@ abstract class AppDatabase : RoomDatabase(){
                                 val database = getInstance(appContext, appExecutors)
                                 val users = DataGenerator.generateUsers()
                                 val userDetails = DataGenerator.generateUserDetails()
+                                val resources = DataGenerator.generateResources()
 
-                                insertData(database, users, userDetails)
+                                insertData(database, users, userDetails, resources)
 
                                 // notify that the database was created and it's ready to be used
                                 database.setDatabaseCreated()
@@ -110,11 +109,13 @@ abstract class AppDatabase : RoomDatabase(){
                     }).build()
         }
 
-        private fun insertData(database: AppDatabase, users: List<UserBasic>,
-                               userDetails: List<UserDetails>) {
+        private fun insertData(
+                database: AppDatabase, users: List<User>, userDetails: List<UserDetails>,
+                resources : List<Resource>) {
             database.runInTransaction {
-                database.userDao().insertUserBasicInfo(users)
-                database.userDao().insertUserDetailInfo(userDetails)
+                database.userDao().insertUserList(users)
+                database.userDao().insertUserDetailsList(userDetails)
+                database.resourceDao().insertResourceList(resources)
             }
         }
 

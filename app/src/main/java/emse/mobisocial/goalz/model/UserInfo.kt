@@ -2,6 +2,8 @@ package emse.mobisocial.goalz.model
 
 /**
  * Created by dtoni on 3/26/2018.
+ *
+ * Encapsulate all the information required for User creation
  */
 data class UserInfo(
         var nickname : String,

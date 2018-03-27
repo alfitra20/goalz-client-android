@@ -1,20 +1,25 @@
 package emse.mobisocial.goalz.model
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
+import android.arch.persistence.room.PrimaryKey
+import java.util.*
+
 /**
- * Created by dtoni on 3/25/2018.
+ * Created by MobiSocial EMSE Team on 3/27/2018.
  */
-
-private const val NEW_USER_ID = 0
-private const val NEW_USER_RATING : Double = 0.0
-
-data class User constructor(
+@Entity(tableName = "users")
+data class User(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
-        var userBasic: UserBasic, var userDetails: UserDetails) {
-
-    constructor( // This constructor should be used by the application logic to create new users
-        nickname : String, firstName : String, lastName : String, email : String, age : Int,
-        website : String? = null, gender : Gender = Gender.UNDEFINED
-    ) : this(UserBasic(NEW_USER_ID, nickname, NEW_USER_RATING, website, null),
-            UserDetails(NEW_USER_ID, firstName, lastName, email, age, gender)){
-    }
-}
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "user_id")
+        var id : Int, //DO NOT UPDATE
+        @ColumnInfo(name = "nickname")
+        var nickname : String, //DO NOT UPDATE
+        @ColumnInfo(name = "rating")
+        var rating : Double, //DO NOT UPDATE
+        @ColumnInfo(name = "website")
+        var website : String?,
+        @ColumnInfo(name = "registrationDate")
+        var registrationDate : Date? ) //DO NOT UPDATE
