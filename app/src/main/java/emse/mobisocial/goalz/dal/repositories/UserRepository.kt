@@ -4,9 +4,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import emse.mobisocial.goalz.dal.IUserRepository
 import emse.mobisocial.goalz.dal.db.dao.UserDao
-import emse.mobisocial.goalz.model.User
+import emse.mobisocial.goalz.model.UserMinimal
 import emse.mobisocial.goalz.model.UserDetails
-import emse.mobisocial.goalz.model.UserInfo
+import emse.mobisocial.goalz.model.User
+import emse.mobisocial.goalz.model.UserTemplate
 import java.util.*
 import java.util.concurrent.Executor
 
@@ -21,19 +22,32 @@ private const val NEW_USER_RATING : Double = 0.0
 class UserRepository private constructor(
         private var executor : Executor, private var userDao: UserDao) : IUserRepository {
 
+    //Query
+    override fun getUser(id : Int): LiveData<User> {
+        return userDao.loadUser(id)
+    }
+
+    override fun getUsers(): LiveData<List<UserMinimal>> {
+        return userDao.loadUsers()
+    }
+
+    override fun getUsersByTopic(topic : String): LiveData<List<UserMinimal>> {
+        return userDao.loadUsersByTopic(topic)
+    }
+
     //Insert
-    override fun registerUser(userInfo: UserInfo) : LiveData<Int> {
+    override fun registerUser(userTemplate: UserTemplate) : LiveData<Int> {
         var result = MutableLiveData<Int>()
         executor.execute {
-            var userBasic = User(
-                    NEW_USER_ID, userInfo.nickname, NEW_USER_RATING,
-                    userInfo.website, Date())
+            var userMinimal = UserMinimal(
+                    NEW_USER_ID, userTemplate.nickname, NEW_USER_RATING,
+                    userTemplate.website, Date())
 
-            var userId = userDao.insertUsers(userBasic).toInt()
+            var userId = userDao.insertUserMinimal(userMinimal).toInt()
 
             var userDetails = UserDetails(
-                    userId, userInfo.firstname, userInfo.lastname, userInfo.email,
-                    userInfo.age, userInfo.gender)
+                    userId, userTemplate.firstname, userTemplate.lastname, userTemplate.email,
+                    userTemplate.age, userTemplate.gender)
             userDao.insertUserDetails(userDetails)
 
             result.postValue(userId)
@@ -46,28 +60,10 @@ class UserRepository private constructor(
     override fun updateUser(user: User) : LiveData<Boolean> {
         var result = MutableLiveData<Boolean>()
         executor.execute {
-            userDao.updateUser(user)
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
-        }
-
-        return result
-    }
-
-    override fun updateUser(user: User, userDetails: UserDetails) : LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            userDao.updateUser(user)
-            userDao.updateUserDetails(userDetails)
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
-        }
-
-        return result
-    }
-
-    override fun updateUserDetails(userDetails: UserDetails) : LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            userDao.updateUserDetails(userDetails)
+            userDao.updateUserMinimal(
+                    UserMinimal(user.id, user.nickname, user.rating, user.website, user.registrationDate))
+            userDao.updateUserDetails(
+                    UserDetails(user.id, user.firstName, user.lastName, user.email, user.age, user.gender))
             result.postValue(true) //TODO: This should be changed based on success/fail logic
         }
 
@@ -75,17 +71,7 @@ class UserRepository private constructor(
     }
 
     //Delete
-    override fun deleteUser(user: User) : LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            userDao.deleteUser(user)
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
-        }
-
-        return result
-    }
-
-    override fun deleteUserById(id : Int) : LiveData<Boolean> {
+    override fun deleteUser(id : Int) : LiveData<Boolean> {
         var result = MutableLiveData<Boolean>()
         executor.execute {
             var user = userDao.loadUserForDelete(id)
@@ -96,19 +82,6 @@ class UserRepository private constructor(
         }
 
         return result
-    }
-
-    //Query
-    override fun getUsers(): LiveData<List<User>> {
-        return userDao.loadUsers()
-    }
-
-    override fun getUser(id : Int): LiveData<User> {
-        return userDao.loadUser(id)
-    }
-
-    override fun getUserDetails(id : Int): LiveData<UserDetails> {
-        return userDao.loadUserDetails(id)
     }
 
     //Companion Object

@@ -5,7 +5,7 @@ package emse.mobisocial.goalz.model
  *
  * Encapsulate all the information required for Resource creation
  */
-data class ResourceInfo(
+data class ResourceTemplate(
         var link : String,
         var topic : String,
         var title : String

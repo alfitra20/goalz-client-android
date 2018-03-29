@@ -8,9 +8,9 @@ import android.arch.lifecycle.Transformations
 import emse.mobisocial.goalz.GoalzApp
 import emse.mobisocial.goalz.dal.IResourceRepository
 import emse.mobisocial.goalz.model.Resource
-import emse.mobisocial.goalz.model.ResourceInfo
+import emse.mobisocial.goalz.model.ResourceTemplate
 
-private val NEW_RESOURCE_INFO = ResourceInfo(
+private val NEW_RESOURCE_INFO = ResourceTemplate(
         "www.link.org",
         "new",
         "New resource"
@@ -22,23 +22,28 @@ private val NEW_RESOURCE_INFO = ResourceInfo(
 class ResourceTestViewModel (application: Application) : AndroidViewModel(application){
 
     private val resourceRepository : IResourceRepository = (application as GoalzApp).resourceRepository
-    private var resourceListDb : MutableLiveData<LiveData<List<Resource>>> = MutableLiveData<LiveData<List<Resource>>>()
+    private var resourceListDb: MutableLiveData<LiveData<List<Resource>>> = MutableLiveData<LiveData<List<Resource>>>()
     init {
         resourceListDb.postValue(resourceRepository.getResources())
     }
 
-    val resourceList : LiveData<List<Resource>> = Transformations.switchMap(resourceListDb){ it }
+    val resourceList: LiveData<List<Resource>> = Transformations.switchMap(resourceListDb){ it }
 
-    fun applyFilter(topic : String){
-        resourceListDb.postValue(resourceRepository.getResourcesByTopic(topic))
+    fun applyByTopicFilter(topic : String){
+        if (topic == ""){
+            resourceListDb.postValue(resourceRepository.getResources())
+        }
+        else {
+            resourceListDb.postValue(resourceRepository.getResourcesByTopic(topic))
+        }
     }
 
-    fun clearFilter(){
-        resourceListDb.postValue(resourceRepository.getResources())
+    fun applyByUserFilter(idText : String){
+        resourceListDb.postValue(resourceRepository.getResourcesForUser(idText.toInt()))
     }
 
     fun deleteResource(id : Int) {
-        resourceRepository.deleteResourceById(id)
+        resourceRepository.deleteResource(id)
     }
 
     fun createResource() {

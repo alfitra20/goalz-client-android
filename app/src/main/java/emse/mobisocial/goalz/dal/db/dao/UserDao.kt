@@ -3,6 +3,7 @@ package emse.mobisocial.goalz.dal.db.dao
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import emse.mobisocial.goalz.model.User
+import emse.mobisocial.goalz.model.UserMinimal
 import emse.mobisocial.goalz.model.UserDetails
 
 /**
@@ -10,48 +11,47 @@ import emse.mobisocial.goalz.model.UserDetails
  */
 @Dao
 abstract class UserDao {
-    //QUERY EXISTING USERS
     @Query("SELECT * FROM users")
-    abstract fun loadUsers(): LiveData<List<User>>
+    abstract fun loadUsers(): LiveData<List<UserMinimal>>
 
-    /*@Query("SELECT * FROM users "
+    @Query("SELECT * FROM users "
             + "WHERE EXISTS (SELECT * FROM recommendations "
             + "JOIN resources ON resources.resource_id = recommendations.resource_id "
-            + "WHERE recommendation.user_id = users.user_id AND resources.topic = :topic)")
-    abstract fun searchUsersByTopic(topic : String): LiveData<List<User>>*/
+            + "WHERE recommendations.user_id = users.user_id AND resources.topic = :topic)")
+    abstract fun loadUsersByTopic(topic : String): LiveData<List<UserMinimal>>
 
-    //TODO: ADD FILTERING CAPABILITIES
-
-    @Query("SELECT * FROM users WHERE user_id = :id")
+    @Query("SELECT * FROM users " +
+            "JOIN user_details ON users.user_id = user_details.user_id " +
+            "WHERE users.user_id = :id")
     abstract fun loadUser(id : Int): LiveData<User>
 
+    //@Query("SELECT * FROM user_details WHERE user_id = :id")
+    //abstract fun loadUserDetails(id : Int): LiveData<UserDetails>
+
     @Query("SELECT * FROM users WHERE user_id = :id")
-    abstract fun loadUserForDelete(id : Int): User
+    abstract fun loadUserForDelete(id : Int): UserMinimal?
 
-    @Query("SELECT * FROM user_details WHERE user_id = :id")
-    abstract fun loadUserDetails(id : Int): LiveData<UserDetails>
-
-    //CREATE NEW USERS
-    @Insert(onConflict = OnConflictStrategy.FAIL)
-    abstract fun insertUsers(user: User) : Long
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
-    abstract fun insertUserDetails(userDetails : UserDetails) : Long
+    abstract fun insertUserMinimal(userMinimal: UserMinimal) : Long
+
+    @Insert(onConflict = OnConflictStrategy.FAIL)
+    abstract fun insertUserDetails(userDetails: UserDetails) : Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertUserList(userList: List<User>)
+    abstract fun insertUserMinimalList(userMinimalList: List<UserMinimal>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertUserDetailsList(userDetailList : List<UserDetails>)
+    abstract fun insertUserDetailsList(userDetailList: List<UserDetails>)
 
-    //MODIFY EXISTING USER
-    @Update
-    abstract fun updateUser(user: User) : Int
 
     @Update
-    abstract fun updateUserDetails(userDetails : UserDetails) : Int
+    abstract fun updateUserMinimal(userMinimal: UserMinimal) : Int
 
-    //DELETE USER
+    @Update
+    abstract fun updateUserDetails(userDetails: UserDetails) : Int
+
+
     @Delete
-    abstract fun deleteUser(user: User) : Int
+    abstract fun deleteUser(userMinimal: UserMinimal) : Int
 }

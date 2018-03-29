@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz.model
+package emse.mobisocial.goalz.util
 
 /**
  * Created by MobiSocial EMSE Team on 3/27/2018.

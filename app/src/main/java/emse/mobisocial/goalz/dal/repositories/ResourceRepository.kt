@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import emse.mobisocial.goalz.dal.IResourceRepository
 import emse.mobisocial.goalz.dal.db.dao.ResourceDao
 import emse.mobisocial.goalz.model.Resource
-import emse.mobisocial.goalz.model.ResourceInfo
+import emse.mobisocial.goalz.model.ResourceTemplate
 import java.util.concurrent.Executor
 
 private const val NEW_RESOURCE_ID = 0
@@ -22,45 +22,6 @@ class ResourceRepository(
         private var resourceDao: ResourceDao)
     : IResourceRepository {
 
-    //Insert
-    override fun addResource(info: ResourceInfo) : LiveData<Int> {
-        var result = MutableLiveData<Int>()
-        executor.execute {
-            val resource = Resource(
-                    NEW_RESOURCE_ID, info.link, info.title, info.topic,
-                    NEW_RESOURCE_RATING, NEW_AVG_REQ_TIME)
-
-            val id = resourceDao.insertResource(resource).toInt()
-            result.postValue(id)
-        }
-
-        return result
-    }
-
-    //Delete
-    fun deleteResource(resource: Resource): LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            resourceDao.deleteResource(resource)
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
-        }
-
-        return result
-    }
-
-    override fun deleteResourceById(id : Int): LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            var resource = resourceDao.loadResourceForDelete(id)
-            if (resource != null) {
-                resourceDao.deleteResource(resource)
-            }
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
-        }
-
-        return result
-    }
-
     //Query
     override fun getResource(id : Int): LiveData<Resource> {
         return resourceDao.loadResource(id)
@@ -72,6 +33,39 @@ class ResourceRepository(
 
     override fun getResourcesByTopic(topic: String): LiveData<List<Resource>> {
         return resourceDao.loadResourcesByTopic(topic)
+    }
+
+    override fun getResourcesForUser(userId: Int): LiveData<List<Resource>> {
+        return resourceDao.loadResourcesForUser(userId)
+    }
+
+    //Insert
+    override fun addResource(template: ResourceTemplate) : LiveData<Int> {
+        var result = MutableLiveData<Int>()
+        executor.execute {
+            val resource = Resource(
+                    NEW_RESOURCE_ID, template.link, template.title, template.topic,
+                    NEW_RESOURCE_RATING, NEW_AVG_REQ_TIME)
+
+            val id = resourceDao.insertResource(resource).toInt()
+            result.postValue(id)
+        }
+
+        return result
+    }
+
+    //Delete
+    override fun deleteResource(id : Int): LiveData<Boolean> {
+        var result = MutableLiveData<Boolean>()
+        executor.execute {
+            var resource = resourceDao.loadResourceForDelete(id)
+            if (resource != null) {
+                resourceDao.deleteResource(resource)
+            }
+            result.postValue(true) //TODO: This should be changed based on success/fail logic
+        }
+
+        return result
     }
 
     //Companion Object

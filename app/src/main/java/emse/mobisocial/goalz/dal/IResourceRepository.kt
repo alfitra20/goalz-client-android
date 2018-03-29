@@ -2,15 +2,12 @@ package emse.mobisocial.goalz.dal
 
 import android.arch.lifecycle.LiveData
 import emse.mobisocial.goalz.model.Resource
-import emse.mobisocial.goalz.model.ResourceInfo
+import emse.mobisocial.goalz.model.ResourceTemplate
 
 /**
  * Created by MobiSocial EMSE Team on 3/27/2018.
  */
 interface IResourceRepository {
-
-    //Insert
-    fun addResource(info: ResourceInfo) : LiveData<Int>
 
     //Query
     fun getResource(id : Int): LiveData<Resource>
@@ -18,6 +15,14 @@ interface IResourceRepository {
     fun getResources(): LiveData<List<Resource>>
 
     fun getResourcesByTopic(topic : String): LiveData<List<Resource>>
+
+    /**
+     * Returns the list of all resources a User have recommended to his/others' goals
+     */
+    fun getResourcesForUser(userId : Int): LiveData<List<Resource>>
+
+    //Insert
+    fun addResource(template: ResourceTemplate) : LiveData<Int>
 
     /* Delete
      *
@@ -29,5 +34,5 @@ interface IResourceRepository {
      *
      *TODO: remove this method in the final version
      */
-    fun deleteResourceById(id : Int): LiveData<Boolean>
+    fun deleteResource(id : Int): LiveData<Boolean>
 }

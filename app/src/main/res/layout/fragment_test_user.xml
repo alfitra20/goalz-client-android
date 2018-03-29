@@ -3,50 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="emse.mobisocial.goalz.test.fragments.TestUserFragment">
+    tools:context="emse.mobisocial.goalz.test.fragments.TestUserFragment"
+    tools:layout_editor_absoluteY="81dp">
 
     <ListView
         android:id="@+id/user_test_fragment_user_list_view"
         android:layout_width="0dp"
-        android:layout_height="364dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="261dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_update_btn"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_update_btn" />
 
     <TextView
         android:id="@+id/user_test_fragment_selected_user_details_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="No user selected"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_search_et" />
 
     <Button
         android:id="@+id/user_test_fragment_delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/user_test_fragment_update_btn"
         app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_selected_user_details_view" />
 
     <Button
         android:id="@+id/user_test_fragment_update_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="UPDATE"
         app:layout_constraintEnd_toStartOf="@+id/user_test_fragment_delete_btn"
         app:layout_constraintStart_toEndOf="@+id/user_test_fragment_insert_btn"
@@ -56,12 +57,34 @@
         android:id="@+id/user_test_fragment_insert_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="INSERT"
-        app:layout_constraintEnd_toStartOf="@+id/user_test_fragment_update_btn"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_test_fragment_selected_user_details_view" />
+
+    <EditText
+        android:id="@+id/user_test_fragment_search_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Topic"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/user_test_fragment_search_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/user_test_fragment_search_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

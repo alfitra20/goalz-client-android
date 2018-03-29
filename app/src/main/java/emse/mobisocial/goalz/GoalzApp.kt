@@ -1,8 +1,14 @@
 package emse.mobisocial.goalz
 
 import android.app.Application
+import emse.mobisocial.goalz.dal.IGoalRepository
+import emse.mobisocial.goalz.dal.IRecommendationRepository
+import emse.mobisocial.goalz.dal.IResourceRepository
+import emse.mobisocial.goalz.dal.IUserRepository
 import emse.mobisocial.goalz.dal.repositories.UserRepository
 import emse.mobisocial.goalz.dal.db.AppDatabase
+import emse.mobisocial.goalz.dal.repositories.GoalRepository
+import emse.mobisocial.goalz.dal.repositories.RecommendationRepository
 import emse.mobisocial.goalz.dal.repositories.ResourceRepository
 
 /**
@@ -23,9 +29,15 @@ class GoalzApp : Application() {
     private val database: AppDatabase
         get() = AppDatabase.getInstance(this, appExecutors)
 
-    val userRepository: UserRepository
+    val userRepository: IUserRepository
         get() = UserRepository.getInstance(appExecutors.diskIO(), database.userDao())
 
-    val resourceRepository: ResourceRepository
+    val resourceRepository: IResourceRepository
         get() = ResourceRepository.getInstance(appExecutors.diskIO(), database.resourceDao())
+
+    val goalRepository: IGoalRepository
+        get() = GoalRepository.getInstance(appExecutors.diskIO(), database.goalDao())
+
+    val recommendationRepository: IRecommendationRepository
+        get() = RecommendationRepository.getInstance(appExecutors.diskIO(), database.recommendationDao())
 }

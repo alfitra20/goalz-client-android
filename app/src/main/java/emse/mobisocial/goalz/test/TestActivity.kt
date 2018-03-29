@@ -10,12 +10,13 @@ import android.view.Menu
 import android.view.MenuItem
 
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.test.fragments.TestGoalFragment
+import emse.mobisocial.goalz.test.fragments.TestRecommendationFragment
 import emse.mobisocial.goalz.test.fragments.TestResourceFragment
 import emse.mobisocial.goalz.test.fragments.TestUserFragment
 import kotlinx.android.synthetic.main.activity_test.*
 
 class TestActivity : AppCompatActivity() {
-
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
@@ -28,7 +29,6 @@ class TestActivity : AppCompatActivity() {
 
         container.adapter = mSectionsPagerAdapter
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_test, menu)
@@ -51,13 +51,15 @@ class TestActivity : AppCompatActivity() {
             when(position){
                 0 -> return TestUserFragment()
                 1 -> return TestResourceFragment()
+                2 -> return TestGoalFragment()
+                3 -> return TestRecommendationFragment()
             }
 
             return TestResourceFragment()
         }
 
         override fun getCount(): Int {
-            return 2
+            return 4
         }
     }
 }

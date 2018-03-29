@@ -27,7 +27,7 @@
         android:layout_marginTop="8dp"
         android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resource_test_fragment_clear_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/resource_test_fragment_for_user_btn" />
 
     <Button
         android:id="@+id/resource_test_fragment_insert_btn"
@@ -60,17 +60,17 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="FILTER"
-        app:layout_constraintEnd_toStartOf="@+id/resource_test_fragment_clear_btn"
+        android:text="Search"
+        app:layout_constraintEnd_toStartOf="@+id/resource_test_fragment_for_user_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/resource_test_fragment_clear_btn"
+        android:id="@+id/resource_test_fragment_for_user_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="CLEAR"
+        android:text="for user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -7,10 +7,12 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import emse.mobisocial.goalz.GoalzApp
 import emse.mobisocial.goalz.dal.IUserRepository
+import emse.mobisocial.goalz.model.UserMinimal
 import emse.mobisocial.goalz.model.*
+import emse.mobisocial.goalz.util.Gender
 
-private val NEW_USER_INFO : UserInfo =
-        UserInfo(
+private val NEW_USER_TEMPLATE: UserTemplate =
+        UserTemplate(
                 "newUser",
                 "password",
                 "Last",
@@ -36,39 +38,51 @@ class UserTestViewModel (application: Application) : AndroidViewModel(applicatio
 
     private val userRepository : IUserRepository = (application as GoalzApp).userRepository
 
-    private var selectedUser : MutableLiveData<User> = MutableLiveData<User>()
-    val userList : LiveData<List<User>> = userRepository.getUsers()
-    var selectedUserDetails : LiveData<UserDetails> = Transformations.switchMap(selectedUser){
-        userRepository.getUserDetails(it.id)
+    private var selectedUserId: MutableLiveData<Int> = MutableLiveData<Int>()
+    private val userListDb: MutableLiveData<LiveData<List<UserMinimal>>> = MutableLiveData<LiveData<List<UserMinimal>>>()
+    var selectedUser: LiveData<User> = Transformations.switchMap(selectedUserId){
+        userRepository.getUser(it)
+    }
+    val userList: LiveData<List<UserMinimal>> = Transformations.switchMap(userListDb){ it }
+
+    init {
+        userListDb.postValue(userRepository.getUsers())
     }
 
-    fun getDetails(user: User) {
-        selectedUser.postValue(user)
+    fun getDetails(id: Int) {
+        selectedUserId.postValue(id)
     }
 
     fun deleteSelectedUser() {
-        val user = selectedUser.value
-        if (user != null) {
-            userRepository.deleteUser(user)
+        val id = selectedUserId.value
+        if (id != null) {
+            userRepository.deleteUser(id)
         }
     }
 
     fun updateSelectedUser() {
-        val user = selectedUser.value
-        val userDetails = selectedUserDetails.value
-        if (user != null && userDetails != null){
+        var user = selectedUser.value
+        if (user != null){
             user.website = UPDATED_USER_WEBSITE
-            userDetails.firstName = UPDATED_USER_FIRSTNAME
-            userDetails.lastName = UPDATED_USER_LASTNAME
-            userDetails.email = UPDATED_USER_EMAIL
-            userDetails.age = UPDATED_USER_AGE
-            userDetails.gender = Gender.valueOf(UPDATED_USER_GENDER)
+            user.firstName = UPDATED_USER_FIRSTNAME
+            user.lastName = UPDATED_USER_LASTNAME
+            user.email = UPDATED_USER_EMAIL
+            user.age = UPDATED_USER_AGE
+            user.gender = Gender.valueOf(UPDATED_USER_GENDER)
 
-            userRepository.updateUser(user, userDetails)
+            userRepository.updateUser(user)
         }
     }
 
     fun registerUser() {
-        userRepository.registerUser(NEW_USER_INFO)
+        userRepository.registerUser(NEW_USER_TEMPLATE)
+    }
+
+    fun searchByTopic(topic : String) {
+        if (topic == ""){
+            userListDb.postValue(userRepository.getUsers())
+        } else{
+            userListDb.postValue(userRepository.getUsersByTopic(topic))
+        }
     }
 }

@@ -26,12 +26,8 @@ class TestResourceFragment : Fragment() {
     private lateinit var clearBtn : Button
     private lateinit var filterBtn : Button
 
-    private lateinit var resourceList : ArrayList<Resource>
+    private lateinit var resourceList: ArrayList<Resource>
     private lateinit var listAdapter : ArrayAdapter<Resource>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -48,7 +44,7 @@ class TestResourceFragment : Fragment() {
         deleteIdEt = view.findViewById(R.id.resource_test_fragment_delete_id_et)
         deleteBtn = view.findViewById(R.id.resource_test_fragment_delete_btn)
         insertBtn = view.findViewById(R.id.resource_test_fragment_insert_btn)
-        clearBtn = view.findViewById(R.id.resource_test_fragment_clear_btn)
+        clearBtn = view.findViewById(R.id.resource_test_fragment_for_user_btn)
         filterBtn = view.findViewById(R.id.resource_test_fragment_filter_btn)
 
         initializeObservers()
@@ -56,15 +52,6 @@ class TestResourceFragment : Fragment() {
 
         return view
     }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
 
     private fun initializeObservers() {
         model.resourceList.observe(this, Observer<List<Resource>> { users ->
@@ -77,8 +64,8 @@ class TestResourceFragment : Fragment() {
     }
 
     private fun initializeEventListeners() {
-        filterBtn.setOnClickListener {model.applyFilter(topicEt.text.toString())}
-        clearBtn.setOnClickListener {model.clearFilter()}
+        filterBtn.setOnClickListener {model.applyByTopicFilter(topicEt.text.toString())}
+        clearBtn.setOnClickListener {model.applyByUserFilter(topicEt.text.toString())}
         deleteBtn.setOnClickListener {model.deleteResource(deleteIdEt.text.toString().toInt())}
         insertBtn.setOnClickListener {model.createResource()}
     }

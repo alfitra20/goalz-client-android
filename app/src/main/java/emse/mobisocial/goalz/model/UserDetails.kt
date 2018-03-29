@@ -1,12 +1,14 @@
 package emse.mobisocial.goalz.model
 
 import android.arch.persistence.room.*
+import emse.mobisocial.goalz.model.UserMinimal
+import emse.mobisocial.goalz.util.Gender
 
 /**
  * Created by MobiSocial EMSE Team on 3/27/2018.
  */
 @Entity(tableName = "user_details", foreignKeys = [(
-        ForeignKey(entity = User::class,
+        ForeignKey(entity = UserMinimal::class,
             parentColumns = [("user_id")],
             childColumns = [("user_id")],
             onDelete = ForeignKey.CASCADE)
@@ -25,5 +27,4 @@ data class UserDetails(
         @ColumnInfo(name = "age")
         var age : Int,
         @ColumnInfo(name = "gender")
-        var gender : Gender = Gender.UNDEFINED) {
-}
+        var gender : Gender)
