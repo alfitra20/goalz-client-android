@@ -11,6 +11,7 @@ import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.ResourceTemplate
 
 private val NEW_RESOURCE_INFO = ResourceTemplate(
+        1,
         "www.link.org",
         "new",
         "New resource"
@@ -39,7 +40,7 @@ class ResourceTestViewModel (application: Application) : AndroidViewModel(applic
     }
 
     fun applyByUserFilter(idText : String){
-        resourceListDb.postValue(resourceRepository.getResourcesForUser(idText.toInt()))
+        resourceListDb.postValue(resourceRepository.getLibraryForUser(idText.toInt()))
     }
 
     fun deleteResource(id : Int) {
