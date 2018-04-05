@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz
+package emse.mobisocial.goalz.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.activity_base_basic.*
 

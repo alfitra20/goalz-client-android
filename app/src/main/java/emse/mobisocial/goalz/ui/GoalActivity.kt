@@ -1,7 +1,8 @@
-package emse.mobisocial.goalz
+package emse.mobisocial.goalz.ui
 
 import android.os.Bundle
 import android.widget.FrameLayout
+import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_base_basic.*
 
 class GoalActivity : BaseActivity() {
