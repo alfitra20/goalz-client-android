@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz
+package emse.mobisocial.goalz.ui
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.test.fragments.TestGoalFragment
 import emse.mobisocial.goalz.test.fragments.TestRecommendationFragment
 import emse.mobisocial.goalz.test.fragments.TestResourceFragment
