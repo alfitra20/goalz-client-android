@@ -13,6 +13,8 @@ data class Resource constructor(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "resource_id")
         var id : Int, //DO NOT UPDATE
+        @ColumnInfo(name = "user_id")
+        var user_id : Int, //AUTHOR - DO NOT UPDATE
         @ColumnInfo(name = "link")
         var link : String, //DO NOT UPDATE
         @ColumnInfo(name = "title")

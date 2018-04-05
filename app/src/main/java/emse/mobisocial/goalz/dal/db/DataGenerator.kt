@@ -26,10 +26,10 @@ private val userDetails = arrayOf(
 )
 
 private val resources = arrayOf(
-        Resource(1, "www.resource1.com", "First Resource", "random", 3.4, 50),
-        Resource(2, "www.google.com", "Dummy resource", "search", 0.2, 10),
-        Resource(3, "www.stackoverflow.com", "Profi", "search", 1.5, 30),
-        Resource(4, "www.scopus.com", "Uni Database", "random", 2.4, 110)
+        Resource(1, 1,"www.resource1.com", "First Resource", "random", 3.4, 50),
+        Resource(2, 1,"www.google.com", "Dummy resource", "search", 0.2, 10),
+        Resource(3, 2,"www.stackoverflow.com", "Profi", "search", 1.5, 30),
+        Resource(4, 3,"www.scopus.com", "Uni Database", "random", 2.4, 110)
 )
 
 private val goals = arrayOf(
@@ -49,6 +49,18 @@ private val recommendations = arrayOf(
         RecommendationMinimal(3,2,1,2, "Google is helpful","It's simple and fast",10,2.1),
         RecommendationMinimal(4,3,8,1, "Holy grail of programming","Everything is here",200,4.7),
         RecommendationMinimal(5,4,8,2, "Science is important","Literature corpus",400,2.8)
+)
+
+private val libraryEntries = arrayOf(
+        LibraryEntry(1,1),
+        LibraryEntry(1,2),
+        LibraryEntry(1,3),
+        LibraryEntry(2,3),
+        LibraryEntry(2,2),
+        LibraryEntry(2,4),
+        LibraryEntry(3,4),
+        LibraryEntry(3,1),
+        LibraryEntry(4,2)
 )
 
 
@@ -77,6 +89,10 @@ abstract class DataGenerator {
 
         fun generateRecommendations() : List<RecommendationMinimal> {
             return recommendations.toList()
+        }
+
+        fun generateLibraryEntries() : List<LibraryEntry> {
+            return libraryEntries.toList()
         }
     }
 

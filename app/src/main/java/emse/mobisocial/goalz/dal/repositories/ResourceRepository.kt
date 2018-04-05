@@ -35,8 +35,8 @@ class ResourceRepository(
         return resourceDao.loadResourcesByTopic(topic)
     }
 
-    override fun getResourcesForUser(userId: Int): LiveData<List<Resource>> {
-        return resourceDao.loadResourcesForUser(userId)
+    override fun getLibraryForUser(userId: Int): LiveData<List<Resource>> {
+        return resourceDao.loadLibraryForUser(userId)
     }
 
     //Insert
@@ -44,7 +44,7 @@ class ResourceRepository(
         var result = MutableLiveData<Int>()
         executor.execute {
             val resource = Resource(
-                    NEW_RESOURCE_ID, template.link, template.title, template.topic,
+                    NEW_RESOURCE_ID, template.user_id, template.link, template.title, template.topic,
                     NEW_RESOURCE_RATING, NEW_AVG_REQ_TIME)
 
             val id = resourceDao.insertResource(resource).toInt()

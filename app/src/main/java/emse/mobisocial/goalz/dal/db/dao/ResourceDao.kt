@@ -22,10 +22,10 @@ abstract class ResourceDao {
     abstract fun loadResourceForDelete(id : Int): Resource?
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("SELECT resources.resource_id, link, resources.title, topic, resources.rating, avg_req_time FROM resources " +
-            "JOIN recommendations ON resources.resource_id = recommendations.resource_id " +
-            "WHERE recommendations.user_id = :userId")
-    abstract fun loadResourcesForUser(userId : Int) : LiveData<List<Resource>>
+    @Query("SELECT resources.resource_id, resources.user_id, link, resources.title, topic, resources.rating, avg_req_time FROM resources " +
+            "JOIN user_library ON resources.resource_id = user_library.resource_id " +
+            "WHERE user_library.user_id = :userId")
+    abstract fun loadLibraryForUser(userId : Int) : LiveData<List<Resource>>
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
     abstract fun insertResource(resource: Resource) : Long

@@ -34,10 +34,7 @@ import emse.mobisocial.goalz.AppExecutors
 import emse.mobisocial.goalz.dal.converter.DateConverter
 import emse.mobisocial.goalz.dal.converter.GenderConverter
 import emse.mobisocial.goalz.dal.converter.LocationConverter
-import emse.mobisocial.goalz.dal.db.dao.GoalDao
-import emse.mobisocial.goalz.dal.db.dao.RecommendationDao
-import emse.mobisocial.goalz.dal.db.dao.ResourceDao
-import emse.mobisocial.goalz.dal.db.dao.UserDao
+import emse.mobisocial.goalz.dal.db.dao.*
 import emse.mobisocial.goalz.model.*
 
 private const val APP_DATABASE_NAME : String = "GoalzDatabase"
@@ -51,7 +48,8 @@ private const val APP_DATABASE_NAME : String = "GoalzDatabase"
         (UserDetails::class),
         (Resource::class),
         (Goal::class),
-        (RecommendationMinimal::class)],
+        (RecommendationMinimal::class),
+        (LibraryEntry::class)],
     version = 1)
 @TypeConverters(DateConverter::class, GenderConverter::class, LocationConverter::class)
 abstract class AppDatabase : RoomDatabase(){
@@ -68,6 +66,8 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun resourceDao(): ResourceDao
 
     abstract fun recommendationDao(): RecommendationDao
+
+    abstract fun libraryDao(): LibraryDao
 
     private fun updateDatabaseCreated(context: Context) {
         if (context.getDatabasePath(APP_DATABASE_NAME).exists()) {
@@ -108,9 +108,10 @@ abstract class AppDatabase : RoomDatabase(){
                                 val resources = DataGenerator.generateResources()
                                 val goals = DataGenerator.generateGoals()
                                 val recommendations = DataGenerator.generateRecommendations()
+                                val libraryEntrys = DataGenerator.generateLibraryEntries()
 
                                 val database = getInstance(appContext, appExecutors)
-                                insertData(database, users, userDetails, resources, goals, recommendations)
+                                insertData(database, users, userDetails, resources, goals, recommendations, libraryEntrys)
 
                                 // notify that the database was created and it's ready to be used
                                 database.setDatabaseCreated()
@@ -121,7 +122,8 @@ abstract class AppDatabase : RoomDatabase(){
 
         private fun insertData(
                 database: AppDatabase, userMinimals: List<UserMinimal>, userDetails: List<UserDetails>,
-                resources: List<Resource>, goals: List<Goal>, recommendationMinimals: List<RecommendationMinimal>) {
+                resources: List<Resource>, goals: List<Goal>,
+                recommendationMinimals: List<RecommendationMinimal>, library: List<LibraryEntry>) {
             database.runInTransaction {
                 database.userDao().insertUserMinimalList(userMinimals)
                 database.userDao().insertUserDetailsList(userDetails)
@@ -130,6 +132,7 @@ abstract class AppDatabase : RoomDatabase(){
                     database.goalDao().insertGoal(goal)
                 }
                 database.recommendationDao().insertRecommendationList(recommendationMinimals)
+                database.libraryDao().insertLibraryEntryList(library)
             }
         }
 

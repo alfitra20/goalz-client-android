@@ -16,10 +16,7 @@ interface IResourceRepository {
 
     fun getResourcesByTopic(topic : String): LiveData<List<Resource>>
 
-    /**
-     * Returns the list of all resources a User have recommended to his/others' goals
-     */
-    fun getResourcesForUser(userId : Int): LiveData<List<Resource>>
+    fun getLibraryForUser(userId : Int): LiveData<List<Resource>>
 
     //Insert
     fun addResource(template: ResourceTemplate) : LiveData<Int>

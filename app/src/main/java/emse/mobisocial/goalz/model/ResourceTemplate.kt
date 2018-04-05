@@ -6,6 +6,7 @@ package emse.mobisocial.goalz.model
  * Encapsulate all the information required for Resource creation
  */
 data class ResourceTemplate(
+        var user_id : Int, // Author
         var link : String,
         var topic : String,
         var title : String
