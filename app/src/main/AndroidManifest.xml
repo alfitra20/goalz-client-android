@@ -10,9 +10,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".test.TestActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BaseActivity"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ExploreActivity"
+            android:label="@string/title_activity_explore"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".GoalsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +35,15 @@
         <service
             android:name="emse.mobisocial.goalz.dal.remote.FirebaseConnectionService"
             android:exported="false"/>
+        <activity
+            android:name=".GoalActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".UsersLibraryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".UserActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

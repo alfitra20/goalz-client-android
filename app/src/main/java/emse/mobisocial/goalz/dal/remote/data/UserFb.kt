@@ -32,10 +32,8 @@ class UserFb constructor() : FirebaseData<User> {
     }
 
     override fun toEntity(id: String): User {
-        var date : Date? = if (registrationDate != null) Date(registrationDate!!*1000) else null
-
-        return User(id, nickname!!, rating, website, date, firstname!!, lastname!!,
-                email!!, age!!, Gender.valueOf(gender!!))
+        return User(id, nickname!!, rating, website, Date(registrationDate*1000), firstname!!
+                , lastname!!, email!!, age!!, Gender.valueOf(gender!!))
     }
 
 }
