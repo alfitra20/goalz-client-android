@@ -15,7 +15,13 @@ import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.activity_base_basic.*
 
+
 open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    // Temporary for deciding which navigation menu and header to be shown
+    // If the user use the app without login
+    // it will use without_login_base_drawer menu
+    private var loggedIn =  true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +35,13 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
+        // when the user using the app without login
+        if(!loggedIn){
+            nav_view.menu.clear()
+            nav_view.inflateMenu(R.menu.without_login_base_drawer)
+        }
+
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -40,13 +53,20 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         var header = nav_view.getHeaderView(0)
         var sidebarNickname : TextView = header.findViewById(R.id.sidebar_nickname)
         var profileImage : ImageView = header.findViewById(R.id.profile_image)
-        sidebarNickname.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
-            startActivity(intent)
-        }
-        profileImage.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
-            startActivity(intent)
+
+        // When the user logged in the profile picture and nickname will redirect to user's profile
+        // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
+        if(loggedIn) {
+            sidebarNickname.setOnClickListener {
+                val intent = Intent(this, UserActivity::class.java)
+                startActivity(intent)
+            }
+            profileImage.setOnClickListener {
+                val intent = Intent(this, UserActivity::class.java)
+                startActivity(intent)
+            }
+        }else{
+            sidebarNickname.text = getString(R.string.app_name)
         }
     }
 
@@ -56,6 +76,13 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
+        // when the user using the app without login
+        if(!loggedIn){
+            nav_view_basic.menu.clear()
+            nav_view_basic.inflateMenu(R.menu.without_login_base_drawer)
+        }
+
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout_basic, toolbar_basic, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout_basic.addDrawerListener(toggle)
@@ -67,13 +94,20 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         var header_basic = nav_view_basic.getHeaderView(0)
         var sidebarNickname : TextView = header_basic.findViewById(R.id.sidebar_nickname)
         var profileImage : ImageView = header_basic.findViewById(R.id.profile_image)
-        sidebarNickname.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
-            startActivity(intent)
-        }
-        profileImage.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
-            startActivity(intent)
+
+        // When the user logged in the profile picture and nickname will redirect to user's profile
+        // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
+        if(loggedIn){
+            sidebarNickname.setOnClickListener {
+                val intent = Intent(this, UserActivity::class.java)
+                startActivity(intent)
+            }
+            profileImage.setOnClickListener {
+                val intent = Intent(this, UserActivity::class.java)
+                startActivity(intent)
+            }
+        }else{
+            sidebarNickname.text = getString(R.string.app_name)
         }
     }
 
@@ -106,10 +140,14 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+
+            // Available for user who use the app without login
             R.id.nav_explore -> {
                 val intent = Intent(this, ExploreActivity::class.java)
                 startActivity(intent)
             }
+
+            // Available only for user who login
             R.id.nav_goals -> {
                 val intent = Intent(this, GoalsActivity::class.java)
                 startActivity(intent)
@@ -125,6 +163,14 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             }
             R.id.nav_logout -> {
+
+            }
+
+            // Without login menu
+            R.id.nav_login -> {
+
+            }
+            R.id.nav_signup -> {
 
             }
         }
