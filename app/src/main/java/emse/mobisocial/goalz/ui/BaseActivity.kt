@@ -24,6 +24,7 @@ open class BaseActivity : AppCompatActivity() {
     private var loggedIn =  true
     private lateinit var mContext:Context
     private lateinit var toggle: ActionBarDrawerToggle
+    val fragmentManager = supportFragmentManager
     lateinit var fragment: Fragment
     lateinit var fragmentClass:Class<*>
 
@@ -31,15 +32,25 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         setSupportActionBar(toolbar)
+
         mContext = this@BaseActivity
     }
 
     private fun setUpNav() {
 
         if(!loggedIn){
+            fragmentClass = ExploreFragment::class.java
             nav_view.menu.clear()
             nav_view.inflateMenu(R.menu.without_login_base_drawer)
+            supportActionBar?.title = getString(R.string.app_bar_explore)
+        }else{
+            fragmentClass = GoalsFragment::class.java
+            supportActionBar?.title = getString(R.string.app_bar_goals)
         }
+
+        fragment = fragmentClass.newInstance() as Fragment
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
+
         toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout?.addDrawerListener(toggle)
@@ -70,14 +81,17 @@ open class BaseActivity : AppCompatActivity() {
             // Available for user who use the app without login
                 R.id.nav_explore -> {
                     fragmentClass = ExploreFragment::class.java
+                    supportActionBar?.title = getString(R.string.app_bar_explore)
                 }
 
             // Available only for user who login
                 R.id.nav_goals -> {
                     fragmentClass = GoalsFragment::class.java
+                    supportActionBar?.title = getString(R.string.app_bar_goals)
                 }
                 R.id.nav_library -> {
                     fragmentClass = UsersLibraryFragment::class.java
+                    supportActionBar?.title = getString(R.string.app_bar_users_library)
                 }
                 R.id.nav_timeline -> {
 
@@ -99,7 +113,6 @@ open class BaseActivity : AppCompatActivity() {
             }
             item.setChecked(true)
             fragment = fragmentClass.newInstance() as Fragment
-            val fragmentManager = supportFragmentManager
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
             drawer_layout.closeDrawer(GravityCompat.START)
 

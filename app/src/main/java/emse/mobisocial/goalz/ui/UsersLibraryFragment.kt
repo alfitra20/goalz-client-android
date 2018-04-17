@@ -23,8 +23,7 @@ class UsersLibraryFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_users_library, container, false)
-        val actionbar = view.toolbar
-        actionbar?.title = getString(R.string.app_bar_users_library)
+
         return view
     }
 
