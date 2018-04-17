@@ -28,9 +28,6 @@ class ExploreFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_explore, container, false)
 
-        val actionbar = activity.actionBar
-        actionbar?.title = getString(R.string.app_bar_explore)
-
         var viewPager = view.findViewById<ViewPager>(R.id.explorePager)
 
         return view

@@ -24,9 +24,6 @@ class GoalsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_goals, container, false)
 
-        val actionbar = view.toolbar
-        actionbar?.title = getString(R.string.app_bar_goals)
-
         return view
     }
 
