@@ -16,30 +16,19 @@
         <activity
             android:name=".ui.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.ExploreActivity"
-            android:label="@string/title_activity_explore"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".ui.GoalsActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
         <activity
-            android:name=".ui.GoalActivity"
-            android:label="@string/title_activity_goal"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.UsersLibraryActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.UserActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".ui.UserActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.BaseActivity"/>
+        </activity>
     </application>
 
 </manifest>
