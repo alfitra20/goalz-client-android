@@ -24,9 +24,6 @@ open class BaseActivity : AppCompatActivity() {
     private var loggedIn =  true
     private lateinit var mContext:Context
     private lateinit var toggle: ActionBarDrawerToggle
-    val fragmentManager = supportFragmentManager
-    lateinit var fragment: Fragment
-    lateinit var fragmentClass:Class<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,23 +31,12 @@ open class BaseActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         mContext = this@BaseActivity
+
+        setUpNav()
+        toggle.syncState()
     }
 
     private fun setUpNav() {
-
-        if(!loggedIn){
-            fragmentClass = ExploreFragment::class.java
-            nav_view.menu.clear()
-            nav_view.inflateMenu(R.menu.without_login_base_drawer)
-            supportActionBar?.title = getString(R.string.app_bar_explore)
-        }else{
-            fragmentClass = GoalsFragment::class.java
-            supportActionBar?.title = getString(R.string.app_bar_goals)
-        }
-
-        fragment = fragmentClass.newInstance() as Fragment
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
-
         toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout?.addDrawerListener(toggle)
@@ -60,9 +46,17 @@ open class BaseActivity : AppCompatActivity() {
         var sidebarNickname : TextView = header.findViewById(R.id.sidebar_nickname)
         var profileImage : ImageView = header.findViewById(R.id.profile_image)
 
+        // Set Default displayed fragment if user is not logged
+        var displayedFragment: Fragment = ExploreFragment()
+        var actionBarTitle = getString(R.string.app_bar_explore)
+
+        // Initialize default views
         // When the user logged in the profile picture and nickname will redirect to user's profile
         // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
-        if(loggedIn) {
+        if (loggedIn) {
+            displayedFragment = GoalsFragment()
+            actionBarTitle = getString(R.string.app_bar_goals)
+
             sidebarNickname.setOnClickListener {
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
@@ -71,7 +65,9 @@ open class BaseActivity : AppCompatActivity() {
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
             }
-        }else{
+        }
+        else {
+            nav_view.menu.clear()
             sidebarNickname.text = getString(R.string.app_name)
         }
 
@@ -80,18 +76,18 @@ open class BaseActivity : AppCompatActivity() {
 
             // Available for user who use the app without login
                 R.id.nav_explore -> {
-                    fragmentClass = ExploreFragment::class.java
-                    supportActionBar?.title = getString(R.string.app_bar_explore)
+                    displayedFragment = ExploreFragment()
+                    actionBarTitle = getString(R.string.app_bar_explore)
                 }
 
             // Available only for user who login
                 R.id.nav_goals -> {
-                    fragmentClass = GoalsFragment::class.java
-                    supportActionBar?.title = getString(R.string.app_bar_goals)
+                    displayedFragment = GoalsFragment()
+                    actionBarTitle = getString(R.string.app_bar_goals)
                 }
                 R.id.nav_library -> {
-                    fragmentClass = UsersLibraryFragment::class.java
-                    supportActionBar?.title = getString(R.string.app_bar_users_library)
+                    displayedFragment = UsersLibraryFragment()
+                    actionBarTitle = getString(R.string.app_bar_users_library)
                 }
                 R.id.nav_timeline -> {
 
@@ -112,19 +108,17 @@ open class BaseActivity : AppCompatActivity() {
                 }
             }
             item.setChecked(true)
-            fragment = fragmentClass.newInstance() as Fragment
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
+
+            // Set selected/ default fragment and appbarTitle
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.content_frame, displayedFragment)
+            transaction.commit()
+            supportActionBar?.title = actionBarTitle
+
             drawer_layout.closeDrawer(GravityCompat.START)
 
             true
         }
-        toggle.syncState()
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        setUpNav()
-
         toggle.syncState()
     }
 
