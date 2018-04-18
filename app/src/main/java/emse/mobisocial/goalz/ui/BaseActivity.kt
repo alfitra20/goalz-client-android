@@ -50,6 +50,8 @@ open class BaseActivity : AppCompatActivity() {
         var displayedFragment: Fragment = ExploreFragment()
         var actionBarTitle = getString(R.string.app_bar_explore)
 
+        nav_view.itemIconTintList = null
+
         // Initialize default views
         // When the user logged in the profile picture and nickname will redirect to user's profile
         // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
@@ -68,6 +70,7 @@ open class BaseActivity : AppCompatActivity() {
         }
         else {
             nav_view.menu.clear()
+            nav_view.inflateMenu(R.menu.without_login_base_drawer)
             sidebarNickname.text = getString(R.string.app_name)
         }
 
