@@ -32,8 +32,23 @@ open class BaseActivity : AppCompatActivity() {
 
         mContext = this@BaseActivity
 
+        setInitialFragment()
         setUpNav()
         toggle.syncState()
+    }
+
+    private fun setInitialFragment() {
+        if (loggedIn) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.content_frame, GoalsFragment())
+            transaction.commit()
+            supportActionBar?.title = getString(R.string.app_bar_goals)
+        } else {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.content_frame, ExploreFragment())
+            transaction.commit()
+            supportActionBar?.title = getString(R.string.app_bar_explore)
+        }
     }
 
     private fun setUpNav() {
@@ -46,19 +61,12 @@ open class BaseActivity : AppCompatActivity() {
         var sidebarNickname : TextView = header.findViewById(R.id.sidebar_nickname)
         var profileImage : ImageView = header.findViewById(R.id.profile_image)
 
-        // Set Default displayed fragment if user is not logged
-        var displayedFragment: Fragment = ExploreFragment()
-        var actionBarTitle = getString(R.string.app_bar_explore)
-
         nav_view.itemIconTintList = null
 
         // Initialize default views
         // When the user logged in the profile picture and nickname will redirect to user's profile
         // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
         if (loggedIn) {
-            displayedFragment = GoalsFragment()
-            actionBarTitle = getString(R.string.app_bar_goals)
-
             sidebarNickname.setOnClickListener {
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
@@ -75,6 +83,8 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         nav_view.setNavigationItemSelectedListener { item ->
+            var displayedFragment: Fragment = ExploreFragment()
+            var actionBarTitle = getString(R.string.app_bar_explore)
             when (item.itemId) {
 
             // Available for user who use the app without login
