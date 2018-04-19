@@ -10,7 +10,7 @@ import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.dal.converter.LocationConverter
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.GoalTemplate
-import emse.mobisocial.goalz.viewmodels.FABGoalResourceVM
+import emse.mobisocial.goalz.ui.viewModels.FABGoalResourceVM
 import kotlinx.android.synthetic.main.activity_create_goal.*
 import java.text.SimpleDateFormat
 

@@ -9,7 +9,7 @@ import android.webkit.URLUtil
 import android.widget.Toast
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.ResourceTemplate
-import emse.mobisocial.goalz.viewmodels.FABGoalResourceVM
+import emse.mobisocial.goalz.ui.viewModels.FABGoalResourceVM
 import kotlinx.android.synthetic.main.activity_create_resource.*
 
 class CreateResourceActivity : AppCompatActivity() {
