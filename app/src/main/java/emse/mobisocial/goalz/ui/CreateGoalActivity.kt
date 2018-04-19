@@ -21,8 +21,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.support.v4.app.ActivityCompat
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
@@ -46,17 +44,6 @@ class CreateGoalActivity : AppCompatActivity() {
     private lateinit var client: FusedLocationProviderClient
     private lateinit var locationManager : LocationManager
 
-    private val textWatcher = object:TextWatcher{
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        }
-        override fun afterTextChanged(p0: Editable?) {
-            checkEmptyField()
-        }
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        }
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_goal)
@@ -68,6 +55,8 @@ class CreateGoalActivity : AppCompatActivity() {
         }
         userGoalsList = ArrayList<Goal>()
         model = ViewModelProviders.of(this).get(FABGoalResourceVM::class.java)
+
+        //using temporary user id
         model.setUser(USER_ID)
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -79,7 +68,7 @@ class CreateGoalActivity : AppCompatActivity() {
                 currentLocation.latitude = location.latitude
             }
         }
-        createGoalButton.isEnabled = false
+        goalDeadlineText.isEnabled = false
 
         initializeObservers()
         initializeEventListeners()
@@ -108,10 +97,6 @@ class CreateGoalActivity : AppCompatActivity() {
     private fun initializeEventListeners() {
         createGoalButton.setOnClickListener {createEventListener() }
         pickDate.post { pickDateListener() }
-        goalTopicText.addTextChangedListener(textWatcher)
-        goalDeadlineText.addTextChangedListener(textWatcher)
-        goalDescriptionText.addTextChangedListener(textWatcher)
-        goalTitleText.addTextChangedListener(textWatcher)
     }
 
     private fun pickDateListener(){
@@ -139,31 +124,35 @@ class CreateGoalActivity : AppCompatActivity() {
         if (parentId == 0){
             parentId = null
         }
-        var date = dateFormat.parse(goalDeadlineText.text.toString())
-        val newGoal = GoalTemplate(
-                USER_ID,
-                parentId,
-                goalTitleText.text.toString(),
-                goalTopicText.text.toString(),
-                goalDescriptionText.text.toString(),
-                currentLocation,
-                0,
-                date)
-        model.addGoal(newGoal).observe(this, Observer<Int> { id ->
-            val intent = Intent(this, GoalActivity::class.java)
-            intent.putExtra("new_goal_id", id.toString())
-            startActivity(intent)
-            Toast.makeText(this, "Goal Successfully Created", Toast.LENGTH_LONG).show()
-            finish()
-        })
+        try {
+            val date = dateFormat.parse(goalDeadlineText.text.toString())
+            val newGoal = GoalTemplate(
+                    USER_ID,
+                    parentId,
+                    goalTitleText.text.toString(),
+                    goalTopicText.text.toString(),
+                    goalDescriptionText.text.toString(),
+                    currentLocation,
+                    0,
+                    date)
+            addGoal(newGoal)
+        }catch (e:Exception){
+            Toast.makeText(this, "Invalid Fields", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
-    private fun checkEmptyField(){
+    private fun addGoal(newGoal:GoalTemplate){
         if(goalTitleText.text.toString()!=""&&goalTopicText.text.toString()!=""&&goalDescriptionText.text.toString()!=""&&goalDeadlineText.text.toString()!="") {
-            createGoalButton.isEnabled = true
+            model.addGoal(newGoal).observe(this, Observer<Int> { id ->
+                val intent = Intent(this, GoalActivity::class.java)
+                intent.putExtra("new_goal_id", id.toString())
+                startActivity(intent)
+                Toast.makeText(this, "Goal Successfully Created", Toast.LENGTH_LONG).show()
+                finish()
+            })
         }else{
-            createGoalButton.isEnabled = false
+            Toast.makeText(this, "Invalid Fields", Toast.LENGTH_SHORT).show()
         }
     }
-
 }
