@@ -3,6 +3,7 @@ package emse.mobisocial.goalz.ui
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -13,10 +14,11 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.ui.resource_library.ResourceLibraryFragment
 import kotlinx.android.synthetic.main.activity_base.*
 
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
 
     // Temporary for deciding which navigation menu and header to be shown
     // If the user use the app without login
@@ -24,6 +26,9 @@ open class BaseActivity : AppCompatActivity() {
     private var loggedIn =  true
     private lateinit var mContext:Context
     private lateinit var toggle: ActionBarDrawerToggle
+
+    override fun onFragmentInteraction(uri: Uri) {
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +91,7 @@ open class BaseActivity : AppCompatActivity() {
                     actionBarTitle = getString(R.string.app_bar_goals)
                 }
                 R.id.nav_library -> {
-                    displayedFragment = UsersLibraryFragment()
+                    displayedFragment = ResourceLibraryFragment()
                     actionBarTitle = getString(R.string.app_bar_users_library)
                 }
                 R.id.nav_timeline -> {
