@@ -7,8 +7,6 @@
     <string name="app_bar_goals">Goals</string>
     <string name="app_bar_users_library">Resource Library</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_base">BaseActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -17,4 +15,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_explore">ExploreActivity</string>
     <string name="title_activity_goal">GoalActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

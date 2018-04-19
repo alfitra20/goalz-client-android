@@ -4,6 +4,7 @@
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".GoalzApp"
@@ -30,7 +31,24 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.BaseActivity" />
+<<<<<<< HEAD
+=======
         </activity>
+        <activity android:name=".ui.CreateGoalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.BaseActivity" />
+>>>>>>> c333e9a2669f572a10d4f56c6632fe989c1ad2dd
+        </activity>
+        <activity android:name=".ui.CreateResourceActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.BaseActivity" />
+        </activity>
+        <activity
+            android:name=".ui.GoalActivity"
+            android:label="@string/title_activity_goal"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

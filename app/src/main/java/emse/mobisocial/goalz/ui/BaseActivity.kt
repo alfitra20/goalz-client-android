@@ -1,9 +1,12 @@
 package emse.mobisocial.goalz.ui
 
+import android.Manifest
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -16,7 +19,10 @@ import android.widget.TextView
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.ui.resource_library.ResourceLibraryFragment
 import kotlinx.android.synthetic.main.activity_base.*
-
+import android.animation.Animator
+import android.support.v4.app.ActivityCompat
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 
 open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
 
@@ -37,8 +43,24 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
         mContext = this@BaseActivity
 
+        setInitialFragment()
         setUpNav()
         toggle.syncState()
+        ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),1)
+    }
+
+    private fun setInitialFragment() {
+        if (loggedIn) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.content_frame, GoalsFragment())
+            transaction.commit()
+            supportActionBar?.title = getString(R.string.app_bar_goals)
+        } else {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.content_frame, ExploreFragment())
+            transaction.commit()
+            supportActionBar?.title = getString(R.string.app_bar_explore)
+        }
     }
 
     private fun setUpNav() {
@@ -51,17 +73,12 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         var sidebarNickname : TextView = header.findViewById(R.id.sidebar_nickname)
         var profileImage : ImageView = header.findViewById(R.id.profile_image)
 
-        // Set Default displayed fragment if user is not logged
-        var displayedFragment: Fragment = ExploreFragment()
-        var actionBarTitle = getString(R.string.app_bar_explore)
+        nav_view.itemIconTintList = null
 
         // Initialize default views
         // When the user logged in the profile picture and nickname will redirect to user's profile
         // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
         if (loggedIn) {
-            displayedFragment = GoalsFragment()
-            actionBarTitle = getString(R.string.app_bar_goals)
-
             sidebarNickname.setOnClickListener {
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
@@ -70,13 +87,25 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
             }
+            addGoalButton.setOnClickListener {
+                val intent = Intent(this, CreateGoalActivity::class.java)
+                startActivity(intent)
+            }
+            addResourceButton.setOnClickListener {
+                val intent = Intent(this, CreateResourceActivity::class.java)
+                startActivity(intent)
+            }
         }
         else {
             nav_view.menu.clear()
+            nav_view.inflateMenu(R.menu.without_login_base_drawer)
             sidebarNickname.text = getString(R.string.app_name)
+            fab.hideMenuButton(true)
         }
 
         nav_view.setNavigationItemSelectedListener { item ->
+            var displayedFragment: Fragment = ExploreFragment()
+            var actionBarTitle = getString(R.string.app_bar_explore)
             when (item.itemId) {
 
             // Available for user who use the app without login
