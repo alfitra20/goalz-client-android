@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz.viewmodels
+package emse.mobisocial.goalz.ui.viewModels
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
