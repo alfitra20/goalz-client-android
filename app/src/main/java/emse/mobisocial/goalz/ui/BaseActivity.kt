@@ -1,8 +1,11 @@
 package emse.mobisocial.goalz.ui
 
+import android.Manifest
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -14,6 +17,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_base.*
+import android.animation.Animator
+import android.support.v4.app.ActivityCompat
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 
 
 open class BaseActivity : AppCompatActivity() {
@@ -34,6 +41,7 @@ open class BaseActivity : AppCompatActivity() {
 
         setUpNav()
         toggle.syncState()
+        ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),1)
     }
 
     private fun setUpNav() {
@@ -67,11 +75,20 @@ open class BaseActivity : AppCompatActivity() {
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
             }
+            addGoalButton.setOnClickListener {
+                val intent = Intent(this, CreateGoalActivity::class.java)
+                startActivity(intent)
+            }
+            addResourceButton.setOnClickListener {
+                val intent = Intent(this, CreateResourceActivity::class.java)
+                startActivity(intent)
+            }
         }
         else {
             nav_view.menu.clear()
             nav_view.inflateMenu(R.menu.without_login_base_drawer)
             sidebarNickname.text = getString(R.string.app_name)
+            fab.hideMenuButton(true)
         }
 
         nav_view.setNavigationItemSelectedListener { item ->
