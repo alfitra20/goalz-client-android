@@ -30,7 +30,6 @@ class TestActivity : AppCompatActivity() {
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         container1.adapter = mSectionsPagerAdapter
-        startService(Intent(this, FirebaseConnectionService::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

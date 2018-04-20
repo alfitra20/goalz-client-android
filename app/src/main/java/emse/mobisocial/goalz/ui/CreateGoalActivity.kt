@@ -121,6 +121,7 @@ class CreateGoalActivity : AppCompatActivity() {
     private fun  createEventListener(){
         var dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         goalDeadlineText
+
         var parentId = (spinnerMap[userGoalSpinner.selectedItemPosition])
         if (parentId == "none"){
             parentId = null
@@ -145,6 +146,7 @@ class CreateGoalActivity : AppCompatActivity() {
 
     private fun addGoal(newGoal:GoalTemplate){
         if(goalTitleText.text.toString()!=""&&goalTopicText.text.toString()!=""&&goalDescriptionText.text.toString()!=""&&goalDeadlineText.text.toString()!="") {
+
             model.addGoal(newGoal).observe(this, Observer<DalResponse> { id ->
                 val intent = Intent(this, GoalActivity::class.java)
                 intent.putExtra("new_goal_id", id.toString())
