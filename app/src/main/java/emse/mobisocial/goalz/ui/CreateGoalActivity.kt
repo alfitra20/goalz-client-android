@@ -27,6 +27,7 @@ import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.dal.db.converter.LocationConverter
 import java.util.*
 import kotlin.collections.HashMap
@@ -147,12 +148,14 @@ class CreateGoalActivity : AppCompatActivity() {
     private fun addGoal(newGoal:GoalTemplate){
         if(goalTitleText.text.toString()!=""&&goalTopicText.text.toString()!=""&&goalDescriptionText.text.toString()!=""&&goalDeadlineText.text.toString()!="") {
 
-            model.addGoal(newGoal).observe(this, Observer<DalResponse> { id ->
-                val intent = Intent(this, GoalActivity::class.java)
-                intent.putExtra("new_goal_id", id.toString())
-                startActivity(intent)
-                Toast.makeText(this, "Goal Successfully Created", Toast.LENGTH_LONG).show()
-                finish()
+            model.addGoal(newGoal).observe(this, Observer<DalResponse> { response ->
+                if (response?.status == DalResponseStatus.SUCCESS){
+                    val intent = Intent(this, GoalActivity::class.java)
+                    intent.putExtra("new_goal_id", response.id)
+                    startActivity(intent)
+                    Toast.makeText(this, "Goal Successfully Created", Toast.LENGTH_LONG).show()
+                    finish()
+                }
             })
         }else{
             Toast.makeText(this, "Invalid Fields", Toast.LENGTH_SHORT).show()

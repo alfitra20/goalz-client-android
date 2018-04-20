@@ -50,7 +50,7 @@ private const val APP_DATABASE_NAME : String = "GoalzDatabase"
         (Goal::class),
         (RecommendationMinimal::class),
         (LibraryEntry::class)],
-    version = 2)
+    version = 1)
 @TypeConverters(DateConverter::class, GenderConverter::class, LocationConverter::class)
 abstract class AppDatabase : RoomDatabase(){
 
