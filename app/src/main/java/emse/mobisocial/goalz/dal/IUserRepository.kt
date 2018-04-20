@@ -1,10 +1,7 @@
 package emse.mobisocial.goalz.dal
 
 import android.arch.lifecycle.LiveData
-import emse.mobisocial.goalz.model.User
-import emse.mobisocial.goalz.model.UserMinimal
-import emse.mobisocial.goalz.model.UserDetails
-import emse.mobisocial.goalz.model.UserTemplate
+import emse.mobisocial.goalz.model.*
 
 /**
  * Created by MobiSocial EMSE Team on 3/27/2018.
@@ -15,6 +12,8 @@ interface IUserRepository {
     fun getUser(id : String): LiveData<User>
 
     fun getUsers(): LiveData<List<UserMinimal>>
+
+    fun searchUsers(formattedQuery: String): LiveData<List<UserMinimal>>
 
     fun getUsersByTopic(topic : String): LiveData<List<UserMinimal>>
 

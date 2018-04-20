@@ -15,6 +15,8 @@ interface IResourceRepository {
 
     fun getResources(): LiveData<List<Resource>>
 
+    fun searchResources(formattedQuery: String): LiveData<List<Resource>>
+
     fun getResourcesByTopic(topic : String): LiveData<List<Resource>>
 
     fun getLibraryForUser(userId : String): LiveData<List<Resource>>

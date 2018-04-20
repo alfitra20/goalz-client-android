@@ -39,6 +39,10 @@ class ResourceRepository(
         return resourceDao.loadResources()
     }
 
+    override fun searchResources(formattedQuery: String): LiveData<List<Resource>> {
+        return resourceDao.searchResources(formattedQuery)
+    }
+
     override fun getResourcesByTopic(topic: String): LiveData<List<Resource>> {
         return resourceDao.loadResourcesByTopic(topic)
     }

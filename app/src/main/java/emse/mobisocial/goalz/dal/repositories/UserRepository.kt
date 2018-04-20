@@ -42,6 +42,10 @@ class UserRepository private constructor(
         return userDao.loadUsers()
     }
 
+    override fun searchUsers(formattedQuery: String): LiveData<List<UserMinimal>> {
+        return userDao.searchUsers(formattedQuery)
+    }
+
     override fun getUsersByTopic(topic : String): LiveData<List<UserMinimal>> {
         return userDao.loadUsersByTopic(topic)
     }
