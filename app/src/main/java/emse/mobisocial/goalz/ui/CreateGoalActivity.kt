@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import emse.mobisocial.goalz.R
-import emse.mobisocial.goalz.dal.converter.LocationConverter
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.GoalTemplate
 import emse.mobisocial.goalz.ui.viewModels.FABGoalResourceVM
@@ -27,6 +26,8 @@ import android.widget.DatePicker
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.db.converter.LocationConverter
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.max
@@ -35,7 +36,7 @@ import kotlin.math.max
 class CreateGoalActivity : AppCompatActivity() {
     private lateinit var model : FABGoalResourceVM
     // Temporary
-    private val USER_ID = 1
+    private val USER_ID = "FOlyCo0IILeOnfUxhZpphdYnICS2"
 
     private var currentLocation : Location = LocationConverter.toLocation("0.0,0.0")
     private lateinit var userGoalsList : ArrayList<Goal>
@@ -80,7 +81,7 @@ class CreateGoalActivity : AppCompatActivity() {
             if (goals != null) {
                     val spinnerArray = arrayOfNulls<String>(max(goals.size,1))
 
-                    spinnerMap[0] = "0"
+                    spinnerMap[0] = "none"
                     spinnerArray[0] = "None"
 
                     for (i in 1 until goals.size)
@@ -120,8 +121,8 @@ class CreateGoalActivity : AppCompatActivity() {
     private fun  createEventListener(){
         var dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         goalDeadlineText
-        var parentId = (spinnerMap[userGoalSpinner.selectedItemPosition])?.toInt()
-        if (parentId == 0){
+        var parentId = (spinnerMap[userGoalSpinner.selectedItemPosition])
+        if (parentId == "none"){
             parentId = null
         }
         try {
@@ -144,7 +145,7 @@ class CreateGoalActivity : AppCompatActivity() {
 
     private fun addGoal(newGoal:GoalTemplate){
         if(goalTitleText.text.toString()!=""&&goalTopicText.text.toString()!=""&&goalDescriptionText.text.toString()!=""&&goalDeadlineText.text.toString()!="") {
-            model.addGoal(newGoal).observe(this, Observer<Int> { id ->
+            model.addGoal(newGoal).observe(this, Observer<DalResponse> { id ->
                 val intent = Intent(this, GoalActivity::class.java)
                 intent.putExtra("new_goal_id", id.toString())
                 startActivity(intent)

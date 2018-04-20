@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import emse.mobisocial.goalz.GoalzApp
+import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.IGoalRepository
 import emse.mobisocial.goalz.dal.IResourceRepository
 import emse.mobisocial.goalz.model.Goal
@@ -19,11 +20,11 @@ class FABGoalResourceVM (application: Application) : AndroidViewModel(applicatio
 
     lateinit var userGoalsList: LiveData<List<Goal>>
 
-    fun setUser(userId: Int){
+    fun setUser(userId: String){
         userGoalsList = goalRepository.getGoalsForUser(userId)
     }
 
-    fun addGoal(newGoal:GoalTemplate) : LiveData<Int> {
+    fun addGoal(newGoal:GoalTemplate) : LiveData<DalResponse> {
         return goalRepository.addGoal(newGoal)
     }
 

@@ -15,7 +15,7 @@ class CreateResourceActivity : AppCompatActivity() {
     private lateinit var model : FABGoalResourceVM
 
     // Temporary
-    private val USER_ID = 1
+    private val USER_ID = "FOlyCo0IILeOnfUxhZpphdYnICS2"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
