@@ -35,12 +35,14 @@ import java.util.concurrent.Executors
  * webservice requests).
  */
 class AppExecutors private constructor(
+        private val mMainThread: Executor,
         private val mDiskIO: Executor,
-        private val mMainThread: Executor) {
+        private val mNetworkIO: Executor) {
 
     constructor() : this(
+            MainThreadExecutor(),
             Executors.newSingleThreadExecutor(),
-            MainThreadExecutor()) {
+            Executors.newFixedThreadPool(3)) {
     }
 
     fun diskIO(): Executor {
@@ -49,6 +51,10 @@ class AppExecutors private constructor(
 
     fun mainThread(): Executor {
         return mMainThread
+    }
+
+    fun networkIO(): Executor {
+        return mNetworkIO
     }
 
     private class MainThreadExecutor : Executor {

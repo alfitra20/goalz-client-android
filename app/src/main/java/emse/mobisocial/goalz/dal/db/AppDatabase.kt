@@ -31,9 +31,9 @@ import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import emse.mobisocial.goalz.AppExecutors
-import emse.mobisocial.goalz.dal.converter.DateConverter
-import emse.mobisocial.goalz.dal.converter.GenderConverter
-import emse.mobisocial.goalz.dal.converter.LocationConverter
+import emse.mobisocial.goalz.dal.db.converter.DateConverter
+import emse.mobisocial.goalz.dal.db.converter.GenderConverter
+import emse.mobisocial.goalz.dal.db.converter.LocationConverter
 import emse.mobisocial.goalz.dal.db.dao.*
 import emse.mobisocial.goalz.model.*
 
@@ -99,49 +99,12 @@ abstract class AppDatabase : RoomDatabase(){
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             appExecutors.diskIO().execute({
-                                // Add a delay to simulate a long-running operation
-                                addDelay()
-
-                                // Generate the data for pre-population
-                                val users = DataGenerator.generateUsers()
-                                val userDetails = DataGenerator.generateUserDetails()
-                                val resources = DataGenerator.generateResources()
-                                val goals = DataGenerator.generateGoals()
-                                val recommendations = DataGenerator.generateRecommendations()
-                                val libraryEntrys = DataGenerator.generateLibraryEntries()
-
                                 val database = getInstance(appContext, appExecutors)
-                                insertData(database, users, userDetails, resources, goals, recommendations, libraryEntrys)
-
                                 // notify that the database was created and it's ready to be used
                                 database.setDatabaseCreated()
                             })
                         }
                     }).build()
-        }
-
-        private fun insertData(
-                database: AppDatabase, userMinimals: List<UserMinimal>, userDetails: List<UserDetails>,
-                resources: List<Resource>, goals: List<Goal>,
-                recommendationMinimals: List<RecommendationMinimal>, library: List<LibraryEntry>) {
-            database.runInTransaction {
-                database.userDao().insertUserMinimalList(userMinimals)
-                database.userDao().insertUserDetailsList(userDetails)
-                database.resourceDao().insertResourceList(resources)
-                for (goal in goals){
-                    database.goalDao().insertGoal(goal)
-                }
-                database.recommendationDao().insertRecommendationList(recommendationMinimals)
-                database.libraryDao().insertLibraryEntryList(library)
-            }
-        }
-
-        private fun addDelay() {
-            try {
-                Thread.sleep(4000)
-            } catch (ignored: InterruptedException) {
-            }
-
         }
     }
 

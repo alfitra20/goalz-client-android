@@ -1,8 +1,10 @@
 package emse.mobisocial.goalz.dal.db.dao
 
 import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
+import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.LibraryEntry
 
 /**
@@ -11,5 +13,8 @@ import emse.mobisocial.goalz.model.LibraryEntry
 @Dao
 abstract class LibraryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertLibraryEntryList(entryList: List<LibraryEntry>)
+    abstract fun insertLibraryEntry(entryList: LibraryEntry)
+
+    @Delete
+    abstract fun deleteLibraryEntry(entryList: LibraryEntry)
 }

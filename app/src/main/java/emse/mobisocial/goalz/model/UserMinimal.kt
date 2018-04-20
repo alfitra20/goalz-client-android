@@ -12,9 +12,9 @@ import java.util.*
 @Entity(tableName = "users")
 data class UserMinimal(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         @ColumnInfo(name = "user_id")
-        var id : Int, //DO NOT UPDATE
+        var id : String, //DO NOT UPDATE
         @ColumnInfo(name = "nickname")
         var nickname : String, //DO NOT UPDATE
         @ColumnInfo(name = "rating")

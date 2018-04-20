@@ -10,11 +10,11 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "resources")
 data class Resource constructor(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         @ColumnInfo(name = "resource_id")
-        var id : Int, //DO NOT UPDATE
+        var id : String, //DO NOT UPDATE
         @ColumnInfo(name = "user_id")
-        var user_id : Int, //AUTHOR - DO NOT UPDATE
+        var user_id : String, //AUTHOR - DO NOT UPDATE
         @ColumnInfo(name = "link")
         var link : String, //DO NOT UPDATE
         @ColumnInfo(name = "title")
@@ -24,5 +24,5 @@ data class Resource constructor(
         @ColumnInfo(name = "rating")
         var rating : Double, //DO NOT UPDATE
         @ColumnInfo(name = "avg_req_time")
-        var avgReqTime : Int //DO NOT UPDATE
+        var avgReqTime : Int//DO NOT UPDATE
 )

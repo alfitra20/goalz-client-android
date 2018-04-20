@@ -5,12 +5,15 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.test.viewmodels.ResourceTestViewModel
 
@@ -66,7 +69,23 @@ class TestResourceFragment : Fragment() {
     private fun initializeEventListeners() {
         filterBtn.setOnClickListener {model.applyByTopicFilter(topicEt.text.toString())}
         clearBtn.setOnClickListener {model.applyByUserFilter(topicEt.text.toString())}
-        deleteBtn.setOnClickListener {model.deleteResource(deleteIdEt.text.toString().toInt())}
-        insertBtn.setOnClickListener {model.createResource()}
+        deleteBtn.setOnClickListener {
+            model.deleteResource(deleteIdEt.text.toString()).observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
+        insertBtn.setOnClickListener {
+            model.createResource().observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
     }
 }

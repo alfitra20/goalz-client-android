@@ -10,22 +10,22 @@ import emse.mobisocial.goalz.model.GoalTemplate
 interface IGoalRepository {
 
     //Query
-    fun getGoal(id : Int) : LiveData<Goal>
+    fun getGoal(id : String) : LiveData<Goal>
 
     fun getGoals() : LiveData<List<Goal>>
 
-    fun getSubgoals(parentId : Int) : LiveData<List<Goal>>
+    fun getSubgoals(parentId : String) : LiveData<List<Goal>>
 
-    fun getGoalsForUser(userId : Int) : LiveData<List<Goal>>
+    fun getGoalsForUser(userId : String) : LiveData<List<Goal>>
 
     fun getGoalsByTopic(topic : String) : LiveData<List<Goal>>
 
     //Insert
-    fun addGoal(template: GoalTemplate) : LiveData<Int>
+    fun addGoal(template: GoalTemplate) : LiveData<DalResponse>
 
     //Update
-    fun updateGoal(goal: Goal) : LiveData<Boolean>
+    fun updateGoal(goal: Goal) : LiveData<DalResponse>
 
     //Delete
-    fun deleteGoal(id: Int) : LiveData<Boolean>
+    fun deleteGoal(id: String) : LiveData<DalResponse>
 }

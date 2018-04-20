@@ -13,14 +13,14 @@ abstract class RecommendationDao {
 
     @Transaction
     @Query("SELECT * FROM recommendations WHERE recommendation_id = :id")
-    abstract fun loadRecommendation(id : Int) : LiveData<Recommendation>
+    abstract fun loadRecommendation(id : String) : LiveData<Recommendation>
 
     @Query("SELECT * FROM recommendations WHERE recommendation_id = :id")
-    abstract fun loadRecommendationForDeleteOrUpdate(id : Int) : RecommendationMinimal
+    abstract fun loadRecommendationForDeleteOrUpdate(id : String) : RecommendationMinimal?
 
     @Transaction
     @Query("SELECT * FROM recommendations WHERE goal_id = :goalId")
-    abstract fun loadRecommendationForGoal(goalId : Int) : LiveData<List<Recommendation>>
+    abstract fun loadRecommendationForGoal(goalId : String) : LiveData<List<Recommendation>>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Transaction
@@ -29,19 +29,16 @@ abstract class RecommendationDao {
             "req_time, rating FROM recommendations " +
             "JOIN goals ON recommendations.goal_id = goals.goal_id " +
             "WHERE goals.user_id = :userId")
-    abstract fun loadRecommendationForUser(userId : Int) : LiveData<List<Recommendation>>
+    abstract fun loadRecommendationForUser(userId : String) : LiveData<List<Recommendation>>
 
     @Transaction
     @Query("SELECT * FROM recommendations WHERE recommendations.user_id = :userId")
-    abstract fun getRecommendationsForAuthor(userId: Int): LiveData<List<Recommendation>>
-
-    @Insert(onConflict = OnConflictStrategy.FAIL)
-    abstract fun insertRecommendation(recommendationMinimal: RecommendationMinimal) : Long
+    abstract fun getRecommendationsForAuthor(userId: String): LiveData<List<Recommendation>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertRecommendationList(recommendationMinimal: List<RecommendationMinimal>)
+    abstract fun insertRecommendation(recommendationMinimal: RecommendationMinimal)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     abstract fun updateRecommendation(recommendationMinimal: RecommendationMinimal)
 
     @Delete
