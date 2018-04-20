@@ -7,8 +7,8 @@ import java.util.*
  * Created by MobiSocial EMSE Team on 3/28/2018.
  */
 data class GoalTemplate(
-        var userId : Int,
-        var parentId : Int?,
+        var userId : String,
+        var parentId : String?,
         var title : String,
         var topic : String,
         var description : String,

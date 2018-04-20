@@ -1,6 +1,7 @@
 package emse.mobisocial.goalz.dal
 
 import android.arch.lifecycle.LiveData
+import emse.mobisocial.goalz.model.LibraryEntry
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.ResourceTemplate
 
@@ -10,16 +11,18 @@ import emse.mobisocial.goalz.model.ResourceTemplate
 interface IResourceRepository {
 
     //Query
-    fun getResource(id : Int): LiveData<Resource>
+    fun getResource(id : String): LiveData<Resource>
 
     fun getResources(): LiveData<List<Resource>>
 
     fun getResourcesByTopic(topic : String): LiveData<List<Resource>>
 
-    fun getLibraryForUser(userId : Int): LiveData<List<Resource>>
+    fun getLibraryForUser(userId : String): LiveData<List<Resource>>
 
     //Insert
-    fun addResource(template: ResourceTemplate) : LiveData<Int>
+    fun addResource(template: ResourceTemplate) : LiveData<DalResponse>
+
+    fun addResourceToLibrary(user_id : String, resource_id : String): LiveData<DalResponse>
 
     /* Delete
      *
@@ -31,5 +34,5 @@ interface IResourceRepository {
      *
      *TODO: remove this method in the final version
      */
-    fun deleteResource(id : Int): LiveData<Boolean>
+    fun deleteResource(id : String) : LiveData<DalResponse>
 }

@@ -12,18 +12,15 @@ import emse.mobisocial.goalz.model.UserTemplate
 interface IUserRepository {
 
     //Query
-    fun getUser(id : Int): LiveData<User>
+    fun getUser(id : String): LiveData<User>
 
     fun getUsers(): LiveData<List<UserMinimal>>
 
     fun getUsersByTopic(topic : String): LiveData<List<UserMinimal>>
 
     //Insert
-    fun registerUser(userTemplate: UserTemplate) : LiveData<Int>
+    fun registerUser(template: UserTemplate) : LiveData<DalResponse>
 
     //Update
-    fun updateUser(user: User) : LiveData<Boolean>
-
-    //Delete
-    fun deleteUser(id : Int) : LiveData<Boolean>
+    fun updateUser(user: User) : LiveData<DalResponse>
 }

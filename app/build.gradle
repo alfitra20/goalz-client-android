@@ -40,4 +40,11 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:1.1.1"
     implementation "android.arch.persistence.room:runtime:1.0.0"
     kapt "android.arch.persistence.room:compiler:1.0.0"
+
+    //Firebase
+    compile 'com.google.firebase:firebase-core:15.0.0'
+    compile 'com.google.firebase:firebase-database:15.0.0'
+    compile 'com.google.firebase:firebase-auth:15.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

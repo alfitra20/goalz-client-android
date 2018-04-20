@@ -2,11 +2,17 @@ package emse.mobisocial.goalz.dal.repositories
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.google.firebase.database.*
 import emse.mobisocial.goalz.dal.IGoalRepository
 import emse.mobisocial.goalz.dal.db.dao.GoalDao
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.GoalTemplate
 import java.util.concurrent.Executor
+import emse.mobisocial.goalz.dal.remote.data.GoalFb
+import com.google.firebase.database.DatabaseReference
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
+
 
 /**
  * Created by MobiSocial EMSE Team on 3/28/2018.
@@ -14,14 +20,18 @@ import java.util.concurrent.Executor
  * Note: This class is a singleton. The companion object can be found at the bottom of the file
  */
 
-private const val NEW_GOAL_ID = 0
-
 class GoalRepository(
-        private var executor : Executor,
-        private var goalDao: GoalDao)
-    : IGoalRepository {
+        private var goalDao: GoalDao,
+        private var diskExecutor : Executor,
+        private var networkExecutor : Executor
+        )
+    : IGoalRepository{
 
-    override fun getGoal(id: Int): LiveData<Goal> {
+    private val remoteGoalTable : DatabaseReference
+            = FirebaseDatabase.getInstance().reference.child("goals")
+
+    // Application accessible methods
+    override fun getGoal(id: String): LiveData<Goal> {
         return goalDao.loadGoal(id)
     }
 
@@ -29,11 +39,11 @@ class GoalRepository(
         return goalDao.loadGoals()
     }
 
-    override fun getSubgoals(parentId: Int): LiveData<List<Goal>> {
+    override fun getSubgoals(parentId: String): LiveData<List<Goal>> {
         return goalDao.loadSubgoals(parentId)
     }
 
-    override fun getGoalsForUser(userId: Int): LiveData<List<Goal>> {
+    override fun getGoalsForUser(userId: String): LiveData<List<Goal>> {
         return goalDao.loadGoalsForUser(userId)
     }
 
@@ -41,39 +51,89 @@ class GoalRepository(
         return goalDao.loadGoalsByTopic(topic)
     }
 
-    override fun addGoal(template: GoalTemplate): LiveData<Int> {
-        var result = MutableLiveData<Int>()
-        executor.execute {
-            val goal = Goal(
-                    NEW_GOAL_ID, template.userId, template.parentId,
-                    template.title, template.topic, template.description,
-                    template.location, template.status, template.deadline)
+    override fun addGoal(template: GoalTemplate): LiveData<DalResponse> {
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
 
-            val id = goalDao.insertGoal(goal).toInt()
-            result.postValue(id)
+        networkExecutor.execute {
+            val newId = remoteGoalTable.push().key
+            val goalFb = GoalFb(template)
+            remoteGoalTable.child(newId).setValue(goalFb , {
+                error, _ -> run {
+                    if (error == null) {
+                        diskExecutor.execute {
+                            var newGoal = goalFb.toEntity(newId)
+                            goalDao.insertGoal(newGoal)
+                            result.postValue(DalResponse(DalResponseStatus.SUCCESS, newId))
+                        }
+                    }
+                    else {
+                        result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                    }
+                }
+            })
         }
 
         return result
     }
 
-    override fun updateGoal(goal: Goal): LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            goalDao.updateGoal(goal)
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
+    override fun updateGoal(goal: Goal): LiveData<DalResponse> {
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
+
+        networkExecutor.execute {
+            val updateInfo = HashMap<String, Any?>()
+            updateInfo["title"] = goal.title
+            updateInfo["topic"] = goal.topic
+            updateInfo["description"] = goal.description
+            updateInfo["latitude"] = goal.location.latitude
+            updateInfo["longitude"] = goal.location.longitude
+            var deadlineTmp = goal.deadline
+            var newDeadline = if (deadlineTmp != null) deadlineTmp.time / 1000 else null
+            updateInfo["deadline"] = newDeadline
+
+            remoteGoalTable.child(goal.id).updateChildren(updateInfo, {
+                error, _ -> run {
+                    if (error == null) {
+                        diskExecutor.execute {
+                            goalDao.updateGoal(goal)
+                            result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+                        }
+                    }
+                    else {
+                        result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                    }
+                }
+            })
         }
 
         return result
     }
 
-    override fun deleteGoal(id: Int): LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            var goal = goalDao.loadGoalForDelete(id)
-            if (goal!= null) {
-                goalDao.deleteGoal(goal)
+    override fun deleteGoal(id: String): LiveData<DalResponse> {
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
+
+        if(id == "")
+            result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+        else {
+            networkExecutor.execute {
+                remoteGoalTable.child(id).removeValue({ error, _ ->
+                    run {
+                        if (error == null) {
+                            diskExecutor.execute {
+                                var goal = goalDao.loadGoalForDelete(id)
+                                if (goal != null) {
+                                    goalDao.deleteGoal(goal)
+                                }
+                                result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+                            }
+                        } else {
+                            result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                        }
+                    }
+                })
             }
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
         }
 
         return result
@@ -83,10 +143,11 @@ class GoalRepository(
     companion object {
         @Volatile private var INSTANCE: GoalRepository? = null
 
-        fun getInstance(executor: Executor, goalDao: GoalDao): GoalRepository {
+        fun getInstance(goalDao: GoalDao, diskExecutor: Executor, networkExecutor: Executor)
+                : GoalRepository {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE
-                        ?: GoalRepository(executor, goalDao)
+                        ?: GoalRepository(goalDao, diskExecutor, networkExecutor)
             }
         }
     }

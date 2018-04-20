@@ -6,7 +6,7 @@ import android.arch.persistence.room.*
  * Created by MobiSocial EMSE Team on 3/27/2018.
  */
 @Entity(tableName = "recommendations",
-        foreignKeys = [
+        /*foreignKeys = [
                 (ForeignKey(entity = Goal::class,
                 parentColumns = [("goal_id")],
                 childColumns = [("goal_id")],
@@ -21,7 +21,7 @@ import android.arch.persistence.room.*
                 parentColumns = [("user_id")],
                 childColumns = [("user_id")],
                 onDelete = ForeignKey.CASCADE))
-        ],
+        ],*/
         indices = [
                 (Index(value = ["goal_id"])),
                 (Index(value = ["user_id"])),
@@ -30,15 +30,15 @@ import android.arch.persistence.room.*
 )
 data class RecommendationMinimal(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         @ColumnInfo(name = "recommendation_id")
-        var id : Int,
+        var id : String,
         @ColumnInfo(name = "resource_id")
-        var resourceId : Int,
+        var resourceId : String,
         @ColumnInfo(name = "goal_id")
-        var goalId : Int,
+        var goalId : String,
         @ColumnInfo(name = "user_id")
-        var userId : Int,
+        var userId : String,
         @ColumnInfo(name = "title")
         var title : String,
         @ColumnInfo(name = "description")

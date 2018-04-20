@@ -23,35 +23,23 @@ abstract class UserDao {
     @Query("SELECT * FROM users " +
             "JOIN user_details ON users.user_id = user_details.user_id " +
             "WHERE users.user_id = :id")
-    abstract fun loadUser(id : Int): LiveData<User>
-
-    //@Query("SELECT * FROM user_details WHERE user_id = :id")
-    //abstract fun loadUserDetails(id : Int): LiveData<UserDetails>
+    abstract fun loadUser(id : String): LiveData<User>
 
     @Query("SELECT * FROM users WHERE user_id = :id")
-    abstract fun loadUserForDelete(id : Int): UserMinimal?
-
-
-    @Insert(onConflict = OnConflictStrategy.FAIL)
-    abstract fun insertUserMinimal(userMinimal: UserMinimal) : Long
-
-    @Insert(onConflict = OnConflictStrategy.FAIL)
-    abstract fun insertUserDetails(userDetails: UserDetails) : Long
+    abstract fun loadUserForDelete(id : String): UserMinimal?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertUserMinimalList(userMinimalList: List<UserMinimal>)
+    abstract fun insertUserMinimal(userMinimal: UserMinimal)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertUserDetailsList(userDetailList: List<UserDetails>)
+    abstract fun insertUserDetails(userDetails: UserDetails)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun updateUserMinimal(userMinimal: UserMinimal)
 
-    @Update
-    abstract fun updateUserMinimal(userMinimal: UserMinimal) : Int
-
-    @Update
-    abstract fun updateUserDetails(userDetails: UserDetails) : Int
-
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun updateUserDetails(userDetails: UserDetails)
 
     @Delete
-    abstract fun deleteUser(userMinimal: UserMinimal) : Int
+    abstract fun deleteUser(userMinimal: UserMinimal)
 }

@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz.dal.converter
+package emse.mobisocial.goalz.dal.db.converter
 
 import android.arch.persistence.room.TypeConverter
 import emse.mobisocial.goalz.util.Gender

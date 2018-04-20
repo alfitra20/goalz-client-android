@@ -11,32 +11,35 @@ import emse.mobisocial.goalz.model.Goal
 abstract class GoalDao {
 
     @Query("SELECT * FROM goals WHERE goal_id = :id")
-    abstract fun loadGoal(id : Int): LiveData<Goal>
+    abstract fun loadGoal(id : String): LiveData<Goal>
 
     @Query("SELECT * FROM goals WHERE goal_id = :id")
-    abstract fun loadGoalForDelete(id : Int): Goal?
+    abstract fun loadGoalSync(id : String): Goal
+
+    @Query("SELECT * FROM goals WHERE goal_id = :id")
+    abstract fun loadGoalForDelete(id : String): Goal?
 
     @Query("SELECT * FROM goals")
     abstract fun loadGoals() : LiveData<List<Goal>>
 
     @Query("SELECT * FROM goals WHERE parent_id = :parentId")
-    abstract fun loadSubgoals(parentId : Int): LiveData<List<Goal>>
+    abstract fun loadSubgoals(parentId : String): LiveData<List<Goal>>
 
     @Query("SELECT * FROM goals WHERE user_id = :userId")
-    abstract fun loadGoalsForUser(userId : Int): LiveData<List<Goal>>
+    abstract fun loadGoalsForUser(userId : String): LiveData<List<Goal>>
 
     @Query("SELECT * FROM goals WHERE topic = :topic")
     abstract fun loadGoalsByTopic(topic : String): LiveData<List<Goal>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertGoal(goal: Goal) : Long
+    abstract fun insertGoal(goal: Goal)
 
 
-    @Update
-    abstract fun updateGoal(goal: Goal) : Int
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun updateGoal(goal: Goal)
 
 
     @Delete
-    abstract fun deleteGoal(goal: Goal) : Int
+    abstract fun deleteGoal(goal: Goal)
 }

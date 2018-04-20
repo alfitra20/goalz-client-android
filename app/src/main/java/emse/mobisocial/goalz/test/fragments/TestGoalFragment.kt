@@ -4,12 +4,15 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.test.viewmodels.GoalTestViewModel
 
@@ -70,11 +73,35 @@ class TestGoalFragment : Fragment() {
             model.selectedGoal = goal
         }
 
-        searchSubgoalsBtn.setOnClickListener {model.searchSubgoals(searchValueEt.text.toString().toInt())}
-        searchForUserBtn.setOnClickListener {model.searchByUser(searchValueEt.text.toString().toInt())}
+        searchSubgoalsBtn.setOnClickListener {model.searchSubgoals(searchValueEt.text.toString())}
+        searchForUserBtn.setOnClickListener {model.searchByUser(searchValueEt.text.toString())}
         searchByTopicBtn.setOnClickListener {model.searchByTopic(searchValueEt.text.toString())}
-        deleteBtn.setOnClickListener {model.deleteSelectedGoal()}
-        updateBtn.setOnClickListener {model.updateSelectedGoal()}
-        insertBtn.setOnClickListener {model.addGoal()}
+        deleteBtn.setOnClickListener {
+            model.deleteSelectedGoal()?.observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
+        updateBtn.setOnClickListener {
+            model.updateSelectedGoal()?.observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
+        insertBtn.setOnClickListener {
+            model.addGoal().observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
     }
 }
