@@ -34,7 +34,7 @@ class ExploreFragment : Fragment() {
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
         var viewPager = view.findViewById<ViewPager>(R.id.explorePager)
-        mSectionsPagerAdapter = SectionsPagerAdapter(mContext!!.supportFragmentManager)
+        mSectionsPagerAdapter = SectionsPagerAdapter(childFragmentManager)
         viewPager.adapter = mSectionsPagerAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
