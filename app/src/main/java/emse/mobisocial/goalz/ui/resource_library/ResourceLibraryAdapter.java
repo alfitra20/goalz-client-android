@@ -37,11 +37,11 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
 
         public ResourceViewHolder(View v) {
             super(v);
-            title = (TextView) itemView.findViewById(R.id.title);
-            topic = (TextView) itemView.findViewById(R.id.topic);
-            link = (TextView) itemView.findViewById(R.id.link);
-            avgReqTime = (TextView) itemView.findViewById(R.id.link);
-            rating = (TextView) itemView.findViewById(R.id.link);
+            title = (TextView) itemView.findViewById(R.id.resource_title);
+            topic = (TextView) itemView.findViewById(R.id.resource_topic);
+            //link = (TextView) itemView.findViewById(R.id.resource_link);
+            //avgReqTime = (TextView) itemView.findViewById(R.id.link);
+            rating = (TextView) itemView.findViewById(R.id.resource_rating);
             // getting the image will be here
         }
     }
@@ -54,7 +54,7 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     @Override
     public ResourceViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         // new view
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.resource_row_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.resource_card, viewGroup, false);
         return new ResourceViewHolder(v);
     }
 
@@ -63,9 +63,10 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     public void onBindViewHolder(ResourceViewHolder holder, int position) {
         holder.topic.setText(resources.get(position).getTopic());
         holder.title.setText(resources.get(position).getTitle());
-        holder.link.setText(resources.get(position).getLink());
-        holder.avgReqTime.setText(resources.get(position).getAvgReqTime());
+        //holder.link.setText(resources.get(position).getLink());
+        //holder.avgReqTime.setText(resources.get(position).getAvgReqTime());
         holder.rating.setText(String.valueOf(resources.get(position).getRating()));
+        //holder.image.setImage
         // image will be here
     }
 
