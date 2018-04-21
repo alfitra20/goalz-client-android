@@ -27,6 +27,8 @@
         android:layout_marginTop="8dp"
         android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/resource_test_fragment_add_to_library_btn"
         app:layout_constraintTop_toBottomOf="@+id/resource_test_fragment_for_user_btn" />
 
     <Button
@@ -35,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="INSERT"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resource_test_fragment_delete_id_et" />
@@ -76,16 +78,38 @@
 
     <EditText
         android:id="@+id/resource_test_fragment_delete_id_et"
-        android:layout_width="0dp"
+        android:layout_width="181dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Id to delete"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/resource_test_fragment_delete_btn"
+        app:layout_constraintEnd_toStartOf="@+id/resource_test_fragment_add_to_library_btn"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resource_test_fragment_topic_et" />
+
+    <Button
+        android:id="@+id/resource_test_fragment_add_to_library_btn"
+        android:layout_width="84dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Add"
+        app:layout_constraintEnd_toStartOf="@+id/resource_test_fragment_delete_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/resource_test_fragment_delete_id_et"
+        app:layout_constraintTop_toBottomOf="@+id/resource_test_fragment_filter_btn" />
+
+    <Button
+        android:id="@+id/resource_test_fragment_delete_library_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="delete from library"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/resource_test_fragment_insert_btn"
+        app:layout_constraintTop_toBottomOf="@+id/resource_test_fragment_add_to_library_btn" />
 
 </android.support.constraint.ConstraintLayout>

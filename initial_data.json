@@ -7,7 +7,6 @@
       "gender" : "MALE",
       "lastname" : "Toniuc",
       "nickname" : "Toniuc",
-      "password" : "password1",
       "rating" : 2.4,
       "registrationDate" : 1520640000
     },
@@ -18,7 +17,6 @@
 	  "gender" : "UNDEFINED",
       "lastname" : "Hamek",
       "nickname" : "Hamek",
-      "password" : "password2",
       "rating" : 1.7,
       "registrationDate" : 1523318400,
       "website" : "www.react.com"
@@ -30,7 +28,6 @@
       "gender" : "MALE",
       "lastname" : "Rahman",
       "nickname" : "Alfitra",
-      "password" : "password3",
       "rating" : 3.8,
       "registrationDate" : 1522627200,
       "website" : "www.music.com"
@@ -42,7 +39,6 @@
       "gender" : "FEMALE",
       "lastname" : "Fataliyeva",
       "nickname" : "Sabina",
-      "password" : "password4",
       "rating" : 2.1,
       "registrationDate" : 1518220800
     }

@@ -14,8 +14,8 @@ import emse.mobisocial.goalz.model.GoalTemplate
 import java.util.*
 
 
-private const val NEW_GOAL_USER_ID = "testUserId"
-private const val NEW_GOAL_PARENT_ID = "testParentId"
+private const val NEW_GOAL_USER_ID = "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+private val NEW_GOAL_PARENT_ID : String? = null
 private const val NEW_GOAL_TITLE = "Learn guitar"
 private const val NEW_GOAL_TOPIC = "Music"
 private const val NEW_GOAL_DESCRIPTION = "Niceeee"

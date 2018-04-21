@@ -11,9 +11,9 @@ import emse.mobisocial.goalz.dal.IRecommendationRepository
 import emse.mobisocial.goalz.model.Recommendation
 import emse.mobisocial.goalz.model.RecommendationTemplate
 
-private const val NEW_RECOMMENDATION_RESOURCE_ID = "testResourceId"
-private const val NEW_RECOMMENDATION_GOAL_ID = "testGoalId"
-private const val NEW_RECOMMENDATION_USER_ID = "testUserId"
+private const val NEW_RECOMMENDATION_RESOURCE_ID = "-LANYpGONoMJnkHUzbM2"
+private const val NEW_RECOMMENDATION_GOAL_ID = "-LANc6UguMrohxmJ37Ud"
+private const val NEW_RECOMMENDATION_USER_ID = "to2mdRC0eXUvPRVTHL1QJk57Aro2"
 private const val NEW_RECOMMENDATION_TITLE = "New recommendation"
 private const val NEW_RECOMMENDATION_DESCRIPTION = "New description"
 private const val NEW_RECOMMENDATION_REQ_TIME = 30

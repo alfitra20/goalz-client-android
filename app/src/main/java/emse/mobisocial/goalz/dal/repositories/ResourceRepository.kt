@@ -29,6 +29,8 @@ class ResourceRepository(
 
     private val remoteResourceTable : DatabaseReference
             = FirebaseDatabase.getInstance().reference.child("resources")
+    private val remoteLibraryTable : DatabaseReference
+            = FirebaseDatabase.getInstance().reference.child("user_library")
 
     //Query
     override fun getResource(id : String): LiveData<Resource> {
@@ -84,9 +86,9 @@ class ResourceRepository(
         result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
 
         networkExecutor.execute {
-            val newId = remoteResourceTable.push().key
+            val newId = remoteLibraryTable.push().key
             val libraryEntryFb = LibraryEntryFb(user_id, resource_id)
-            remoteResourceTable.child(newId).setValue(libraryEntryFb , {
+            remoteLibraryTable.child(newId).setValue(libraryEntryFb , {
                 error, _ -> run {
                 if (error == null) {
                     diskExecutor.execute {
@@ -101,6 +103,37 @@ class ResourceRepository(
             }
             })
         }
+        return result
+    }
+
+    override fun deleteResourceFromLibrary(user_id : String, resource_id : String)
+            : LiveData<DalResponse> {
+
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
+
+        diskExecutor.execute {
+            var entry = libraryDao.loadLibraryEntryForDelete(user_id, resource_id)
+            if (entry == null)
+                result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+            else {
+                networkExecutor.execute {
+                    remoteLibraryTable.child(entry.id).removeValue({ error, _ ->
+                        run {
+                            if (error == null) {
+                                diskExecutor.execute {
+                                    libraryDao.deleteLibraryEntry(entry)
+                                    result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+                                }
+                            } else {
+                                result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                            }
+                        }
+                    })
+                }
+            }
+        }
+
         return result
     }
 

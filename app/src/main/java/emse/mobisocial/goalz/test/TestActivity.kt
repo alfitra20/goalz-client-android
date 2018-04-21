@@ -1,17 +1,17 @@
 package emse.mobisocial.goalz.test
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
 
 import emse.mobisocial.goalz.R
-import emse.mobisocial.goalz.dal.remote.FirebaseConnectionService
 import emse.mobisocial.goalz.test.fragments.TestGoalFragment
 import emse.mobisocial.goalz.test.fragments.TestRecommendationFragment
 import emse.mobisocial.goalz.test.fragments.TestResourceFragment
@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_test.*
 class TestActivity : AppCompatActivity() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private lateinit var mFirebaseAuth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,17 @@ class TestActivity : AppCompatActivity() {
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         container1.adapter = mSectionsPagerAdapter
+
+        mFirebaseAuth = FirebaseAuth.getInstance()
+        mFirebaseAuth.signInWithEmailAndPassword("dtoniuc@gmail.com", "dtoniucpass").addOnCompleteListener {
+            task ->
+            if(task.isSuccessful){
+                Log.d("SIGNIN","login success")
+            }
+            else {
+                Log.d("SIGNIN","login fail")
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

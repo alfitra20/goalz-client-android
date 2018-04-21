@@ -18,7 +18,7 @@ data class User(
         @ColumnInfo(name = "website")
         var website : String?,
         @ColumnInfo(name = "registrationDate")
-        var registrationDate : Date?, //DO NOT UPDATE
+        var registrationDate : Date, //DO NOT UPDATE
         @ColumnInfo(name = "first_name")
         var firstName : String,
         @ColumnInfo(name = "last_name")
