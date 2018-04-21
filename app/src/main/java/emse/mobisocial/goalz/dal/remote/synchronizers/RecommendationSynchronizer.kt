@@ -12,6 +12,10 @@ class RecommendationSynchronizer (
     private var recommendationDao: RecommendationDao,
     private var diskExecutor: Executor) : ISynchronizer<RecommendationMinimal> {
 
+    init {
+        diskExecutor.execute { recommendationDao.invalidateData() }
+    }
+
     override fun addData(t: RecommendationMinimal) {
         diskExecutor.execute { recommendationDao.insertRecommendation(t) }
     }

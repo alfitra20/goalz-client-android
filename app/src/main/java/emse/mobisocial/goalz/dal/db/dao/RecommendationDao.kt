@@ -43,4 +43,7 @@ abstract class RecommendationDao {
 
     @Delete
     abstract fun deleteRecommendation(recommendationMinimal: RecommendationMinimal)
+
+    @Query("DELETE FROM recommendations")
+    abstract fun invalidateData()
 }

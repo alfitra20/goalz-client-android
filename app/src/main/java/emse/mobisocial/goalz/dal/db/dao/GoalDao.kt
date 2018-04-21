@@ -42,4 +42,7 @@ abstract class GoalDao {
 
     @Delete
     abstract fun deleteGoal(goal: Goal)
+
+    @Query("DELETE FROM goals")
+    abstract fun invalidateData()
 }

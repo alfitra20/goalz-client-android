@@ -1,6 +1,7 @@
 package emse.mobisocial.goalz
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import emse.mobisocial.goalz.dal.IGoalRepository
 import emse.mobisocial.goalz.dal.IRecommendationRepository

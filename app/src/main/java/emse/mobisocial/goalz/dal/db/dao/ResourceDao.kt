@@ -35,4 +35,7 @@ abstract class ResourceDao {
 
     @Delete
     abstract fun deleteResource(resource: Resource)
+
+    @Query("DELETE FROM resources")
+    abstract fun invalidateData()
 }

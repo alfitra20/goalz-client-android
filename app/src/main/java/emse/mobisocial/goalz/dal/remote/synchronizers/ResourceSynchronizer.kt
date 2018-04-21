@@ -12,6 +12,10 @@ class ResourceSynchronizer(
         private var resourceDao: ResourceDao,
         private var diskExecutor: Executor) : ISynchronizer<Resource> {
 
+    init {
+        diskExecutor.execute { resourceDao.invalidateData() }
+    }
+
     override fun addData(t: Resource) {
         diskExecutor.execute { resourceDao.insertResource(t) }
     }

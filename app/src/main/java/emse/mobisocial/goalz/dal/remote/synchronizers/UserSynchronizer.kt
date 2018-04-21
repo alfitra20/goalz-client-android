@@ -12,6 +12,10 @@ class UserSynchronizer (
         private var userDao: UserDao,
         private var diskExecutor: Executor) : ISynchronizer<User> {
 
+    init {
+        diskExecutor.execute { userDao.invalidateData() }
+    }
+
     override fun addData(t: User) {
         diskExecutor.execute {
             userDao.insertUserMinimal(t.getUserMinimal())

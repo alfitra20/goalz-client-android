@@ -42,4 +42,7 @@ abstract class UserDao {
 
     @Delete
     abstract fun deleteUser(userMinimal: UserMinimal)
+
+    @Query("DELETE FROM users")
+    abstract fun invalidateData()
 }

@@ -12,6 +12,10 @@ class GoalSynchronizer(
         private var goalDao: GoalDao,
         private var diskExecutor: Executor) : ISynchronizer<Goal>{
 
+    init {
+        diskExecutor.execute { goalDao.invalidateData() }
+    }
+
     override fun addData(t: Goal) {
         diskExecutor.execute { goalDao.insertGoal(t) }
     }

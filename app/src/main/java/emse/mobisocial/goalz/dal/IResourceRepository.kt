@@ -24,6 +24,8 @@ interface IResourceRepository {
 
     fun addResourceToLibrary(user_id : String, resource_id : String): LiveData<DalResponse>
 
+    fun deleteResourceFromLibrary(user_id : String, resource_id : String): LiveData<DalResponse>
+
     /* Delete
      *
      * WARNING: This method is created to make testing and debugging easier. Do not implement
