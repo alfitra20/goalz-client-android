@@ -4,12 +4,15 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.Recommendation
 import emse.mobisocial.goalz.test.viewmodels.RecommendationTestViewModel
 
@@ -70,11 +73,35 @@ class TestRecommendationFragment : Fragment() {
             model.selectedRecommendation = recommendation
         }
 
-        searchForAuthorBtn.setOnClickListener { model.searchForAuthor(searchValueEt.text.toString().toInt()) }
-        searchForUserBtn.setOnClickListener { model.searchForUser(searchValueEt.text.toString().toInt()) }
-        searchForGoalBtn.setOnClickListener { model.searchForGoal(searchValueEt.text.toString().toInt()) }
-        deleteBtn.setOnClickListener {model.deleteSelectedRecommendation()}
-        updateBtn.setOnClickListener {model.updateSelectedRecommendation()}
-        insertBtn.setOnClickListener {model.insertRecommendation()}
+        searchForAuthorBtn.setOnClickListener { model.searchForAuthor(searchValueEt.text.toString()) }
+        searchForUserBtn.setOnClickListener { model.searchForUser(searchValueEt.text.toString()) }
+        searchForGoalBtn.setOnClickListener { model.searchForGoal(searchValueEt.text.toString()) }
+        deleteBtn.setOnClickListener {
+            model.deleteSelectedRecommendation()?.observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
+        updateBtn.setOnClickListener {
+            model.updateSelectedRecommendation()?.observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
+        insertBtn.setOnClickListener {
+            model.insertRecommendation().observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
     }
 }

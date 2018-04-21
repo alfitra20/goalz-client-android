@@ -67,7 +67,7 @@
             android:id="@+id/resource_rating_level_1"
             android:layout_width="22dp"
             android:layout_height="27dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="11dp"
             app:layout_constraintBottom_toBottomOf="parent"

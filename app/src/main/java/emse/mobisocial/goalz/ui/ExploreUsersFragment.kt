@@ -12,7 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
+import android.view.*
+import android.widget.SearchView
 import android.widget.TextView
 
 import emse.mobisocial.goalz.R
@@ -23,16 +24,14 @@ class ExploreUsersFragment : Fragment() {
 
     private lateinit var model : ExploreUsersViewModel
     private lateinit var recyclerView: RecyclerView
-    // An array can be used to hold the data temporarily. Maybe needed later
-    // private lateinit var usersList : ArrayList<UserMinimal>
+    private lateinit var searchView: SearchView
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_explore_users, container, false)
 
-        // usersList = ArrayList<UserMinimal>()
+        setHasOptionsMenu(true)
 
         model = ViewModelProviders.of(this).get(ExploreUsersViewModel::class.java)
 
@@ -55,6 +54,33 @@ class ExploreUsersFragment : Fragment() {
                 recyclerViewAdapter.addItems(users)
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.clear()
+        inflater?.inflate(R.menu.menu_explore, menu)
+        val searchItem = menu!!.findItem(R.id.exploreSearch)
+        searchView = searchItem.actionView as SearchView
+        searchView.setIconified(false)
+        searchView.setOnCloseListener(object: SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                searchItem.collapseActionView()
+                return true
+            }
+        })
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(searchQuery: String?): Boolean {
+                model.searchUsers(searchQuery!!)
+                return true
+            }
+
+            override fun onQueryTextChange(searchQuery: String?): Boolean {
+                model.searchUsers(searchQuery!!)
+                return true
+            }
+        })
+        super.onCreateOptionsMenu(menu,inflater)
     }
 
     inner class RecyclerViewAdapter(usersParam: ArrayList<UserMinimal>) : RecyclerView.Adapter<RecyclerViewAdapter.UserViewHolder>() {

@@ -17,7 +17,7 @@ data class UserDetails(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
         @PrimaryKey
         @ColumnInfo(name = "user_id")
-        var userId : Int, //DO NOT UPDATE
+        var userId : String, //DO NOT UPDATE
         @ColumnInfo(name = "first_name")
         var firstName : String,
         @ColumnInfo(name = "last_name")

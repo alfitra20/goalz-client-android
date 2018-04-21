@@ -48,6 +48,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <service
+            android:name="emse.mobisocial.goalz.dal.remote.FirebaseConnectionService"
+            android:exported="false"/>
     </application>
 
 </manifest>

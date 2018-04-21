@@ -5,9 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Resource
@@ -15,24 +12,24 @@ import emse.mobisocial.goalz.ui.viewModels.ExploreResourcesViewModel
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.ImageView
+import android.view.*
+import android.widget.SearchView
 import android.widget.TextView
 
 class ExploreResourcesFragment : Fragment() {
 
     private lateinit var model : ExploreResourcesViewModel
     private lateinit var recyclerView: RecyclerView
-    // An array can be used to hold the data temporarily. Maybe needed later
-    // private lateinit var resourcesList : ArrayList<Resource>
+    private lateinit var searchView: SearchView
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_explore_resources, container, false)
 
-        // resourcesList = ArrayList<Resource>()
-
         model = ViewModelProviders.of(this).get(ExploreResourcesViewModel::class.java)
+
+        setHasOptionsMenu(true)
 
         recyclerView = view.findViewById(R.id.explore_resources_recycler_view) as RecyclerView
 
@@ -53,6 +50,33 @@ class ExploreResourcesFragment : Fragment() {
                 recyclerViewAdapter.addItems(resources)
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.clear()
+        inflater?.inflate(R.menu.menu_explore, menu)
+        val searchItem = menu!!.findItem(R.id.exploreSearch)
+        searchView = searchItem.actionView as SearchView
+        searchView.setIconified(false)
+        searchView.setOnCloseListener(object: SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                searchItem.collapseActionView()
+                return true
+            }
+        })
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(searchQuery: String?): Boolean {
+                model.searchResources(searchQuery!!)
+                return true
+            }
+
+            override fun onQueryTextChange(searchQuery: String?): Boolean {
+                model.searchResources(searchQuery!!)
+                return true
+            }
+        })
+        super.onCreateOptionsMenu(menu,inflater)
     }
 
     inner class RecyclerViewAdapter(resourcesParams: ArrayList<Resource>) : RecyclerView.Adapter<RecyclerViewAdapter.ResourceViewHolder>() {

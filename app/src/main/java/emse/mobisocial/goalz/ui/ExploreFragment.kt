@@ -1,7 +1,6 @@
 package emse.mobisocial.goalz.ui
 
 import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -10,19 +9,20 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import emse.mobisocial.goalz.R
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.view.*
 
 
 class ExploreFragment : Fragment() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
     private var mContext: AppCompatActivity? = null
-
+    private  var menuInflater: MenuInflater? = null
+    private var appBar: Menu? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -33,6 +33,9 @@ class ExploreFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_explore, container, false)
         var viewPager = view.findViewById<ViewPager>(R.id.explorePager)
+
+        setHasOptionsMenu(true)
+
         val tabLayout = view.findViewById(R.id.exploreTabs) as TabLayout
         tabLayout.addTab(tabLayout.newTab()
                 //.setText("Goals")
@@ -75,9 +78,21 @@ class ExploreFragment : Fragment() {
         })
 
         mSectionsPagerAdapter = SectionsPagerAdapter(mContext!!.supportFragmentManager)
+        mSectionsPagerAdapter = SectionsPagerAdapter(childFragmentManager)
         viewPager.adapter = mSectionsPagerAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
+        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                viewPager.currentItem = tab!!.position;
+            }
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewPager.currentItem = tab!!.position;
+            }
+        })
         return view
     }
 
@@ -86,8 +101,16 @@ class ExploreFragment : Fragment() {
         mContext = context as AppCompatActivity
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menuInflater = inflater
+        appBar = menu
+        super.onCreateOptionsMenu(menu,inflater)
+    }
+
     override fun onDetach() {
         super.onDetach()
+        appBar?.clear()
+        menuInflater?.inflate(R.menu.base, appBar)
     }
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
