@@ -7,48 +7,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import emse.mobisocial.goalz.R;
-import emse.mobisocial.goalz.model.ResourceTemplate;
+import emse.mobisocial.goalz.model.Resource;
 
 /**
  * Created by Sabina on 4/18/2018.
  */
 
-public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibraryAdapter.ResourceViewHolder>
-        implements Filterable {
+public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibraryAdapter.ResourceViewHolder> {
 
-    private Context context;
-    private List<ResourceTemplate> resources;
-    private List<ResourceTemplate> resourcesFiltered;
-    private ResourceLibraryAdapterListener resourceLibraryAdapterListener;
+    private List<Resource> resources;
 
     public static class ResourceViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView title;
         public TextView link;
         public TextView topic;
-        //public TextView tweetText;
-        //public TextView tweetDate;
+        public ImageView image;
+        public TextView avgReqTime;
+        public TextView rating;
 
         public ResourceViewHolder(View v) {
             super(v);
             title = (TextView) itemView.findViewById(R.id.title);
             topic = (TextView) itemView.findViewById(R.id.topic);
             link = (TextView) itemView.findViewById(R.id.link);
+            avgReqTime = (TextView) itemView.findViewById(R.id.link);
+            rating = (TextView) itemView.findViewById(R.id.link);
+            // getting the image will be here
         }
     }
 
-    public ResourceLibraryAdapter(Context context, List<ResourceTemplate> resources,
-                                  ResourceLibraryAdapterListener resourceLibraryAdapterListener) {
-        this.context = context;
+    public ResourceLibraryAdapter(List<Resource> resources) {
         this.resources = resources;
-        this.resourcesFiltered = resources;
-        this.resourceLibraryAdapterListener = resourceLibraryAdapterListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -62,11 +61,12 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ResourceViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         holder.topic.setText(resources.get(position).getTopic());
         holder.title.setText(resources.get(position).getTitle());
         holder.link.setText(resources.get(position).getLink());
+        holder.avgReqTime.setText(resources.get(position).getAvgReqTime());
+        holder.rating.setText(String.valueOf(resources.get(position).getRating()));
+        // image will be here
     }
 
     @Override
@@ -78,44 +78,5 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     @Override
     public int getItemCount() {
         return resources.size();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    resourcesFiltered = resources;
-                } else {
-                    List<ResourceTemplate> filteredList = new ArrayList<>();
-                    for (ResourceTemplate row : resources) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase()) || row.getTopic().contains(charSequence)) {
-                            filteredList.add(row);
-                        }
-                    }
-
-                    resourcesFiltered = filteredList;
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = resourcesFiltered;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                resourcesFiltered = (ArrayList<ResourceTemplate>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    public interface ResourceLibraryAdapterListener {
-        void onResourceSelected(ResourceTemplate contact);
     }
 }

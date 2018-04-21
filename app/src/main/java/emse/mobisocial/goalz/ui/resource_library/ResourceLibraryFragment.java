@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.drive.events.ResourceEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import emse.mobisocial.goalz.R;
-import emse.mobisocial.goalz.model.ResourceTemplate;
+import emse.mobisocial.goalz.model.Resource;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +26,7 @@ import emse.mobisocial.goalz.model.ResourceTemplate;
  * Use the {@link ResourceLibraryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ResourceLibraryFragment extends Fragment implements ResourceLibraryAdapter.ResourceLibraryAdapterListener {
+public class ResourceLibraryFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
@@ -40,11 +42,6 @@ public class ResourceLibraryFragment extends Fragment implements ResourceLibrary
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
-    @Override
-    public void onResourceSelected(ResourceTemplate contact) {
-
-    }
 
     public ResourceLibraryFragment() {
         // Required empty public constructor
@@ -85,18 +82,19 @@ public class ResourceLibraryFragment extends Fragment implements ResourceLibrary
         mRecyclerView = (RecyclerView) view.findViewById(R.id.resource_library_recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        List<ResourceTemplate> list = new ArrayList<>();
+        List<Resource> list = new ArrayList<>();
         list.add(getDummyResource());
         list.add(getDummyResource());
         list.add(getDummyResource());
-        mAdapter = new ResourceLibraryAdapter(getContext(), list, this);
+        mAdapter = new ResourceLibraryAdapter(list);
         mRecyclerView.setAdapter(mAdapter);
         // Inflate the layout for this fragment
         return view;
     }
 
-    ResourceTemplate getDummyResource() {
-        return new ResourceTemplate(1, "https://link.com", "Some topic", "Some title");
+    Resource getDummyResource() {
+        return new Resource(1, 1, "https://www.foodnetwork.com/how-to/articles/how-to-make-perfect-pancakes",
+                "Some topic", "Some title", 5, 2);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
