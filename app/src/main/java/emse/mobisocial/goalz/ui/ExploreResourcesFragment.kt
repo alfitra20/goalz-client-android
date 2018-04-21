@@ -56,6 +56,13 @@ class ExploreResourcesFragment : Fragment() {
         inflater?.inflate(R.menu.menu_explore, menu)
         val searchItem = menu!!.findItem(R.id.exploreSearch)
         searchView = searchItem.actionView as SearchView
+        searchView.setIconified(false)
+        searchView.setOnCloseListener(object: SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                searchItem.collapseActionView()
+                return true
+            }
+        })
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
 
             override fun onQueryTextSubmit(searchQuery: String?): Boolean {
