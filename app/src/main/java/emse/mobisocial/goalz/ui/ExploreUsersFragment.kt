@@ -2,6 +2,7 @@ package emse.mobisocial.goalz.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
@@ -10,6 +11,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 
 import emse.mobisocial.goalz.R
@@ -74,7 +77,14 @@ class ExploreUsersFragment : Fragment() {
         override fun onBindViewHolder(userViewHolder: UserViewHolder, i: Int) {
             // The data from the user model is retrieved and bound to the card View here.
             userViewHolder.userNickname.text = mUsers[i].nickname
-            userViewHolder.userRating.text = mUsers[i].rating.toString()
+            val rating = mUsers[i].rating
+            when(rating){
+                in 0..10 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_1)
+                in 11..50 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_2)
+                in 51..200 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_3)
+                else -> userViewHolder.ratingImage.setImageResource(R.drawable.level_4)
+            }
+            userViewHolder.rating.text = rating.toString()
         }
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
@@ -84,12 +94,17 @@ class ExploreUsersFragment : Fragment() {
         inner class UserViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
             internal var userCard: CardView
             internal var userNickname: TextView
-            internal var userRating: TextView
+            internal var ratingImage:ImageView
+            internal var rating:TextView
+
 
             init {
                 userCard = itemView.findViewById<View>(R.id.user_card_view) as CardView
                 userNickname = itemView.findViewById<View>(R.id.user_nickname) as TextView
-                userRating = itemView.findViewById<View>(R.id.user_rating) as TextView
+                ratingImage = itemView.findViewById(R.id.rating_icon) as ImageView
+                rating = itemView.findViewById<View>(R.id.rating_text) as TextView
+
+
             }
         }
 

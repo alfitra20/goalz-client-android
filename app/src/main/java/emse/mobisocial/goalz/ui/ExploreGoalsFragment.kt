@@ -14,7 +14,9 @@ import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.ui.viewModels.ExploreGoalsViewModel
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.android.synthetic.main.goal_card.*
 
 class ExploreGoalsFragment : Fragment() {
 
@@ -75,6 +77,11 @@ class ExploreGoalsFragment : Fragment() {
             // The data from the goal model is retrieved and bound to the card View here.
             goalViewHolder.goalName.text = mGoals[i].title
             goalViewHolder.goalDescription.text = mGoals[i].description
+            if (mGoals[i].status == 0){
+                goalViewHolder.goalStatusImage.setImageResource(R.drawable.incomplete)
+            }else{
+                goalViewHolder.goalStatusImage.setImageResource(R.drawable.completed2)
+            }
         }
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
@@ -85,11 +92,13 @@ class ExploreGoalsFragment : Fragment() {
             internal var goalCard: CardView
             internal var goalName: TextView
             internal var goalDescription: TextView
+            internal var goalStatusImage: ImageView
 
             init {
                 goalCard = itemView.findViewById<View>(R.id.goal_card_view) as CardView
                 goalName = itemView.findViewById<View>(R.id.goal_name) as TextView
                 goalDescription = itemView.findViewById<View>(R.id.goal_description) as TextView
+                goalStatusImage = itemView.findViewById(R.id.status_image) as ImageView
             }
         }
 

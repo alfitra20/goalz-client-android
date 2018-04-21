@@ -2,25 +2,20 @@ package emse.mobisocial.goalz.ui
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import emse.mobisocial.goalz.R
-import kotlinx.android.synthetic.main.activity_base.*
-import kotlinx.android.synthetic.main.activity_base.view.*
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
-import emse.mobisocial.goalz.test.fragments.TestGoalFragment
-import emse.mobisocial.goalz.test.fragments.TestRecommendationFragment
-import emse.mobisocial.goalz.test.fragments.TestResourceFragment
-import emse.mobisocial.goalz.test.fragments.TestUserFragment
 
 
 class ExploreFragment : Fragment() {
@@ -30,21 +25,55 @@ class ExploreFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_explore, container, false)
-
+        var viewPager = view.findViewById<ViewPager>(R.id.explorePager)
         val tabLayout = view.findViewById(R.id.exploreTabs) as TabLayout
-        tabLayout.addTab(tabLayout.newTab().setText("Goals"))
-        tabLayout.addTab(tabLayout.newTab().setText("Users"))
-        tabLayout.addTab(tabLayout.newTab().setText("Resources"))
+        tabLayout.addTab(tabLayout.newTab()
+                //.setText("Goals")
+                .setIcon(R.drawable.goal_white)
+        )
+
+        tabLayout.addTab(tabLayout.newTab()
+               // .setText("Users")
+                .setIcon(R.drawable.users_grey)
+        )
+        tabLayout.addTab(tabLayout.newTab()
+                //.setText("Resources")
+                .setIcon(R.drawable.resource_grey)
+        )
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
-        var viewPager = view.findViewById<ViewPager>(R.id.explorePager)
+        tabLayout.addOnTabSelectedListener(object:TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                var position = tab?.position
+                when (position){
+                    0 -> tab?.setIcon(R.drawable.goal_white)
+                    1 -> tab?.setIcon(R.drawable.users_white)
+                    2 -> tab?.setIcon(R.drawable.resource_white)
+                }
+                viewPager.currentItem = tab!!.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                var position = tab?.position
+                when (position){
+                    0 -> tab?.setIcon(R.drawable.goal_grey)
+                    1 -> tab?.setIcon(R.drawable.users_grey)
+                    2 -> tab?.setIcon(R.drawable.resource_grey)
+                }
+            }
+        })
+
         mSectionsPagerAdapter = SectionsPagerAdapter(mContext!!.supportFragmentManager)
         viewPager.adapter = mSectionsPagerAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))

@@ -14,6 +14,7 @@ import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.ui.viewModels.ExploreResourcesViewModel
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.ImageView
 import android.widget.TextView
 
 class ExploreResourcesFragment : Fragment() {
@@ -75,7 +76,41 @@ class ExploreResourcesFragment : Fragment() {
             // The data from the resource model is retrieved and bound to the card View here.
             resourceViewHolder.resourceTitle.text = mResources[i].title
             resourceViewHolder.resourceTopic.text = mResources[i].topic
-            resourceViewHolder.resourceRating.text = mResources[i].rating.toString()
+            resourceViewHolder.resourceUrl.text = mResources[i].link
+
+            var rating = mResources[i].rating.toInt()
+            var pictureFill  = 0
+            var pictureBlank = 0
+
+            if (rating >= 0) {
+                pictureFill = R.drawable.thumbs_up
+                pictureBlank = R.drawable.thumbs_up_blank
+            }else{
+                pictureFill = R.drawable.thumbs_down
+                pictureBlank = R.drawable.thumbs_down_blank
+            }
+
+            resourceViewHolder.ratingLevel1.setImageResource(pictureBlank)
+            resourceViewHolder.ratingLevel2.setImageResource(pictureBlank)
+            resourceViewHolder.ratingLevel3.setImageResource(pictureBlank)
+            resourceViewHolder.ratingLevel4.setImageResource(pictureBlank)
+            resourceViewHolder.ratingLevel5.setImageResource(pictureBlank)
+            if(rating>=1) {
+                resourceViewHolder.ratingLevel1.setImageResource(pictureFill)
+            }
+            if(rating>=2) {
+                resourceViewHolder.ratingLevel2.setImageResource(pictureFill)
+            }
+            if(rating>=3){
+                resourceViewHolder.ratingLevel3.setImageResource(pictureFill)
+            }
+            if(rating>=4){
+                resourceViewHolder.ratingLevel4.setImageResource(pictureFill)
+            }
+            if(rating>4){
+                resourceViewHolder.ratingLevel5.setImageResource(pictureFill)
+            }
+
         }
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
@@ -86,13 +121,27 @@ class ExploreResourcesFragment : Fragment() {
             internal var resourceCard: CardView
             internal var resourceTitle: TextView
             internal var resourceTopic: TextView
-            internal var resourceRating: TextView
+            internal var resourceUrl: TextView
+            internal var ratingLevel1: ImageView
+            internal var ratingLevel2: ImageView
+            internal var ratingLevel3: ImageView
+            internal var ratingLevel4: ImageView
+            internal var ratingLevel5: ImageView
+
 
             init {
                 resourceCard = itemView.findViewById<View>(R.id.resource_card_view) as CardView
                 resourceTitle = itemView.findViewById<View>(R.id.resource_title) as TextView
                 resourceTopic = itemView.findViewById<View>(R.id.resource_topic) as TextView
-                resourceRating = itemView.findViewById<View>(R.id.resource_rating) as TextView
+                resourceUrl = itemView.findViewById<View>(R.id.resource_url) as TextView
+                ratingLevel1 = itemView.findViewById<View>(R.id.resource_rating_level_1) as ImageView
+                ratingLevel2 = itemView.findViewById<View>(R.id.resource_rating_level_2) as ImageView
+                ratingLevel3 = itemView.findViewById<View>(R.id.resource_rating_level_3) as ImageView
+                ratingLevel4 = itemView.findViewById<View>(R.id.resource_rating_level_4) as ImageView
+                ratingLevel5 = itemView.findViewById<View>(R.id.resource_rating_level_5) as ImageView
+
+
+
             }
         }
 
