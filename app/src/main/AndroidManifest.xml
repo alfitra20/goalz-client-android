@@ -19,11 +19,7 @@
             android:name=".ui.BaseActivity"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.UserActivity">
             <meta-data
@@ -43,14 +39,25 @@
         <activity
             android:name=".ui.GoalActivity"
             android:label="@string/title_activity_goal"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <service
-            android:name="emse.mobisocial.goalz.dal.remote.FirebaseConnectionService"
-            android:exported="false"/>
+            android:name=".dal.remote.FirebaseConnectionService"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.OnboardingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
     </application>
 
 </manifest>
