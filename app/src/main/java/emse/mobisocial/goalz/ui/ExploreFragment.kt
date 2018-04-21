@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.*
 
 
@@ -18,6 +19,8 @@ class ExploreFragment : Fragment() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
     private var mContext: AppCompatActivity? = null
+    private  var menuInflater: MenuInflater? = null
+    private var appBar: Menu? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -26,6 +29,8 @@ class ExploreFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_explore, container, false)
+
+        setHasOptionsMenu(true)
 
         val tabLayout = view.findViewById(R.id.exploreTabs) as TabLayout
         tabLayout.addTab(tabLayout.newTab().setText("Goals"))
@@ -57,8 +62,16 @@ class ExploreFragment : Fragment() {
         mContext = context as AppCompatActivity
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menuInflater = inflater
+        appBar = menu
+        super.onCreateOptionsMenu(menu,inflater)
+    }
+
     override fun onDetach() {
         super.onDetach()
+        appBar?.clear()
+        menuInflater?.inflate(R.menu.base, appBar)
     }
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
