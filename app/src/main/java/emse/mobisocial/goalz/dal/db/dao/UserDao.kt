@@ -28,6 +28,9 @@ abstract class UserDao {
     @Query("SELECT * FROM users WHERE user_id = :id")
     abstract fun loadUserForDelete(id : String): UserMinimal?
 
+    @Query("SELECT * FROM users WHERE nickname LIKE :formattedQuery OR website LIKE :formattedQuery")
+    abstract fun searchUsers(formattedQuery: String): LiveData<List<UserMinimal>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertUserMinimal(userMinimal: UserMinimal)
 

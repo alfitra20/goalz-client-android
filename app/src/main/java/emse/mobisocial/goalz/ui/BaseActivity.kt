@@ -18,7 +18,9 @@ import android.widget.TextView
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_base.*
 import android.animation.Animator
+import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 
@@ -32,10 +34,12 @@ open class BaseActivity : AppCompatActivity() {
     private lateinit var mContext:Context
     private lateinit var toggle: ActionBarDrawerToggle
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         setSupportActionBar(toolbar)
+        Log.d("suppor", supportActionBar.toString())
 
         mContext = this@BaseActivity
 
@@ -51,6 +55,7 @@ open class BaseActivity : AppCompatActivity() {
             transaction.replace(R.id.content_frame, GoalsFragment())
             transaction.commit()
             supportActionBar?.title = getString(R.string.app_bar_goals)
+
         } else {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.content_frame, ExploreFragment())

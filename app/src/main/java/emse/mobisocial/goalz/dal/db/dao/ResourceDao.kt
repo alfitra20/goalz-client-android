@@ -27,6 +27,9 @@ abstract class ResourceDao {
             "WHERE user_library.user_id = :userId")
     abstract fun loadLibraryForUser(userId : String) : LiveData<List<Resource>>
 
+    @Query("SELECT * FROM resources WHERE title LIKE :formattedQuery OR topic LIKE :formattedQuery OR link LIKE :formattedQuery")
+    abstract fun searchResources(formattedQuery: String): LiveData<List<Resource>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertResource(resource: Resource)
 
