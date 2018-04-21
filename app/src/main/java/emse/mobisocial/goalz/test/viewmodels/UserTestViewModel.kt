@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import emse.mobisocial.goalz.GoalzApp
+import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.IUserRepository
 import emse.mobisocial.goalz.model.UserMinimal
 import emse.mobisocial.goalz.model.*
@@ -38,7 +39,7 @@ class UserTestViewModel (application: Application) : AndroidViewModel(applicatio
 
     private val userRepository : IUserRepository = (application as GoalzApp).userRepository
 
-    private var selectedUserId: MutableLiveData<Int> = MutableLiveData<Int>()
+    private var selectedUserId: MutableLiveData<String> = MutableLiveData<String>()
     private val userListDb: MutableLiveData<LiveData<List<UserMinimal>>> = MutableLiveData<LiveData<List<UserMinimal>>>()
     var selectedUser: LiveData<User> = Transformations.switchMap(selectedUserId){
         userRepository.getUser(it)
@@ -49,15 +50,8 @@ class UserTestViewModel (application: Application) : AndroidViewModel(applicatio
         userListDb.postValue(userRepository.getUsers())
     }
 
-    fun getDetails(id: Int) {
+    fun getDetails(id: String) {
         selectedUserId.postValue(id)
-    }
-
-    fun deleteSelectedUser() {
-        val id = selectedUserId.value
-        if (id != null) {
-            userRepository.deleteUser(id)
-        }
     }
 
     fun updateSelectedUser() {
@@ -66,7 +60,6 @@ class UserTestViewModel (application: Application) : AndroidViewModel(applicatio
             user.website = UPDATED_USER_WEBSITE
             user.firstName = UPDATED_USER_FIRSTNAME
             user.lastName = UPDATED_USER_LASTNAME
-            user.email = UPDATED_USER_EMAIL
             user.age = UPDATED_USER_AGE
             user.gender = Gender.valueOf(UPDATED_USER_GENDER)
 
@@ -74,8 +67,8 @@ class UserTestViewModel (application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun registerUser() {
-        userRepository.registerUser(NEW_USER_TEMPLATE)
+    fun registerUser() : LiveData<DalResponse> {
+        return userRepository.registerUser(NEW_USER_TEMPLATE)
     }
 
     fun searchByTopic(topic : String) {

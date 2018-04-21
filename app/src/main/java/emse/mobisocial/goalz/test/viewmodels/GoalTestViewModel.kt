@@ -5,18 +5,17 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
-import android.location.Location
 import emse.mobisocial.goalz.GoalzApp
+import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.IGoalRepository
-import emse.mobisocial.goalz.dal.converter.LocationConverter
+import emse.mobisocial.goalz.dal.db.converter.LocationConverter
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.GoalTemplate
-import emse.mobisocial.goalz.model.Resource
 import java.util.*
 
 
-private const val NEW_GOAL_USER_ID = 3
-private const val NEW_GOAL_PARENT_ID = 5
+private const val NEW_GOAL_USER_ID = "testUserId"
+private const val NEW_GOAL_PARENT_ID = "testParentId"
 private const val NEW_GOAL_TITLE = "Learn guitar"
 private const val NEW_GOAL_TOPIC = "Music"
 private const val NEW_GOAL_DESCRIPTION = "Niceeee"
@@ -44,14 +43,15 @@ class GoalTestViewModel (application: Application) : AndroidViewModel(applicatio
         goalListDb.postValue(goalRepository.getGoals())
     }
 
-    fun deleteSelectedGoal() {
+    fun deleteSelectedGoal() : LiveData<DalResponse>?{
         val x = selectedGoal
         if(x != null) {
-            goalRepository.deleteGoal(x.id)
+            return goalRepository.deleteGoal(x.id)
         }
+        return null
     }
 
-    fun updateSelectedGoal(){
+    fun updateSelectedGoal() : LiveData<DalResponse>? {
         val goal = selectedGoal
         if (goal != null) {
             goal.title = UPDATED_GOAL_TITLE
@@ -60,11 +60,12 @@ class GoalTestViewModel (application: Application) : AndroidViewModel(applicatio
             goal.status = UPDATED_GOAL_STATUS
             goal.deadline = UPDATED_GOAL_DEADLINE
 
-            goalRepository.updateGoal(goal)
+            return goalRepository.updateGoal(goal)
         }
+        return null
     }
 
-    fun addGoal(){
+    fun addGoal() : LiveData<DalResponse> {
         val newGoal = GoalTemplate(
                 NEW_GOAL_USER_ID,
                 NEW_GOAL_PARENT_ID,
@@ -72,7 +73,7 @@ class GoalTestViewModel (application: Application) : AndroidViewModel(applicatio
                 NEW_GOAL_TOPIC,
                 NEW_GOAL_DESCRIPTION,
                 NEW_GOAL_LOCATION)
-        goalRepository.addGoal(newGoal)
+        return goalRepository.addGoal(newGoal)
     }
 
     fun searchByTopic(topic : String) {
@@ -84,11 +85,11 @@ class GoalTestViewModel (application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun searchByUser(id : Int) {
+    fun searchByUser(id : String) {
         goalListDb.postValue(goalRepository.getGoalsForUser(id))
     }
 
-    fun searchSubgoals(id : Int) {
+    fun searchSubgoals(id : String) {
         goalListDb.postValue(goalRepository.getSubgoals(id))
     }
 }

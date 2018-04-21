@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package emse.mobisocial.goalz.dal.converter
+package emse.mobisocial.goalz.dal.db.converter
 
 import android.arch.persistence.room.TypeConverter
 import java.util.Date

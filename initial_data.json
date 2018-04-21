@@ -1,0 +1,253 @@
+{
+  "users" : {
+    "to2mdRC0eXUvPRVTHL1QJk57Aro2" : {
+      "age" : 23,
+      "email" : "dtoniuc@gmail.com",
+      "firstname" : "Daniel",
+      "gender" : "MALE",
+      "lastname" : "Toniuc",
+      "nickname" : "Toniuc",
+      "password" : "password1",
+      "rating" : 2.4,
+      "registrationDate" : 1520640000
+    },
+    "STDJT5Gfp0XDedPq9RQjnaQaLgF2" : {
+      "age" : 38,
+      "email" : "randomEmail@oulu.fi",
+      "firstname" : "Chouaib",
+	  "gender" : "UNDEFINED",
+      "lastname" : "Hamek",
+      "nickname" : "Hamek",
+      "password" : "password2",
+      "rating" : 1.7,
+      "registrationDate" : 1523318400,
+      "website" : "www.react.com"
+    },
+    "FOlyCo0IILeOnfUxhZpphdYnICS2" : {
+      "age" : 18,
+      "email" : "rahman@indonesia.com",
+      "firstname" : "Alfitra",
+      "gender" : "MALE",
+      "lastname" : "Rahman",
+      "nickname" : "Alfitra",
+      "password" : "password3",
+      "rating" : 3.8,
+      "registrationDate" : 1522627200,
+      "website" : "www.music.com"
+    },
+    "UN52blV915X22fpOadqF3Dmnag73" : {
+      "age" : 24,
+      "email" : "sabina@oulu.fi",
+      "firstname" : "Sabina",
+      "gender" : "FEMALE",
+      "lastname" : "Fataliyeva",
+      "nickname" : "Sabina",
+      "password" : "password4",
+      "rating" : 2.1,
+      "registrationDate" : 1518220800
+    }
+  },
+  "resources" : {
+      "-LANYpGEsqzV90Y7HU7T" : {
+      "avgReqTime" : 50,
+      "link" : "www.resource1.com",
+      "rating" : 3.4,
+      "title" : "First Resource",
+      "topic" : "random",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANYpGMsgHHnxpyhZoo" : {
+      "avgReqTime" : 10,
+      "link" : "www.google.com",
+      "rating" : 0.2,
+      "title" : "Dummy resource",
+      "topic" : "search",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANYpGNU0M9kApqSwwj" : {
+      "avgReqTime" : 30,
+      "link" : "www.stackoverflow.com",
+      "rating" : 1.5,
+      "title" : "Profi",
+      "topic" : "search",
+      "user_id" : "STDJT5Gfp0XDedPq9RQjnaQaLgF2"
+    },
+    "-LANYpGONoMJnkHUzbM2" : {
+      "avgReqTime" : 110,
+      "link" : "www.scopus.com",
+      "rating" : 2.4,
+      "title" : "Uni Database",
+      "topic" : "random",
+      "user_id" : "FOlyCo0IILeOnfUxhZpphdYnICS2"
+    }
+  },
+  "goals" : {
+    "-LANc6UYFtRlS-gZ4rZC" : {
+      "description" : "I want to learn a new sport",
+      "latitude" : 25.490361,
+      "longitude" : 65.010836,
+      "status" : 0,
+      "title" : "MyTopGoal",
+      "topic" : "sport",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANc6UfENlmNZB3BYfE" : {
+      "description" : "Because I can",
+      "latitude" : 103.862217,
+      "longitude" : 1.347763,
+      "status" : 64,
+      "title" : "Music goal",
+      "topic" : "music",
+      "user_id" : "FOlyCo0IILeOnfUxhZpphdYnICS2"
+    },
+    "-LANc6UguMrohxmJ37Uc" : {
+      "deadline" : 1535673600,
+      "description" : "Good food is healthy",
+      "latitude" : 3.087247,
+      "longitude" : 36.74145,
+      "status" : 83,
+      "title" : "Cook rice",
+      "topic" : "cooking",
+      "user_id" : "STDJT5Gfp0XDedPq9RQjnaQaLgF2"
+    },
+    "-LANc6UguMrohxmJ37Ud" : {
+      "deadline" : 1528156800,
+      "description" : "Because unicorns",
+      "latitude" : 25.411079,
+      "longitude" : 65.030254,
+      "status" : 100,
+      "title" : "Learn Django",
+      "topic" : "programming",
+      "user_id" : "UN52blV915X22fpOadqF3Dmnag73"
+    },
+	"-LANh-zMovZLf7U61fuZ" : {
+      "deadline" : 1526342400,
+      "description" : "This is cool",
+      "latitude" : 25.472305,
+      "longitude" : 65.054859,
+      "parent_id" : "-LANc6UYFtRlS-gZ4rZC",
+      "status" : 70,
+      "title" : "MySubGoal-Basketball",
+      "topic" : "sport",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANh-zSXwI0p63qvff4" : {
+      "deadline" : 1538352000,
+      "description" : "Hard, but why not",
+      "latitude" : 25.498739,
+      "longitude" : 65.009067,
+      "parent_id" : "-LANc6UYFtRlS-gZ4rZC",
+      "status" : 10,
+      "title" : "MySubGoal-Swimming",
+      "topic" : "sport",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANh-zTu5VmSenzRd92" : {
+      "deadline" : 1607904000,
+      "description" : "Like Beethoven",
+      "latitude" : 25.472006,
+      "longitude" : 65.049201,
+      "parent_id" : "-LANc6UfENlmNZB3BYfE",
+      "status" : 25,
+      "title" : "Play piano",
+      "topic" : "music",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+	"-LANi8XMXGKMw50QiuKv" : {
+      "deadline" : 1532044800,
+      "description" : "Easiest way",
+      "latitude" : 25.498739,
+      "longitude" : 65.009067,
+      "parent_id" : "-LANh-zSXwI0p63qvff4",
+      "status" : 40,
+      "title" : "MySubGoal-Swimming-Freestyle",
+      "topic" : "sport",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    }
+  },
+  "recommendations": {
+    "-LANlDAL7SJpSQ69PZIo" : {
+      "description" : "Try random things",
+      "goal_id" : "-LANc6UYFtRlS-gZ4rZC",
+      "rating" : 3.2,
+      "reqTime" : 20,
+      "resource_id" : "-LANYpGEsqzV90Y7HU7T",
+      "title" : "Sport is random",
+      "user_id" : "FOlyCo0IILeOnfUxhZpphdYnICS2"
+    },
+    "-LANlDAMi6NCwXrBW4Bh" : {
+      "description" : "It always helps",
+      "goal_id" : "-LANc6UYFtRlS-gZ4rZC",
+      "rating" : 1.5,
+      "reqTime" : 120,
+      "resource_id" : "-LANYpGMsgHHnxpyhZoo",
+      "title" : "Google it",
+      "user_id" : "UN52blV915X22fpOadqF3Dmnag73"
+    },
+    "-LANlDAMi6NCwXrBW4Bi" : {
+      "description" : "It's simple and fast",
+      "goal_id" : "-LANc6UYFtRlS-gZ4rZC",
+      "rating" : 2.1,
+      "reqTime" : 10,
+      "resource_id" : "-LANYpGMsgHHnxpyhZoo",
+      "title" : "Google is helpful",
+      "user_id" : "STDJT5Gfp0XDedPq9RQjnaQaLgF2"
+    },
+    "-LANlDANdq0J1bxEwlsk" : {
+      "description" : "Everything is here",
+      "goal_id" : "-LANc6UguMrohxmJ37Ud",
+      "rating" : 4.7,
+      "reqTime" : 200,
+      "resource_id" : "-LANYpGNU0M9kApqSwwj",
+      "title" : "Holy grail of programming",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANlDANdq0J1bxEwlsl" : {
+      "description" : "Literature corpus",
+      "goal_id" : "-LANc6UguMrohxmJ37Ud",
+      "rating" : 2.8,
+      "reqTime" : 400,
+      "resource_id" : "-LANYpGONoMJnkHUzbM2",
+      "title" : "Science is important",
+      "user_id" : "STDJT5Gfp0XDedPq9RQjnaQaLgF2"
+    }
+  },
+  "user_library" : {
+    "-LANmka4XFDO_8pshedw" : {
+      "resource_id" : "-LANYpGEsqzV90Y7HU7T",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANmka7u9EVpfDuXx0a" : {
+      "resource_id" : "-LANYpGMsgHHnxpyhZoo",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANmka8civV2i5oY6-x" : {
+      "resource_id" : "-LANYpGNU0M9kApqSwwj",
+      "user_id" : "to2mdRC0eXUvPRVTHL1QJk57Aro2"
+    },
+    "-LANmka8civV2i5oY6-y" : {
+      "resource_id" : "-LANYpGMsgHHnxpyhZoo",
+      "user_id" : "STDJT5Gfp0XDedPq9RQjnaQaLgF2"
+    },
+    "-LANmka8civV2i5oY6-z" : {
+      "resource_id" : "-LANYpGNU0M9kApqSwwj",
+      "user_id" : "STDJT5Gfp0XDedPq9RQjnaQaLgF2"
+    },
+    "-LANmka9fJT4cDgWvmN4" : {
+      "resource_id" : "-LANYpGONoMJnkHUzbM2",
+      "user_id" : "STDJT5Gfp0XDedPq9RQjnaQaLgF2"
+    },
+    "-LANmka9fJT4cDgWvmN5" : {
+      "resource_id" : "-LANYpGEsqzV90Y7HU7T",
+      "user_id" : "FOlyCo0IILeOnfUxhZpphdYnICS2"
+    },
+    "-LANmka9fJT4cDgWvmN6" : {
+      "resource_id" : "-LANYpGONoMJnkHUzbM2",
+      "user_id" : "FOlyCo0IILeOnfUxhZpphdYnICS2"
+    },
+    "-LANmka9fJT4cDgWvmN7" : {
+      "resource_id" : "-LANYpGMsgHHnxpyhZoo",
+      "user_id" : "UN52blV915X22fpOadqF3Dmnag73"
+    }
+  }
+}

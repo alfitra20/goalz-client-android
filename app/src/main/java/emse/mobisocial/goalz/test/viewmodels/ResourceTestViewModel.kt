@@ -6,12 +6,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import emse.mobisocial.goalz.GoalzApp
+import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.IResourceRepository
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.ResourceTemplate
 
 private val NEW_RESOURCE_INFO = ResourceTemplate(
-        1,
+        "testUserId",
         "www.link.org",
         "new",
         "New resource"
@@ -40,14 +41,14 @@ class ResourceTestViewModel (application: Application) : AndroidViewModel(applic
     }
 
     fun applyByUserFilter(idText : String){
-        resourceListDb.postValue(resourceRepository.getLibraryForUser(idText.toInt()))
+        resourceListDb.postValue(resourceRepository.getLibraryForUser(idText))
     }
 
-    fun deleteResource(id : Int) {
-        resourceRepository.deleteResource(id)
+    fun deleteResource(id : String) : LiveData<DalResponse> {
+        return resourceRepository.deleteResource(id)
     }
 
-    fun createResource() {
-        resourceRepository.addResource(NEW_RESOURCE_INFO)
+    fun createResource() : LiveData<DalResponse> {
+        return resourceRepository.addResource(NEW_RESOURCE_INFO)
     }
 }

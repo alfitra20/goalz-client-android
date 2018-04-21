@@ -1,5 +1,6 @@
 package emse.mobisocial.goalz.test
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 
 import android.support.v4.app.Fragment
@@ -10,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.dal.remote.FirebaseConnectionService
 import emse.mobisocial.goalz.test.fragments.TestGoalFragment
 import emse.mobisocial.goalz.test.fragments.TestRecommendationFragment
 import emse.mobisocial.goalz.test.fragments.TestResourceFragment

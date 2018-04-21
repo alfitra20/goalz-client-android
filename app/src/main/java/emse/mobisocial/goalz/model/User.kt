@@ -10,22 +10,31 @@ import java.util.*
 data class User(
         // This constructor is used by the data layer. DO NOT use it in any upper layers
         @ColumnInfo(name = "user_id")
-        var id : Int, //DO NOT UPDATE
+        var id : String, //DO NOT UPDATE
         @ColumnInfo(name = "nickname")
-        var nickname : String, //DO NOT UPDATE
+        var nickname : String,
         @ColumnInfo(name = "rating")
         var rating : Double, //DO NOT UPDATE
         @ColumnInfo(name = "website")
         var website : String?,
         @ColumnInfo(name = "registrationDate")
-        var registrationDate : Date?,
+        var registrationDate : Date?, //DO NOT UPDATE
         @ColumnInfo(name = "first_name")
         var firstName : String,
         @ColumnInfo(name = "last_name")
         var lastName : String,
         @ColumnInfo(name = "email")
-        var email : String,
+        var email : String, //DO NOT UPDATE
         @ColumnInfo(name = "age")
         var age : Int,
         @ColumnInfo(name = "gender")
-        var gender : Gender)
+        var gender : Gender){
+
+        fun getUserMinimal() : UserMinimal {
+                return UserMinimal(id, nickname, rating, website, registrationDate)
+        }
+
+        fun getUserDetails() : UserDetails {
+                return UserDetails(id, firstName, lastName, email, age, gender)
+        }
+}

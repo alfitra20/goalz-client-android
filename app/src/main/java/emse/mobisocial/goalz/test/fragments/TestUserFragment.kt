@@ -6,12 +6,15 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.model.UserMinimal
 import emse.mobisocial.goalz.model.UserDetails
@@ -77,9 +80,16 @@ class TestUserFragment : Fragment() {
             model.getDetails(user.id)
         }
 
-        deleteBtn.setOnClickListener { model.deleteSelectedUser() }
         updateBtn.setOnClickListener { model.updateSelectedUser() }
-        insertBtn.setOnClickListener { model.registerUser() }
+        insertBtn.setOnClickListener { model.registerUser().observe(this, Observer<DalResponse> { response ->
+                when (response?.status) {
+                    DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT","InProgress")
+                    DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT","Success")
+                    DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
+                }
+            })
+        }
+
         searchBtn.setOnClickListener { model.searchByTopic(searchEt.text.toString()) }
     }
 }

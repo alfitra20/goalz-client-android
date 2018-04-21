@@ -16,28 +16,26 @@ abstract class ResourceDao {
     abstract fun loadResourcesByTopic(topic : String) : LiveData<List<Resource>>
 
     @Query("SELECT * FROM resources WHERE resource_id = :id")
-    abstract fun loadResource(id : Int): LiveData<Resource>
+    abstract fun loadResource(id : String): LiveData<Resource>
 
     @Query("SELECT * FROM resources WHERE resource_id = :id")
-    abstract fun loadResourceForDelete(id : Int): Resource?
+    abstract fun loadResourceForDelete(id : String): Resource?
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT resources.resource_id, resources.user_id, link, resources.title, topic, resources.rating, avg_req_time FROM resources " +
             "JOIN user_library ON resources.resource_id = user_library.resource_id " +
             "WHERE user_library.user_id = :userId")
-    abstract fun loadLibraryForUser(userId : Int) : LiveData<List<Resource>>
+    abstract fun loadLibraryForUser(userId : String) : LiveData<List<Resource>>
 
-    @Insert(onConflict = OnConflictStrategy.FAIL)
-    abstract fun insertResource(resource: Resource) : Long
+    @Query("SELECT * FROM resources WHERE title LIKE :formattedQuery OR topic LIKE :formattedQuery OR link LIKE :formattedQuery")
+    abstract fun searchResources(formattedQuery: String): LiveData<List<Resource>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertResourceList(userList: List<Resource>)
+    abstract fun insertResource(resource: Resource)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun updateResource(resource: Resource)
 
     @Delete
-    abstract fun deleteResource(resource: Resource) : Int
-
-
-    @Update
-    abstract fun updateResource(resource: Resource) : Int
+    abstract fun deleteResource(resource: Resource)
 }

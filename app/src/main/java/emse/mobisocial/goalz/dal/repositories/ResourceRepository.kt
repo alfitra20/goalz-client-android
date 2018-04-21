@@ -2,15 +2,18 @@ package emse.mobisocial.goalz.dal.repositories
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.dal.IResourceRepository
 import emse.mobisocial.goalz.dal.db.dao.ResourceDao
+import emse.mobisocial.goalz.dal.db.dao.LibraryDao
+import emse.mobisocial.goalz.dal.remote.data.LibraryEntryFb
+import emse.mobisocial.goalz.dal.remote.data.ResourceFb
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.ResourceTemplate
 import java.util.concurrent.Executor
-
-private const val NEW_RESOURCE_ID = 0
-private const val NEW_RESOURCE_RATING : Double = 0.0
-private const val NEW_AVG_REQ_TIME = -1
 
 /**
  * Created by MobiSocial EMSE Team on 3/27/2018.
@@ -18,12 +21,17 @@ private const val NEW_AVG_REQ_TIME = -1
  * Note: This class is a singleton. The companion object can be found at the bottom of the file
  */
 class ResourceRepository(
-        private var executor : Executor,
-        private var resourceDao: ResourceDao)
+        private var resourceDao: ResourceDao,
+        private var libraryDao: LibraryDao,
+        private var diskExecutor : Executor,
+        private var networkExecutor : Executor)
     : IResourceRepository {
 
+    private val remoteResourceTable : DatabaseReference
+            = FirebaseDatabase.getInstance().reference.child("resources")
+
     //Query
-    override fun getResource(id : Int): LiveData<Resource> {
+    override fun getResource(id : String): LiveData<Resource> {
         return resourceDao.loadResource(id)
     }
 
@@ -31,38 +39,98 @@ class ResourceRepository(
         return resourceDao.loadResources()
     }
 
+    override fun searchResources(formattedQuery: String): LiveData<List<Resource>> {
+        return resourceDao.searchResources(formattedQuery)
+    }
+
     override fun getResourcesByTopic(topic: String): LiveData<List<Resource>> {
         return resourceDao.loadResourcesByTopic(topic)
     }
 
-    override fun getLibraryForUser(userId: Int): LiveData<List<Resource>> {
+    override fun getLibraryForUser(userId: String): LiveData<List<Resource>> {
         return resourceDao.loadLibraryForUser(userId)
     }
 
     //Insert
-    override fun addResource(template: ResourceTemplate) : LiveData<Int> {
-        var result = MutableLiveData<Int>()
-        executor.execute {
-            val resource = Resource(
-                    NEW_RESOURCE_ID, template.user_id, template.link, template.title, template.topic,
-                    NEW_RESOURCE_RATING, NEW_AVG_REQ_TIME)
+    override fun addResource(template: ResourceTemplate) : LiveData<DalResponse> {
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
 
-            val id = resourceDao.insertResource(resource).toInt()
-            result.postValue(id)
+        networkExecutor.execute {
+            val newId = remoteResourceTable.push().key
+            val resourceFb = ResourceFb(template)
+            remoteResourceTable.child(newId).setValue(resourceFb , {
+                error, _ -> run {
+                    if (error == null) {
+                        diskExecutor.execute {
+                            var newResource = resourceFb.toEntity(newId)
+                            resourceDao.insertResource(newResource)
+                            result.postValue(DalResponse(DalResponseStatus.SUCCESS, newId))
+                        }
+                    }
+                    else {
+                        result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                    }
+                }
+            })
         }
+        return result
+    }
 
+    override fun addResourceToLibrary(user_id : String, resource_id : String)
+            : LiveData<DalResponse> {
+
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
+
+        networkExecutor.execute {
+            val newId = remoteResourceTable.push().key
+            val libraryEntryFb = LibraryEntryFb(user_id, resource_id)
+            remoteResourceTable.child(newId).setValue(libraryEntryFb , {
+                error, _ -> run {
+                if (error == null) {
+                    diskExecutor.execute {
+                        var newEntry = libraryEntryFb.toEntity(newId)
+                        libraryDao.insertLibraryEntry(newEntry)
+                        result.postValue(DalResponse(DalResponseStatus.SUCCESS, newId))
+                    }
+                }
+                else {
+                    result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                }
+            }
+            })
+        }
         return result
     }
 
     //Delete
-    override fun deleteResource(id : Int): LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            var resource = resourceDao.loadResourceForDelete(id)
-            if (resource != null) {
-                resourceDao.deleteResource(resource)
+    override fun deleteResource(id : String): LiveData<DalResponse> {
+
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
+
+        if(id == "")
+            result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+        else {
+            networkExecutor.execute {
+                remoteResourceTable.child(id).removeValue({
+                    error, _ -> run {
+                    if (error == null) {
+                        diskExecutor.execute {
+                            var resource = resourceDao.loadResourceForDelete(id)
+                            if (resource!= null) {
+                                resourceDao.deleteResource(resource)
+                            }
+                            result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+                        }
+                    }
+                    else {
+                        result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                    }
+                }
+                })
             }
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
         }
 
         return result
@@ -72,10 +140,13 @@ class ResourceRepository(
     companion object {
         @Volatile private var INSTANCE: ResourceRepository? = null
 
-        fun getInstance(executor: Executor, resourceDao: ResourceDao): ResourceRepository {
+        fun getInstance(resourceDao: ResourceDao, libraryDao: LibraryDao,
+                        diskExecutor: Executor, networkExecutor: Executor)
+                : ResourceRepository {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE
-                        ?: ResourceRepository(executor, resourceDao)
+                        ?: ResourceRepository(
+                                resourceDao, libraryDao, diskExecutor, networkExecutor)
             }
         }
     }

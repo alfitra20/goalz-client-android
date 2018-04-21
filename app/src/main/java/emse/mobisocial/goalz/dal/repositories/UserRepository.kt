@@ -2,17 +2,21 @@ package emse.mobisocial.goalz.dal.repositories
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import emse.mobisocial.goalz.dal.IUserRepository
 import emse.mobisocial.goalz.dal.db.dao.UserDao
 import emse.mobisocial.goalz.model.UserMinimal
-import emse.mobisocial.goalz.model.UserDetails
 import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.model.UserTemplate
-import java.util.*
 import java.util.concurrent.Executor
-
-private const val NEW_USER_ID = 0
-private const val NEW_USER_RATING : Double = 0.0
+import com.google.firebase.auth.AuthResult
+import com.google.android.gms.tasks.OnCompleteListener
+import android.util.Log
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
+import emse.mobisocial.goalz.dal.remote.data.UserFb
 
 /**
  * Created by MobiSocial EMSE Team on 3/27/2018.
@@ -20,10 +24,17 @@ private const val NEW_USER_RATING : Double = 0.0
  * Note: This class is a singleton. The companion object can be found at the bottom of the file
  */
 class UserRepository private constructor(
-        private var executor : Executor, private var userDao: UserDao) : IUserRepository {
+        private var userDao: UserDao,
+        private var diskExecutor : Executor,
+        private var networkExecutor : Executor
+    ) : IUserRepository {
+
+    private val mAuth = FirebaseAuth.getInstance()
+    private val remoteUserTable : DatabaseReference
+            = FirebaseDatabase.getInstance().reference.child("users")
 
     //Query
-    override fun getUser(id : Int): LiveData<User> {
+    override fun getUser(id : String): LiveData<User> {
         return userDao.loadUser(id)
     }
 
@@ -31,54 +42,85 @@ class UserRepository private constructor(
         return userDao.loadUsers()
     }
 
+    override fun searchUsers(formattedQuery: String): LiveData<List<UserMinimal>> {
+        return userDao.searchUsers(formattedQuery)
+    }
+
     override fun getUsersByTopic(topic : String): LiveData<List<UserMinimal>> {
         return userDao.loadUsersByTopic(topic)
     }
 
     //Insert
-    override fun registerUser(userTemplate: UserTemplate) : LiveData<Int> {
-        var result = MutableLiveData<Int>()
-        executor.execute {
-            var userMinimal = UserMinimal(
-                    NEW_USER_ID, userTemplate.nickname, NEW_USER_RATING,
-                    userTemplate.website, Date())
+    override fun registerUser(template: UserTemplate) : LiveData<DalResponse> {
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
 
-            var userId = userDao.insertUserMinimal(userMinimal).toInt()
-
-            var userDetails = UserDetails(
-                    userId, userTemplate.firstname, userTemplate.lastname, userTemplate.email,
-                    userTemplate.age, userTemplate.gender)
-            userDao.insertUserDetails(userDetails)
-
-            result.postValue(userId)
-        }
+        mAuth.createUserWithEmailAndPassword(template.email, template.password)
+            .addOnCompleteListener(networkExecutor, OnCompleteListener<AuthResult> { task ->
+                if (task.isSuccessful) {
+                    Log.d("SIGNUP", "createUserWithEmail:success")
+                    val user = mAuth.currentUser!!
+                    val userFb = UserFb(template)
+                    remoteUserTable.child(user.uid).setValue(userFb , { error, _ ->
+                        run {
+                            if (error == null) {
+                                diskExecutor.execute {
+                                    var newUser = userFb.toEntity(user.uid)
+                                    userDao.insertUserMinimal(newUser.getUserMinimal())
+                                    userDao.insertUserDetails(newUser.getUserDetails())
+                                    result.postValue(DalResponse(DalResponseStatus.SUCCESS, user.uid))
+                                }
+                            }
+                            else {
+                                user.delete()
+                                result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                            }
+                        }
+                    })
+                } else {
+                    result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                }
+            })
 
         return result
     }
 
     //Update
-    override fun updateUser(user: User) : LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            userDao.updateUserMinimal(
-                    UserMinimal(user.id, user.nickname, user.rating, user.website, user.registrationDate))
-            userDao.updateUserDetails(
-                    UserDetails(user.id, user.firstName, user.lastName, user.email, user.age, user.gender))
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
-        }
+    override fun updateUser(user: User) : LiveData<DalResponse> {
+        var result = MutableLiveData<DalResponse>()
+        result.postValue(DalResponse(DalResponseStatus.INPROGRESS, null))
 
-        return result
-    }
-
-    //Delete
-    override fun deleteUser(id : Int) : LiveData<Boolean> {
-        var result = MutableLiveData<Boolean>()
-        executor.execute {
-            var user = userDao.loadUserForDelete(id)
-            if (user!= null) {
-                userDao.deleteUser(user)
+        val currentUser = mAuth.currentUser
+        if(currentUser != null){
+            if (currentUser.uid != user.id){
+                result.postValue(DalResponse(DalResponseStatus.FAIL, null))
             }
-            result.postValue(true) //TODO: This should be changed based on success/fail logic
+            else {
+                networkExecutor.execute {
+                    val updateInfo = HashMap<String, Any?>()
+                    updateInfo["nickname"] = user.nickname
+                    updateInfo["website"] = user.website
+                    updateInfo["firstname"] = user.firstName
+                    updateInfo["lastname"] = user.lastName
+                    updateInfo["age"] = user.age
+                    updateInfo["gender"] = user.gender.name
+
+                    remoteUserTable.child(user.id).updateChildren(updateInfo, {
+                        error, _ -> run {
+                        if (error == null) {
+                            diskExecutor.execute {
+                                userDao.updateUserMinimal(user.getUserMinimal())
+                                userDao.updateUserDetails(user.getUserDetails())
+                                result.postValue(DalResponse(DalResponseStatus.SUCCESS, null))
+                            }
+                        }
+                        else {
+                            result.postValue(DalResponse(DalResponseStatus.FAIL, null))
+                        }
+                    }
+                    })
+                }
+            }
         }
 
         return result
@@ -88,10 +130,11 @@ class UserRepository private constructor(
     companion object {
         @Volatile private var INSTANCE: UserRepository? = null
 
-        fun getInstance(executor: Executor, userDao: UserDao): UserRepository {
+        fun getInstance(userDao: UserDao, diskExecutor: Executor, networkExecutor: Executor)
+                : UserRepository {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE
-                        ?: UserRepository(executor, userDao)
+                        ?: UserRepository(userDao, diskExecutor, networkExecutor)
             }
         }
     }

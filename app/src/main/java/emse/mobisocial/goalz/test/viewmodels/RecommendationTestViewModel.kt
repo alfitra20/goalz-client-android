@@ -6,13 +6,14 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import emse.mobisocial.goalz.GoalzApp
+import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.IRecommendationRepository
 import emse.mobisocial.goalz.model.Recommendation
 import emse.mobisocial.goalz.model.RecommendationTemplate
 
-private const val NEW_RECOMMENDATION_RESOURCE_ID = 2
-private const val NEW_RECOMMENDATION_GOAL_ID = 2
-private const val NEW_RECOMMENDATION_USER_ID = 2
+private const val NEW_RECOMMENDATION_RESOURCE_ID = "testResourceId"
+private const val NEW_RECOMMENDATION_GOAL_ID = "testGoalId"
+private const val NEW_RECOMMENDATION_USER_ID = "testUserId"
 private const val NEW_RECOMMENDATION_TITLE = "New recommendation"
 private const val NEW_RECOMMENDATION_DESCRIPTION = "New description"
 private const val NEW_RECOMMENDATION_REQ_TIME = 30
@@ -34,20 +35,20 @@ class RecommendationTestViewModel  (application: Application) : AndroidViewModel
 
     var selectedRecommendation : Recommendation? = null
 
-    fun searchForUser(userId : Int){
+    fun searchForUser(userId : String){
         recommendationListDb.postValue(recommendationRepository.getRecommendationsForUser(userId))
     }
 
-    fun searchForAuthor(userId : Int){
+    fun searchForAuthor(userId : String){
         recommendationListDb.postValue(recommendationRepository.getRecommendationsForAuthor(userId))
     }
 
-    fun searchForGoal(goalId : Int){
+    fun searchForGoal(goalId : String){
         recommendationListDb.postValue(recommendationRepository.getRecommendationsForGoal(goalId))
     }
 
-    fun insertRecommendation() {
-        recommendationRepository.addRecommendation(
+    fun insertRecommendation() : LiveData<DalResponse> {
+        return recommendationRepository.addRecommendation(
                 RecommendationTemplate(
                         NEW_RECOMMENDATION_RESOURCE_ID,
                         NEW_RECOMMENDATION_GOAL_ID,
@@ -59,18 +60,22 @@ class RecommendationTestViewModel  (application: Application) : AndroidViewModel
         )
     }
 
-    fun deleteSelectedRecommendation() {
+    fun deleteSelectedRecommendation() : LiveData<DalResponse>? {
         val x = selectedRecommendation
         if(x != null) {
             recommendationRepository.deleteRecommendation(x.id)
         }
+
+        return null
     }
 
-    fun updateSelectedRecommendation(){
+    fun updateSelectedRecommendation() : LiveData<DalResponse>? {
         val recommendation = selectedRecommendation
         if (recommendation != null) {
             recommendationRepository.rateRecommendation(recommendation.id, UPDATED_RATING)
         }
+
+        return null
     }
 
 }

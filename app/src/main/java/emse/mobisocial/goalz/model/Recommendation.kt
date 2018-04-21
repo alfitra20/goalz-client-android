@@ -9,13 +9,13 @@ import android.arch.persistence.room.Relation
 
 data class Recommendation (
         @ColumnInfo(name = "recommendation_id")
-        var id : Int, //DO NOT UPDATE
+        var id : String, //DO NOT UPDATE
         @ColumnInfo(name = "resource_id")
-        var resourceId : Int, //DO NOT UPDATE
+        var resourceId : String, //DO NOT UPDATE
         @ColumnInfo(name = "goal_id")
-        var goalId : Int, //DO NOT UPDATE
+        var goalId : String, //DO NOT UPDATE
         @ColumnInfo(name = "user_id")
-        var userId : Int, //DO NOT UPDATE
+        var userId : String, //DO NOT UPDATE
         @ColumnInfo(name = "title")
         var title : String, //DO NOT UPDATE
         @ColumnInfo(name = "description")
