@@ -15,6 +15,8 @@ import android.widget.ImageView
 import android.view.*
 import android.widget.SearchView
 import android.widget.TextView
+import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
+import com.nex3z.togglebuttongroup.button.LabelToggle
 
 class ExploreResourcesFragment : Fragment() {
 
@@ -23,25 +25,39 @@ class ExploreResourcesFragment : Fragment() {
     private lateinit var searchView: SearchView
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
+    // filter variables and views
+    private var filterOpen: Boolean = false
+    private lateinit var filterView: MultiSelectToggleGroup
+    private lateinit var topicFilter: LabelToggle
+    private lateinit var ratingFilter: LabelToggle
+    private lateinit var timeFilter: LabelToggle
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_explore_resources, container, false)
-
-        model = ViewModelProviders.of(this).get(ExploreResourcesViewModel::class.java)
-
         setHasOptionsMenu(true)
 
+        // Initialize data
+        filterView = view.findViewById(R.id.resources_filters) as MultiSelectToggleGroup
+        model = ViewModelProviders.of(this).get(ExploreResourcesViewModel::class.java)
         recyclerView = view.findViewById(R.id.explore_resources_recycler_view) as RecyclerView
+        topicFilter = view.findViewById(R.id.order_resources_topic)
+        ratingFilter = view.findViewById(R.id.order_resources_rating)
+        timeFilter = view.findViewById(R.id.order_resources_time)
 
+        setupRecyclerView()
+        initializeObservers()
+        initializeListeners()
+
+        return view
+    }
+
+    private fun setupRecyclerView() {
         recyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerViewAdapter = RecyclerViewAdapter(ArrayList<Resource>())
         recyclerView.adapter = recyclerViewAdapter
-
-        initializeObservers()
-
-        return view
     }
 
     private fun initializeObservers() {
@@ -52,9 +68,36 @@ class ExploreResourcesFragment : Fragment() {
         })
     }
 
+    private fun initializeListeners() {
+        filterView.setOnCheckedChangeListener(object: MultiSelectToggleGroup.OnCheckedStateChangeListener {
+            override fun onCheckedStateChanged(single: MultiSelectToggleGroup?, checkedId: Int, isChecked: Boolean) {
+                if (isChecked) {
+                    uncheckOthers(checkedId)
+                    recyclerViewAdapter.filterRecyclerView()
+                } else {
+                    model.reset()
+                }
+            }
+        })
+    }
+
+    private fun uncheckOthers(checkId: Int) {
+        for (id: Int in filterView.getCheckedIds()) {
+            if (id != checkId) {
+                when(id) {
+                    ratingFilter.id -> ratingFilter.setChecked(false)
+                    topicFilter.id -> topicFilter.setChecked(false)
+                    timeFilter.id -> timeFilter.setChecked(false)
+                }
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         menu?.clear()
         inflater?.inflate(R.menu.menu_explore, menu)
+
+        // Setup the behaviour of the search menu item
         val searchItem = menu!!.findItem(R.id.exploreSearch)
         searchView = searchItem.actionView as SearchView
         searchView.setIconified(false)
@@ -76,6 +119,28 @@ class ExploreResourcesFragment : Fragment() {
                 return true
             }
         })
+
+        // Setup the behaviour of the filter menu item
+        val filterItem = menu!!.findItem(R.id.exploreFilter)
+        val r = context.resources
+        val topMarginPx = r.getDimensionPixelSize(R.dimen.explore_top_margin)
+        val params = recyclerView.getLayoutParams() as ViewGroup.MarginLayoutParams
+        filterItem.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener {
+            override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                if (!filterOpen) {
+                    filterView.visibility = View.VISIBLE
+                    params.setMargins(0, 0, 0, 0)
+                    recyclerView.setLayoutParams(params)
+                } else {
+                    filterView.visibility = View.GONE
+                    params.setMargins(0, topMarginPx, 0, 0)
+                    recyclerView.setLayoutParams(params)
+                }
+                filterOpen = !filterOpen
+                return true
+            }
+        })
+
         super.onCreateOptionsMenu(menu,inflater)
     }
 
@@ -139,6 +204,38 @@ class ExploreResourcesFragment : Fragment() {
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
             super.onAttachedToRecyclerView(recyclerView)
+        }
+
+        fun filterRecyclerView() {
+            val checkedIds = filterView.getCheckedIds()
+            for (id: Int in checkedIds) {
+                when (id) {
+                    ratingFilter.id -> filterByRating()
+                    topicFilter.id -> filterByTopic()
+                    timeFilter.id -> filterByTime()
+                }
+            }
+        }
+
+        fun filterByTopic() {
+            val filterdList = ArrayList<Resource>(mResources)
+            filterdList.sortBy { resource -> resource.topic }
+            this.mResources = filterdList
+            notifyDataSetChanged()
+        }
+
+        fun filterByRating() {
+            val filterdList = ArrayList<Resource>(mResources)
+            filterdList.sortBy { resource -> -resource.rating }
+            this.mResources = filterdList
+            notifyDataSetChanged()
+        }
+
+        fun filterByTime() {
+            val filterdList = ArrayList<Resource>(mResources)
+            filterdList.sortBy { resource -> resource.avgReqTime }
+            this.mResources = filterdList
+            notifyDataSetChanged()
         }
 
         inner class ResourceViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

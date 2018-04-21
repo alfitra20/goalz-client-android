@@ -28,4 +28,8 @@ class ExploreUsersViewModel(application: Application): AndroidViewModel(applicat
             usersListDb.postValue(userRepository.searchUsers(formattedQuery))
         }
     }
+
+    fun reset() {
+        usersListDb.postValue(userRepository.getUsers())
+    }
 }
