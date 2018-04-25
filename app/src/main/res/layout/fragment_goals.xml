@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tbgChildSpacing="30dp">
+        app:tbgChildSpacing="20dp">
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
             android:id="@+id/order_goals_topic"
@@ -28,17 +28,17 @@
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_goals_status"
+            android:id="@+id/order_goals_deadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status"
+            android:text="Deadline"
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_goals_proximity"
+            android:id="@+id/order_goals_resources_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Proximity"
+            android:text="Resources"
             android:textSize="16sp" />
 
     </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>

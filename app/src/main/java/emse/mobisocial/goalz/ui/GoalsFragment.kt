@@ -16,21 +16,26 @@ import android.widget.SearchView
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
+import com.nex3z.togglebuttongroup.button.LabelToggle
 
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.Recommendation
 import emse.mobisocial.goalz.ui.viewModels.GoalsViewModel
+import java.util.*
 
 
 class GoalsFragment : Fragment() {
 
-    private lateinit var mFirebaseAuth : FirebaseAuth
     private lateinit var filterView: MultiSelectToggleGroup
     private lateinit var model : GoalsViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var recyclerViewAdapter: GoalsFragment.RecyclerViewAdapter
+
+    private lateinit var topicFilter: LabelToggle
+    private lateinit var deadlineFilter: LabelToggle
+    private lateinit var resourcesCountFilter: LabelToggle
 
     private var filterOpen: Boolean = false
     private var userId: String? = null
@@ -57,8 +62,13 @@ class GoalsFragment : Fragment() {
             model = ViewModelProviders.of(this).get(GoalsViewModel::class.java)
             model.initialize(userId!!)
 
+            deadlineFilter = view.findViewById(R.id.order_goals_deadline)
+            topicFilter = view.findViewById(R.id.order_goals_topic)
+            resourcesCountFilter = view.findViewById(R.id.order_goals_resources_count)
+
             setupRecyclerView()
             initializeObservers()
+            initializeListeners()
 
         } else {
             Log.e("GOALS FRAGMENT: ", "COULD NOT GET AUTHENTICATED USER")
@@ -86,6 +96,31 @@ class GoalsFragment : Fragment() {
                 recyclerViewAdapter.addRecommendations(recommendations)
             }
         })
+    }
+
+    private fun initializeListeners() {
+        filterView.setOnCheckedChangeListener(object: MultiSelectToggleGroup.OnCheckedStateChangeListener {
+            override fun onCheckedStateChanged(single: MultiSelectToggleGroup?, checkedId: Int, isChecked: Boolean) {
+                if (isChecked) {
+                    uncheckOthers(checkedId)
+                    recyclerViewAdapter.filterRecyclerView()
+                } else {
+                    model.reset(userId!!)
+                }
+            }
+        })
+    }
+
+    private fun uncheckOthers(checkId: Int) {
+        for (id: Int in filterView.getCheckedIds()) {
+            if (id != checkId) {
+                when(id) {
+                    resourcesCountFilter.id -> resourcesCountFilter.setChecked(false)
+                    topicFilter.id -> topicFilter.setChecked(false)
+                    deadlineFilter.id -> deadlineFilter.setChecked(false)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -181,8 +216,8 @@ class GoalsFragment : Fragment() {
             // The data from the goal model is retrieved and bound to the card View here.
             val deadline = mGoals[i].deadline
             val recommendations_count = countRecommendationsForGoal(mGoals[i].id)
-            goalViewHolder.goalName.text = mGoals[i].title
-            goalViewHolder.goalDescription.text = mGoals[i].description
+            goalViewHolder.goalTitle.text = mGoals[i].title
+            goalViewHolder.goalTopic.text = mGoals[i].topic
             goalViewHolder.goalRecommendationsCount.text = recommendations_count.toString()
             if (deadline != null) {
                 val formattedDate = DateFormat.format("dd MMM yyyy", deadline) as String
@@ -206,17 +241,48 @@ class GoalsFragment : Fragment() {
             super.onAttachedToRecyclerView(recyclerView)
         }
 
+        fun filterRecyclerView() {
+            val checkedIds = filterView.getCheckedIds()
+            for (id: Int in checkedIds) {
+                when (id) {
+                    deadlineFilter.id -> filterByDeadline()
+                    topicFilter.id -> filterByTopic()
+                    resourcesCountFilter.id -> filterByResourcesCount()
+                }
+            }
+        }
+
+        fun filterByTopic() {
+            val filterdList = ArrayList<Goal>(mGoals)
+            filterdList.sortBy { goal -> goal.topic }
+            this.mGoals = filterdList
+            notifyDataSetChanged()
+        }
+
+        fun filterByDeadline() {
+            val filterdList = ArrayList<Goal>(mGoals).sortedWith(compareBy<Goal,Long?>(nullsLast(), { it.deadline?.time }))
+            this.mGoals = filterdList
+            notifyDataSetChanged()
+        }
+
+        fun filterByResourcesCount() {
+            val filterdList = ArrayList<Goal>(mGoals)
+            filterdList.sortBy { goal -> -countRecommendationsForGoal(goal.id) }
+            this.mGoals = filterdList
+            notifyDataSetChanged()
+        }
+
         inner class GoalViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
             internal var goalCard: CardView
-            internal var goalName: TextView
-            internal var goalDescription: TextView
+            internal var goalTitle: TextView
+            internal var goalTopic: TextView
             internal var goalDeadline: TextView
             internal var goalRecommendationsCount: TextView
 
             init {
                 goalCard = itemView.findViewById<View>(R.id.own_goal_card_view) as CardView
-                goalName = itemView.findViewById<View>(R.id.own_goal_name) as TextView
-                goalDescription = itemView.findViewById<View>(R.id.own_goal_description) as TextView
+                goalTitle = itemView.findViewById<View>(R.id.own_goal_title) as TextView
+                goalTopic = itemView.findViewById<View>(R.id.own_goal_topic) as TextView
                 goalDeadline = itemView.findViewById<View>(R.id.own_goal_deadline) as TextView
                 goalRecommendationsCount = itemView.findViewById(R.id.own_goal_recommendations_count) as TextView
             }

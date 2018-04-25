@@ -20,7 +20,7 @@
         app:tbgChildSpacing="30dp">
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_goals_topic"
+            android:id="@+id/order_explore_goals_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -28,14 +28,14 @@
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_goals_status"
+            android:id="@+id/order_explore_goals_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Status"
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_goals_proximity"
+            android:id="@+id/order_explore_goals_proximity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Proximity"

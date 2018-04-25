@@ -18,7 +18,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/own_goal_name"
+            android:id="@+id/own_goal_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -37,7 +37,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/own_goal_description"
+            android:id="@+id/own_goal_topic"
             android:layout_width="245dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/divider"
@@ -64,7 +64,7 @@
             android:id="@+id/own_goal_deadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/own_goal_name"
+            android:layout_alignBottom="@+id/own_goal_title"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="16dp"
             android:autoSizeMinTextSize="12sp"
@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/own_goal_deadline"
-            android:layout_alignTop="@+id/own_goal_description"
+            android:layout_alignTop="@+id/own_goal_topic"
             android:autoSizeMinTextSize="12sp"
             android:singleLine="true"
             android:textColor="#FFFF"

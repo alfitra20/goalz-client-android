@@ -23,9 +23,9 @@ class GoalsViewModel(application: Application): AndroidViewModel(application) {
     val goalsList: LiveData<List<Goal>> = Transformations.switchMap(goalsListDb) { it }
     val recommendationsList: LiveData<List<Recommendation>> = Transformations.switchMap(recommendationsListDb) { it }
 
-    fun initialize(user_id: String) {
-        goalsListDb.postValue(goalRepository.getGoalsForUser(user_id))
-        recommendationsListDb.postValue(recommendationRepository.getRecommendationsForUser(user_id))
+    fun initialize(userId: String) {
+        goalsListDb.postValue(goalRepository.getGoalsForUser(userId))
+        recommendationsListDb.postValue(recommendationRepository.getRecommendationsForUser(userId))
     }
 
     fun searchGoalsForUser(searchQuery : String, userId: String) {
@@ -38,7 +38,7 @@ class GoalsViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun reset() {
-        goalsListDb.postValue(goalRepository.getGoals())
+    fun reset(userId: String) {
+        goalsListDb.postValue(goalRepository.getGoalsForUser(userId))
     }
 }

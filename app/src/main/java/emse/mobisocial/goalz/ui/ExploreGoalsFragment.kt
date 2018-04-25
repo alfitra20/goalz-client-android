@@ -59,9 +59,9 @@ class ExploreGoalsFragment : Fragment() {
         filterView = view.findViewById(R.id.explore_goals_filters) as MultiSelectToggleGroup
         recyclerView = view.findViewById(R.id.explore_goals_recycler_view) as RecyclerView
         model = ViewModelProviders.of(this).get(ExploreGoalsViewModel::class.java)
-        proximityFilter = view.findViewById(R.id.order_goals_proximity)
-        topicFilter = view.findViewById(R.id.order_goals_topic)
-        statusFilter = view.findViewById(R.id.order_goals_status)
+        proximityFilter = view.findViewById(R.id.order_explore_goals_proximity)
+        topicFilter = view.findViewById(R.id.order_explore_goals_topic)
+        statusFilter = view.findViewById(R.id.order_explore_goals_status)
 
         setupRecyclerView()
         initializeObservers()
@@ -182,8 +182,8 @@ class ExploreGoalsFragment : Fragment() {
 
         override fun onBindViewHolder(goalViewHolder: GoalViewHolder, i: Int) {
             // The data from the goal model is retrieved and bound to the card View here.
-            goalViewHolder.goalName.text = mGoals[i].title
-            goalViewHolder.goalDescription.text = mGoals[i].description
+            goalViewHolder.goalTitle.text = mGoals[i].title
+            goalViewHolder.goalTopic.text = mGoals[i].topic
             if (mGoals[i].status == 0){
                 goalViewHolder.goalStatusImage.setImageResource(R.drawable.incomplete)
             }else{
@@ -229,14 +229,14 @@ class ExploreGoalsFragment : Fragment() {
 
         inner class GoalViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
             internal var goalCard: CardView
-            internal var goalName: TextView
-            internal var goalDescription: TextView
+            internal var goalTitle: TextView
+            internal var goalTopic: TextView
             internal var goalStatusImage: ImageView
 
             init {
                 goalCard = itemView.findViewById<View>(R.id.goal_card_view) as CardView
-                goalName = itemView.findViewById<View>(R.id.goal_name) as TextView
-                goalDescription = itemView.findViewById<View>(R.id.goal_description) as TextView
+                goalTitle = itemView.findViewById<View>(R.id.goal_title) as TextView
+                goalTopic = itemView.findViewById<View>(R.id.goal_topic) as TextView
                 goalStatusImage = itemView.findViewById(R.id.status_image) as ImageView
             }
         }
