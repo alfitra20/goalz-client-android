@@ -43,6 +43,10 @@ class GoalRepository(
         return goalDao.searchGoals(formattedQuery)
     }
 
+    override fun searchGoalsForUser(formattedQuery: String, userId: String): LiveData<List<Goal>> {
+        return goalDao.searchGoalsForUser(formattedQuery, userId)
+    }
+
     override fun getSubgoals(parentId: String): LiveData<List<Goal>> {
         return goalDao.loadSubgoals(parentId)
     }

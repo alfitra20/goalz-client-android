@@ -11,9 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.SearchView
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
@@ -35,7 +33,7 @@ class GoalsFragment : Fragment() {
     private lateinit var recyclerViewAdapter: GoalsFragment.RecyclerViewAdapter
 
     private var filterOpen: Boolean = false
-    private var user_id: String? = null
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +47,15 @@ class GoalsFragment : Fragment() {
         setHasOptionsMenu(true)
 
 
-        user_id = FirebaseAuth.getInstance().currentUser?.uid
-        if (user_id != null) {
-            Log.e("GOALS FRAGMENT", "USER AUTHENTICATED:" + user_id)
+        userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            Log.e("GOALS FRAGMENT", "USER AUTHENTICATED:" + userId)
 
             // Initialize data
             filterView = view.findViewById(R.id.goals_filters) as MultiSelectToggleGroup
             recyclerView = view.findViewById(R.id.goals_recycler_view) as RecyclerView
             model = ViewModelProviders.of(this).get(GoalsViewModel::class.java)
-            model.initialize(user_id!!)
+            model.initialize(userId!!)
 
             setupRecyclerView()
             initializeObservers()
@@ -88,6 +86,61 @@ class GoalsFragment : Fragment() {
                 recyclerViewAdapter.addRecommendations(recommendations)
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.clear()
+        inflater?.inflate(R.menu.menu_explore, menu)
+
+        // Setup the behaviour of the search menu item
+        val searchItem = menu!!.findItem(R.id.exploreSearch)
+        searchView = searchItem.actionView as SearchView
+        searchView.setIconified(false)
+        searchView.setOnCloseListener(object: SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                searchItem.collapseActionView()
+                return true
+            }
+        })
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(searchQuery: String?): Boolean {
+                if (userId != null) {
+                    model.searchGoalsForUser(searchQuery!!, userId!!)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(searchQuery: String?): Boolean {
+                if (userId != null ) {
+                    model.searchGoalsForUser(searchQuery!!, userId!!)
+                }
+                return true
+            }
+        })
+
+        // Set up the behaviour of the filter menu item
+        val filterItem = menu!!.findItem(R.id.exploreFilter)
+        val r = context.resources
+        val topMarginPx = r.getDimensionPixelSize(R.dimen.goals_fragment_top_margin)
+        val params = recyclerView.getLayoutParams() as ViewGroup.MarginLayoutParams
+        filterItem.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener {
+            override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                if (!filterOpen) {
+                    filterView.visibility = View.VISIBLE
+                    params.setMargins(0, 0, 0, 0)
+                    recyclerView.setLayoutParams(params)
+                } else {
+                    filterView.visibility = View.GONE
+                    params.setMargins(0, topMarginPx, 0, 0)
+                    recyclerView.setLayoutParams(params)
+                }
+                filterOpen = !filterOpen
+                return true
+            }
+        })
+
+        super.onCreateOptionsMenu(menu,inflater)
     }
 
     override fun onAttach(context: Context) {

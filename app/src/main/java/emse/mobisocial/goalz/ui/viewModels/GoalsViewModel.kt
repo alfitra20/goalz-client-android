@@ -28,13 +28,13 @@ class GoalsViewModel(application: Application): AndroidViewModel(application) {
         recommendationsListDb.postValue(recommendationRepository.getRecommendationsForUser(user_id))
     }
 
-    fun searchGoals(searchQuery : String) {
+    fun searchGoalsForUser(searchQuery : String, userId: String) {
         if (searchQuery == ""){
-            goalsListDb.postValue(goalRepository.getGoals())
+            goalsListDb.postValue(goalRepository.getGoalsForUser(userId))
         }
         else {
             val formattedQuery = "%$searchQuery%"
-            goalsListDb.postValue(goalRepository.searchGoals(formattedQuery))
+            goalsListDb.postValue(goalRepository.searchGoalsForUser(formattedQuery, userId))
         }
     }
 
