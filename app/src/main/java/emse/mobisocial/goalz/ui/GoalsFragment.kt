@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
 
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
+import emse.mobisocial.goalz.model.Recommendation
 import emse.mobisocial.goalz.ui.viewModels.GoalsViewModel
 
 
@@ -71,14 +73,19 @@ class GoalsFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
-        recyclerViewAdapter = RecyclerViewAdapter(ArrayList<Goal>())
+        recyclerViewAdapter = RecyclerViewAdapter(ArrayList<Goal>(), ArrayList<Recommendation>())
         recyclerView.adapter = recyclerViewAdapter
     }
 
     private fun initializeObservers() {
         model.goalsList.observe(this, Observer<List<Goal>> { goals ->
             if (goals != null) {
-                recyclerViewAdapter.addItems(goals)
+                recyclerViewAdapter.addGoals(goals)
+            }
+        })
+        model.recommendationsList.observe(this, Observer<List<Recommendation>> { recommendations ->
+            if (recommendations != null) {
+                recyclerViewAdapter.addRecommendations(recommendations)
             }
         })
     }
@@ -93,15 +100,21 @@ class GoalsFragment : Fragment() {
 
     }
 
-    inner class RecyclerViewAdapter(goalsParam: ArrayList<Goal>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
+    inner class RecyclerViewAdapter(goalsParam: ArrayList<Goal>, recommendationsParam: ArrayList<Recommendation>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
         private var mGoals: List<Goal> = goalsParam
+        private var mRecommendations: List<Recommendation> = recommendationsParam
 
         override fun getItemCount(): Int {
             return mGoals.size
         }
 
-        fun addItems(newGoalsList: List<Goal>) {
+        fun addGoals(newGoalsList: List<Goal>) {
             this.mGoals = newGoalsList
+            notifyDataSetChanged()
+        }
+
+        fun addRecommendations(newRecommendationsList: List<Recommendation>) {
+            this.mRecommendations = newRecommendationsList
             notifyDataSetChanged()
         }
 
@@ -114,9 +127,26 @@ class GoalsFragment : Fragment() {
         override fun onBindViewHolder(goalViewHolder: GoalViewHolder, i: Int) {
             // The data from the goal model is retrieved and bound to the card View here.
             val deadline = mGoals[i].deadline
+            val recommendations_count = countRecommendationsForGoal(mGoals[i].id)
             goalViewHolder.goalName.text = mGoals[i].title
             goalViewHolder.goalDescription.text = mGoals[i].description
-            goalViewHolder.goalDeadline.text = if (deadline != null) deadline.toString() else "Not specified"
+            goalViewHolder.goalRecommendationsCount.text = recommendations_count.toString()
+            if (deadline != null) {
+                val formattedDate = DateFormat.format("dd MMM yyyy", deadline) as String
+                goalViewHolder.goalDeadline.text = formattedDate
+            } else {
+                goalViewHolder.goalDeadline.text = "Not specified"
+            }
+        }
+
+        fun countRecommendationsForGoal(goal_id: String): Int {
+            var count = 0
+            for (r in mRecommendations){
+                if (r.goalId == goal_id) {
+                    count++
+                }
+            }
+            return count
         }
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
@@ -128,12 +158,14 @@ class GoalsFragment : Fragment() {
             internal var goalName: TextView
             internal var goalDescription: TextView
             internal var goalDeadline: TextView
+            internal var goalRecommendationsCount: TextView
 
             init {
                 goalCard = itemView.findViewById<View>(R.id.own_goal_card_view) as CardView
                 goalName = itemView.findViewById<View>(R.id.own_goal_name) as TextView
                 goalDescription = itemView.findViewById<View>(R.id.own_goal_description) as TextView
                 goalDeadline = itemView.findViewById<View>(R.id.own_goal_deadline) as TextView
+                goalRecommendationsCount = itemView.findViewById(R.id.own_goal_recommendations_count) as TextView
             }
         }
 
