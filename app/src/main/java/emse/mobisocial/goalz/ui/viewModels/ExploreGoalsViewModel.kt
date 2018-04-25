@@ -30,4 +30,8 @@ class ExploreGoalsViewModel(application: Application): AndroidViewModel(applicat
             goalsListDb.postValue(goalRepository.searchGoals(formattedQuery))
         }
     }
+
+    fun reset() {
+        goalsListDb.postValue(goalRepository.getGoals())
+    }
 }
