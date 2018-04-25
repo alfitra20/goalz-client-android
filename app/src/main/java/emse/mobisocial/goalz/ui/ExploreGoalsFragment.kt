@@ -56,7 +56,7 @@ class ExploreGoalsFragment : Fragment() {
         }
 
         // Initialize data
-        filterView = view.findViewById(R.id.goals_filters) as MultiSelectToggleGroup
+        filterView = view.findViewById(R.id.explore_goals_filters) as MultiSelectToggleGroup
         recyclerView = view.findViewById(R.id.explore_goals_recycler_view) as RecyclerView
         model = ViewModelProviders.of(this).get(ExploreGoalsViewModel::class.java)
         proximityFilter = view.findViewById(R.id.order_goals_proximity)
