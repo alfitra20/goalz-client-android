@@ -6,16 +6,15 @@ import org.jsoup.nodes.Element;
 
 import java.net.URL;
 
-/**
- * Created by Sabina on 4/21/2018.
- */
-
 public class ImageExtractor {
+
     public static String extractImageUrl(String url) throws Exception {
         String contentType = new URL(url).openConnection().getContentType();
         if (contentType != null) {
             if (contentType.startsWith("image/")) {
                 return url;
+            } else if(contentType.contains("pdf/")) {
+                return null;
             }
         }
 
@@ -33,44 +32,12 @@ public class ImageExtractor {
             return imageUrl;
         }
 
-        imageUrl = getImageFromTwitterCard(document);
-        if (imageUrl != null) {
-            return imageUrl;
-        }
-
-        imageUrl = getImageFromTwitterShared(document);
-        if (imageUrl != null) {
-            return imageUrl;
-        }
-
         imageUrl = getImageFromLinkRel(document);
         if (imageUrl != null) {
             return imageUrl;
         }
 
-        imageUrl = getImageFromGuess(document);
-        if (imageUrl != null) {
-            return imageUrl;
-        }
-
         return imageUrl;
-    }
-
-    private static String getImageFromTwitterShared(Document document) {
-        Element div = document.select("div.media-gallery-image-wrapper").first();
-        if (div == null) {
-            return null;
-        }
-        Element img = div.select("img.media-slideshow-image").first();
-        if (img != null) {
-            return img.absUrl("src");
-        }
-        return null;
-    }
-
-    private static String getImageFromGuess(Document document) {
-        // TODO
-        return null;
     }
 
     private static String getImageFromLinkRel(Document document) {
@@ -79,15 +46,6 @@ public class ImageExtractor {
             return link.attr("abs:href");
         }
         return null;
-    }
-
-    private static String getImageFromTwitterCard(Document document) {
-        Element meta = document.select("meta[name=twitter:card][content=photo]").first();
-        if (meta == null) {
-            return null;
-        }
-        Element image = document.select("meta[name=twitter:image]").first();
-        return image.attr("abs:content");
     }
 
     private static String getImageFromOpenGraph(Document document) {

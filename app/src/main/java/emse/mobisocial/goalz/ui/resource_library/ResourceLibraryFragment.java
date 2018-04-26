@@ -1,5 +1,7 @@
 package emse.mobisocial.goalz.ui.resource_library;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,13 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.drive.events.ResourceEvent;
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import emse.mobisocial.goalz.R;
 import emse.mobisocial.goalz.model.Resource;
+import emse.mobisocial.goalz.ui.viewModels.ResourceLibraryViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +33,7 @@ import emse.mobisocial.goalz.model.Resource;
  */
 public class ResourceLibraryFragment extends Fragment {
 
+    ResourceLibraryViewModel model;
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -78,23 +84,94 @@ public class ResourceLibraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_resource_library, container, false);
-
+        model = ViewModelProviders.of(this).get(ResourceLibraryViewModel.class);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.resource_library_recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        List<Resource> list = new ArrayList<>();
-        list.add(getDummyResource());
-        list.add(getDummyResource());
-        list.add(getDummyResource());
-        mAdapter = new ResourceLibraryAdapter(list);
+        // here user's Id will be taken from shared preferences
+        String userId = "1";
+        // experimenting with caching:
+        /*if (Picasso.get() == null) {
+            Picasso.Builder builder = new Picasso.Builder(getContext());
+            builder.downloader(new OkHttp3Downloader(getContext()));
+            Picasso built = builder.build();
+            built.setIndicatorsEnabled(true);
+            built.setLoggingEnabled(true);
+            Picasso.setSingletonInstance(built);
+        }*/
+        //initializeObservers(userId);
+        // temporary, above and below
+        List<Resource> meh = new ArrayList<>();
+        tempData(meh);
+        mAdapter = new ResourceLibraryAdapter(getContext(), meh);
         mRecyclerView.setAdapter(mAdapter);
-        // Inflate the layout for this fragment
+
+        /*Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            Glide.with(ResourceLibraryFragment.this).resumeRequests();
+                        }
+                        if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                            Glide.with(ResourceLibraryFragment.this).pauseRequests();
+                        }
+                        super.onScrollStateChanged(recyclerView, newState);
+                    }
+                });
+            }
+        });
+        t.start();*/
+
         return view;
     }
 
-    Resource getDummyResource() {
-        return new Resource(1, 1, "https://www.foodnetwork.com/how-to/articles/how-to-make-perfect-pancakes",
-                "Some topic", "Some title", 5, 2);
+    private void tempData(List<Resource> meh) {
+        Resource resource = new Resource("1", "1", "https://www.bbcgoodfood.com/howto/guide/25-skills-every-cook-should-know",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource);
+        Resource resource2 = new Resource("2", "1", "https://www.wikihow.com/Code",
+        "Title", "Meh topic", 5, 30);
+        meh.add(resource2);
+        Resource resource3 = new Resource("3", "1", "https://www.self.com/gallery/essential-weight-lifting-moves-for-beginners",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource3);
+        Resource resource4 = new Resource("4", "1", "http://dish.allrecipes.com/topping-and-baking-pizza/",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource4);
+        Resource resource5 = new Resource("5", "1", "http://www.bbc.com/news/in-pictures-43876420",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource5);
+        Resource resource6 = new Resource("6", "1", "https://bitcoin.org/en/",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource6);
+        Resource resource7 = new Resource("7", "1", "https://www.wikihow.com/Play-Guitar",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource7);
+        Resource resource8 = new Resource("8", "1", "https://www.yogajournal.com/meditation/7-meditations-relationship-problems",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource8);
+        Resource resource9 = new Resource("9", "1", "https://www.iwillteachyoutoberich.com/blog/how-to-make-money-fast/",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource9);
+        Resource resource10 = new Resource("10", "1", "http://www.abc.net.au/news/health/2017-09-16/yoga-a-beginner-guide/8656236",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource10);
+        Resource resource11 = new Resource("11", "1", "https://www.vogue.com/article/how-i-learned-to-ride-a-bike-as-an-adult",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource11);
+        Resource resource12 = new Resource("12", "1", "https://www.wikihow.com/Play-Basketball",
+                "Title", "Meh topic", 5, 30);
+        meh.add(resource12);
+    }
+
+    private void initializeObservers(String userId) {
+        model.resources.observe(this, resources -> {
+            mAdapter = new ResourceLibraryAdapter(getContext(), resources);
+            mRecyclerView.setAdapter(mAdapter);
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
