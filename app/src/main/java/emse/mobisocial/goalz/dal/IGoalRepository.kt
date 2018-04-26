@@ -16,6 +16,8 @@ interface IGoalRepository {
 
     fun searchGoals(formattedQuery: String): LiveData<List<Goal>>
 
+    fun searchGoalsForUser(formattedQury: String, userId: String): LiveData<List<Goal>>
+
     fun getSubgoals(parentId : String) : LiveData<List<Goal>>
 
     fun getGoalsForUser(userId : String) : LiveData<List<Goal>>

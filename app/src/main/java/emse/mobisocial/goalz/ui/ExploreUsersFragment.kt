@@ -25,27 +25,30 @@ class ExploreUsersFragment : Fragment() {
     private lateinit var model : ExploreUsersViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: SearchView
+    private var filterByRatingClicked: Boolean = false
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_explore_users, container, false)
-
         setHasOptionsMenu(true)
 
+        // Initialize data
         model = ViewModelProviders.of(this).get(ExploreUsersViewModel::class.java)
-
         recyclerView = view.findViewById(R.id.explore_users_recycler_view) as RecyclerView
 
+        setupRecyclerView()
+        initializeObservers()
+
+        return view
+    }
+
+    private fun setupRecyclerView() {
         recyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerViewAdapter = RecyclerViewAdapter(ArrayList<UserMinimal>())
         recyclerView.adapter = recyclerViewAdapter
-
-        initializeObservers()
-
-        return view
     }
 
     private fun initializeObservers() {
@@ -59,6 +62,8 @@ class ExploreUsersFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         menu?.clear()
         inflater?.inflate(R.menu.menu_explore, menu)
+
+        // Setup the behaviour of the search menu item
         val searchItem = menu!!.findItem(R.id.exploreSearch)
         searchView = searchItem.actionView as SearchView
         searchView.setIconified(false)
@@ -80,6 +85,22 @@ class ExploreUsersFragment : Fragment() {
                 return true
             }
         })
+
+        // Set up the behaviour of the filter menu item
+        val filterItem = menu!!.findItem(R.id.exploreFilter)
+        val r = context.resources
+        filterItem.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener {
+            override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                if (!filterByRatingClicked) {
+                    recyclerViewAdapter.filter()
+                } else {
+                    model.reset()
+                }
+                filterByRatingClicked = !filterByRatingClicked
+                return true
+            }
+        })
+
         super.onCreateOptionsMenu(menu,inflater)
     }
 
@@ -115,6 +136,13 @@ class ExploreUsersFragment : Fragment() {
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
             super.onAttachedToRecyclerView(recyclerView)
+        }
+
+        fun filter() {
+             val filterdList = ArrayList<UserMinimal>(mUsers)
+             filterdList.sortBy { user -> -user.rating }
+             this.mUsers = filterdList
+             notifyDataSetChanged()
         }
 
         inner class UserViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -28,4 +28,8 @@ class ExploreResourcesViewModel(application: Application): AndroidViewModel(appl
             resourcesListDb.postValue(resourceRepository.searchResources(formattedQuery))
         }
     }
+
+    fun reset() {
+        resourcesListDb.postValue(resourceRepository.getResources())
+    }
 }
