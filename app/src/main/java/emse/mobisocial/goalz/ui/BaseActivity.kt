@@ -1,7 +1,6 @@
 package emse.mobisocial.goalz.ui
 
 import android.Manifest
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -17,29 +16,38 @@ import android.widget.ImageView
 import android.widget.TextView
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_base.*
-import android.animation.Animator
+import android.preference.PreferenceManager
 import android.support.annotation.RequiresApi
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.util.Log
-import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
+import com.google.firebase.auth.FirebaseAuth
 
 
 open class BaseActivity : AppCompatActivity() {
 
-    // Temporary for deciding which navigation menu and header to be shown
-    // If the user use the app without login
-    // it will use without_login_base_drawer menu
-    private var loggedIn =  true
+    private var loggedIn =  false
     private lateinit var mContext:Context
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var mFirebaseAuth : FirebaseAuth
+    private lateinit var mSnackbar: Snackbar
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         setSupportActionBar(toolbar)
-        Log.d("suppor", supportActionBar.toString())
+        Log.d("support", supportActionBar.toString())
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val withoutLogin= preferences.getBoolean("without_login", false)
+        if (!withoutLogin){
+            loggedIn = true
+        }
+        mSnackbar = Snackbar.make(base_layout,
+                                "You are not logged in", Snackbar.LENGTH_LONG)
+        val loginIntent = Intent(this, LoginActivity::class.java)
+        mSnackbar.setAction("Login") { startActivity(loginIntent) }
 
         mContext = this@BaseActivity
 
@@ -55,12 +63,12 @@ open class BaseActivity : AppCompatActivity() {
             transaction.replace(R.id.content_frame, GoalsFragment())
             transaction.commit()
             supportActionBar?.title = getString(R.string.app_bar_goals)
-
         } else {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.content_frame, ExploreFragment())
             transaction.commit()
             supportActionBar?.title = getString(R.string.app_bar_explore)
+            mSnackbar.show()
         }
     }
 
@@ -131,11 +139,17 @@ open class BaseActivity : AppCompatActivity() {
 
                 }
                 R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(this, OnboardingActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
 
                 }
 
             // Without login menu
                 R.id.nav_login -> {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
 
                 }
                 R.id.nav_signup -> {

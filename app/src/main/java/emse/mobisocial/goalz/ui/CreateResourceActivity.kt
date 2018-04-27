@@ -5,8 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
@@ -17,9 +19,7 @@ import kotlinx.android.synthetic.main.activity_create_resource.*
 class CreateResourceActivity : AppCompatActivity() {
 
     private lateinit var model : FABGoalResourceVM
-
-    // Temporary
-    private val USER_ID = "FOlyCo0IILeOnfUxhZpphdYnICS2"
+    private var userId:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,13 +27,17 @@ class CreateResourceActivity : AppCompatActivity() {
         supportActionBar?.title = "Create a new Resource"
         supportActionBar?.elevation = 0F
 
-        model = ViewModelProviders.of(this).get(FABGoalResourceVM::class.java)
-
-        createResourceButton.setOnClickListener {createEventListener() }
+        userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            model = ViewModelProviders.of(this).get(FABGoalResourceVM::class.java)
+            createResourceButton.setOnClickListener { createEventListener() }
+        }else{
+            Log.e("CREATE A GOAL: ", "COULD NOT GET AUTHENTICATED USER")
+        }
     }
     private fun  createEventListener(){
         val newResource = ResourceTemplate(
-                USER_ID,
+                userId!!,
                 resourceUrlText.text.toString(),
                 resourceTopicText.text.toString(),
                 resourceTitleText.text.toString()

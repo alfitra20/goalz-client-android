@@ -26,6 +26,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.dal.db.converter.LocationConverter
@@ -36,8 +37,6 @@ import kotlin.math.max
 
 class CreateGoalActivity : AppCompatActivity() {
     private lateinit var model : FABGoalResourceVM
-    // Temporary
-    private val USER_ID = "FOlyCo0IILeOnfUxhZpphdYnICS2"
 
     private var currentLocation : Location = LocationConverter.toLocation("0.0,0.0")
     private lateinit var userGoalsList : ArrayList<Goal>
@@ -45,6 +44,7 @@ class CreateGoalActivity : AppCompatActivity() {
     private lateinit var mDateListener:DatePickerDialog.OnDateSetListener
     private lateinit var client: FusedLocationProviderClient
     private lateinit var locationManager : LocationManager
+    private var userId:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,23 +58,26 @@ class CreateGoalActivity : AppCompatActivity() {
         userGoalsList = ArrayList<Goal>()
         model = ViewModelProviders.of(this).get(FABGoalResourceVM::class.java)
 
-        //using temporary user id
-        model.setUser(USER_ID)
+        userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            model.setUser(userId!!)
 
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        client = LocationServices.getFusedLocationProviderClient(this)
+            locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            client = LocationServices.getFusedLocationProviderClient(this)
 
-        client.lastLocation.addOnSuccessListener(this) { location ->
-            if (location != null) {
-                currentLocation.longitude = location.longitude
-                currentLocation.latitude = location.latitude
+            client.lastLocation.addOnSuccessListener(this) { location ->
+                if (location != null) {
+                    currentLocation.longitude = location.longitude
+                    currentLocation.latitude = location.latitude
+                }
             }
+            goalDeadlineText.isEnabled = false
+
+            initializeObservers()
+            initializeEventListeners()
+        }else{
+            Log.e("CREATE A GOAL: ", "COULD NOT GET AUTHENTICATED USER")
         }
-        goalDeadlineText.isEnabled = false
-
-        initializeObservers()
-        initializeEventListeners()
-
     }
     private fun initializeObservers() {
         model.userGoalsList.observe(this, Observer<List<Goal>> { goals ->
@@ -130,7 +133,7 @@ class CreateGoalActivity : AppCompatActivity() {
         try {
             val date = dateFormat.parse(goalDeadlineText.text.toString())
             val newGoal = GoalTemplate(
-                    USER_ID,
+                    userId!!,
                     parentId,
                     goalTitleText.text.toString(),
                     goalTopicText.text.toString(),

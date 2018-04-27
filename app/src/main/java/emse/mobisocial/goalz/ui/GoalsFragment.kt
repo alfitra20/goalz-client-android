@@ -154,11 +154,12 @@ class GoalsFragment : Fragment() {
             }
         })
 
+
         // Set up the behaviour of the filter menu item
         val filterItem = menu!!.findItem(R.id.exploreFilter)
         val r = context.resources
         val topMarginPx = r.getDimensionPixelSize(R.dimen.goals_fragment_top_margin)
-        val params = recyclerView.getLayoutParams() as ViewGroup.MarginLayoutParams
+        val params = recyclerView.layoutParams as ViewGroup.MarginLayoutParams
         filterItem.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener {
             override fun onMenuItemClick(p0: MenuItem?): Boolean {
                 if (!filterOpen) {
