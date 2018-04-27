@@ -16,7 +16,7 @@ class RecommendationFb constructor(): FirebaseData<RecommendationMinimal> {
     var title : String? = null
     var description : String? = null
     var reqTime : Int? = null
-    var rating : Double = 0.0
+    var rating : Double = -100.0
 
     constructor(template : RecommendationTemplate) : this() {
         user_id = template.userId

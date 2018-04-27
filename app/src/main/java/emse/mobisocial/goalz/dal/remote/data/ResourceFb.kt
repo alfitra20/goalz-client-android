@@ -16,6 +16,7 @@ class ResourceFb constructor() : FirebaseData<Resource> {
     var topic : String? = null
     var rating : Double = 0.0
     var avgReqTime : Int = -1
+    var recommendation_no : Int = 0
 
     constructor(template : ResourceTemplate) : this() {
         user_id = template.user_id
@@ -25,6 +26,6 @@ class ResourceFb constructor() : FirebaseData<Resource> {
     }
 
     override fun toEntity(id: String): Resource {
-        return Resource(id, user_id!!, link!!, title!!, topic!!, rating, avgReqTime)
+        return Resource(id, user_id, link!!, title!!, topic!!, rating, recommendation_no, avgReqTime)
     }
 }

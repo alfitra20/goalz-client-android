@@ -7,6 +7,11 @@ import android.arch.persistence.room.Relation
  * Created by MobiSocial EMSE Team on 3/29/2018.
  */
 
+// When a recommendation has this rating value it is not taken into account for:
+//      - The rating of the user who posted it
+//      - The rating of the resource to which it refers
+const val DEFAULT_RECOMMENDATION_RATING = -100
+
 data class Recommendation (
         @ColumnInfo(name = "recommendation_id")
         var id : String, //DO NOT UPDATE
