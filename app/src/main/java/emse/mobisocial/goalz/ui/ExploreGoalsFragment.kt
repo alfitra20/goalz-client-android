@@ -241,9 +241,9 @@ class ExploreGoalsFragment : Fragment() {
                 goalStatusImage = itemView.findViewById(R.id.status_image) as ImageView
 
                 itemView.setOnClickListener {
-                    val goal_id = mGoals[adapterPosition].id
+                    val goalId = mGoals[adapterPosition].id
                     val intent = Intent(activity, GoalActivity::class.java)
-                    intent.putExtra("goal_id", goal_id)
+                    intent.putExtra("goal_id", goalId)
                     startActivity(intent)
                 }
             }

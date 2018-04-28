@@ -3,6 +3,7 @@ package emse.mobisocial.goalz.ui
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -286,6 +287,13 @@ class GoalsFragment : Fragment() {
                 goalTopic = itemView.findViewById<View>(R.id.own_goal_topic) as TextView
                 goalDeadline = itemView.findViewById<View>(R.id.own_goal_deadline) as TextView
                 goalRecommendationsCount = itemView.findViewById(R.id.own_goal_recommendations_count) as TextView
+
+                itemView.setOnClickListener {
+                    val goalId = mGoals[adapterPosition].id
+                    val intent = Intent(activity, GoalActivity::class.java)
+                    intent.putExtra("goal_id", goalId)
+                    startActivity(intent)
+                }
             }
         }
 
