@@ -48,10 +48,10 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
             super(v);
             title = (TextView) itemView.findViewById(R.id.resource_title);
             topic = (TextView) itemView.findViewById(R.id.resource_topic);
-            //link = (TextView) itemView.findViewById(R.id.resource_link);
-            //rating = (TextView) itemView.findViewById(R.id.resource_rating);
-            //image = (ImageView) itemView.findViewById(R.id.resource_image);
-            //avgReqTime = (TextView) itemView.findViewById(R.id.resource_time);
+            link = (TextView) itemView.findViewById(R.id.resource_link);
+            rating = (TextView) itemView.findViewById(R.id.resource_rating);
+            image = (ImageView) itemView.findViewById(R.id.resource_image);
+            avgReqTime = (TextView) itemView.findViewById(R.id.resource_time);
         }
     }
 
@@ -71,21 +71,17 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ResourceViewHolder holder, int position) {
-        Glide.with(context).pauseRequests(); //doesn't make sense to me but it solves the problem at least partly
-        Glide.clear(holder.image);
-        holder.image.setImageResource(R.drawable.light);
+        Glide.with(context).pauseRequests(); //doesn't make sense to me but it solves the problem, at least partly
+        if (holder.image != null) {
+            Glide.clear(holder.image); // because fckin magic!
+            holder.image.setImageResource(R.drawable.light);
+        }
 
         holder.topic.setText(resources.get(position).getTopic());
         holder.title.setText(resources.get(position).getTitle());
         holder.rating.setText(String.valueOf(resources.get(position).getRating()));
         holder.link.setText(resources.get(position).getLink());
         holder.avgReqTime.setText(String.valueOf(resources.get(position).getAvgReqTime()));
-
-        /*Thread.UncaughtExceptionHandler h = new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread th, Throwable ex) {
-                System.out.println("Uncaught exception: " + ex);
-            }
-        };*/
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -96,21 +92,9 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
 
                     if (imgUrl != null && holder.image.getMeasuredWidth() *
                             holder.image.getMeasuredHeight() != 0) {  // because sh*t happens!! :(
-                        Log.i("I AM ALIIIIIIIVE!!", imgUrl);
                         Runnable updateViewRunnable = new Runnable() {
                             @Override
                             public void run() {
-                                /*Picasso.get()
-                                            .load(imgUrl)
-                                            //.networkPolicy(NetworkPolicy.OFFLINE)
-                                            .resize(holder.image.getMeasuredWidth(), holder.image.getMeasuredHeight())
-                                            .centerCrop()
-                                            .into(holder.image);*/
-
-                                //holder.image.setImageResource(android.R.color.transparent);
-                                //holder.image.setImageDrawable(null);
-                                //Glide.clear(holder.image); // because fckin magic!
-                                //holder.image.setImageURI(null);
                                 Glide.with(context).resumeRequests();
                                 Glide.with(context)
                                         .load(imgUrl)
@@ -124,17 +108,7 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                         };
                         Handler handler = new Handler(context.getApplicationContext().getMainLooper());
                         handler.post(updateViewRunnable);
-                    } /*else if(imgUrl != null) {
-                        Runnable updateViewRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.image.setImageResource(R.drawable.pdf);
-                            }
-                        };
-                        Handler handler = new Handler(context.getApplicationContext().getMainLooper());
-                        handler.post(updateViewRunnable);
-                    }*/
-                    else {
+                    } else {
                         /*Runnable updateViewRunnable = new Runnable() {
                             @Override
                             public void run() {
@@ -159,53 +133,14 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                     };
                     Handler handler = new Handler(context.getApplicationContext().getMainLooper());
                     handler.post(updateViewRunnable);*/
-                    Log.i("I AM NOT ALIIIIIIIVE!!", ":((");
                     e.printStackTrace();
                 }
             }
         });
 
         thread.setName("Fckin thread");
-        //thread.setUncaughtExceptionHandler(h);
         thread.start();
     }
-
-    // work in progress
-   /* @Override
-    public void onClick(View view) {
-        mListener.onClick(view, getAdapterPosition());
-    }*/
-
-    /*private void setImage(ResourceViewHolder holder, String url) {
-        Picasso.get()
-                .load(url)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(holder.image, new Callback.EmptyCallback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-                        //Try again online if cache failed
-                        Picasso.get()
-                                .load(holder.getImageUrl())
-                                .error(R.drawable.light)
-                                .into(holder.image, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        Log.v("Picasso","Could not fetch image");
-                                    }
-                                });
-                    }
-                });
-    }*/
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

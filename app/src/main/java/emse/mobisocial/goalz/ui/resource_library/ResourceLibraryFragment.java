@@ -12,10 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,15 +86,7 @@ public class ResourceLibraryFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         // here user's Id will be taken from shared preferences
         String userId = "1";
-        // experimenting with caching:
-        /*if (Picasso.get() == null) {
-            Picasso.Builder builder = new Picasso.Builder(getContext());
-            builder.downloader(new OkHttp3Downloader(getContext()));
-            Picasso built = builder.build();
-            built.setIndicatorsEnabled(true);
-            built.setLoggingEnabled(true);
-            Picasso.setSingletonInstance(built);
-        }*/
+
         //initializeObservers(userId);
         // temporary, above and below
         List<Resource> meh = new ArrayList<>();
@@ -106,64 +94,46 @@ public class ResourceLibraryFragment extends Fragment {
         mAdapter = new ResourceLibraryAdapter(getContext(), meh);
         mRecyclerView.setAdapter(mAdapter);
 
-        /*Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            Glide.with(ResourceLibraryFragment.this).resumeRequests();
-                        }
-                        if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                            Glide.with(ResourceLibraryFragment.this).pauseRequests();
-                        }
-                        super.onScrollStateChanged(recyclerView, newState);
-                    }
-                });
-            }
-        });
-        t.start();*/
 
         return view;
     }
 
     private void tempData(List<Resource> meh) {
         Resource resource = new Resource("1", "1", "https://www.bbcgoodfood.com/howto/guide/25-skills-every-cook-should-know",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource);
         Resource resource2 = new Resource("2", "1", "https://www.wikihow.com/Code",
-        "Title", "Meh topic", 5, 30);
+        "Title", "Meh topic",1, 5, 30);
         meh.add(resource2);
         Resource resource3 = new Resource("3", "1", "https://www.self.com/gallery/essential-weight-lifting-moves-for-beginners",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource3);
         Resource resource4 = new Resource("4", "1", "http://dish.allrecipes.com/topping-and-baking-pizza/",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource4);
         Resource resource5 = new Resource("5", "1", "http://www.bbc.com/news/in-pictures-43876420",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource5);
         Resource resource6 = new Resource("6", "1", "https://bitcoin.org/en/",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource6);
         Resource resource7 = new Resource("7", "1", "https://www.wikihow.com/Play-Guitar",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource7);
         Resource resource8 = new Resource("8", "1", "https://www.yogajournal.com/meditation/7-meditations-relationship-problems",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource8);
         Resource resource9 = new Resource("9", "1", "https://www.iwillteachyoutoberich.com/blog/how-to-make-money-fast/",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource9);
         Resource resource10 = new Resource("10", "1", "http://www.abc.net.au/news/health/2017-09-16/yoga-a-beginner-guide/8656236",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource10);
         Resource resource11 = new Resource("11", "1", "https://www.vogue.com/article/how-i-learned-to-ride-a-bike-as-an-adult",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource11);
         Resource resource12 = new Resource("12", "1", "https://www.wikihow.com/Play-Basketball",
-                "Title", "Meh topic", 5, 30);
+                "Title", "Meh topic", 1, 5, 30);
         meh.add(resource12);
     }
 
