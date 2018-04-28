@@ -21,6 +21,7 @@ import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 
 

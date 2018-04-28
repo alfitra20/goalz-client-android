@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="emse.mobisocial.goalz.ui.GoalActivity">
+
+    <item android:id="@+id/goal_activity_recommend_menu_item"
+        android:title="@string/goal_activity_recommend_menu_item_title"
+        android:icon="@drawable/ic_mode_comment_white_24dp"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/goal_activity_clone_menu_item"
+        android:title="@string/goal_activity_clone_menu_item_title"
+        android:icon="@drawable/ic_file_download_white_24dp"
+        app:showAsAction="always"/>
+</menu>

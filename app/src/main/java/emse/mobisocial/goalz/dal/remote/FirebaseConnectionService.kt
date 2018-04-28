@@ -5,6 +5,7 @@ import com.google.firebase.database.*
 import emse.mobisocial.goalz.GoalzApp
 import android.app.Service
 import android.os.IBinder
+import android.util.Log
 import emse.mobisocial.goalz.dal.remote.data.*
 import emse.mobisocial.goalz.model.*
 
@@ -52,6 +53,7 @@ class FirebaseConnectionService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("FIREBASE SERVICE"," STARTED")
         return START_STICKY
     }
 
