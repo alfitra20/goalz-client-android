@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="250dp"
     android:layout_marginBottom="5dp"
     android:id="@+id/resource_card_view">
 
-    <android.support.constraint.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/resource_title"
@@ -26,7 +25,8 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
+
 
         <TextView
             android:id="@+id/resource_topic"
@@ -41,16 +41,18 @@
             android:fontFamily="@font/catamaran_semibold"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="topic    goes herer"
+            android:text="topic goes here"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/resource_url"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/resource_title" />
 
+
         <TextView
             android:id="@+id/resource_url"
             android:layout_width="223dp"
+
             android:layout_height="18dp"
             android:layout_marginBottom="11dp"
             android:layout_marginEnd="145dp"
@@ -125,6 +127,41 @@
             app:layout_constraintTop_toBottomOf="@+id/resource_url"
             app:srcCompat="@drawable/thumbs_down_blank" />
 
-    </android.support.constraint.ConstraintLayout>
 
+
+        <!--    android:layout_height="wrap_content"
+            android:layout_below="@+id/resource_topic"
+            android:layout_marginLeft="11dp"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/resource_image"
+            android:src="@drawable/light"
+            android:layout_width="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_height="130dp"
+            android:layout_below="@+id/resource_rating"/>
+
+        <TextView
+            android:id="@+id/resource_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resource_image"/>
+
+        <TextView
+            android:id="@+id/resource_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resource_link"/> -->
+
+        <!--<View
+            android:id="@+id/divider"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="140dp"
+            android:background="#E75043" />-->
+
+    </RelativeLayout>
 </android.support.v7.widget.CardView>
