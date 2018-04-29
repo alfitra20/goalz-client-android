@@ -2,7 +2,6 @@ package emse.mobisocial.goalz.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,12 +12,12 @@ import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.ResourceTemplate
-import emse.mobisocial.goalz.ui.viewModels.FABGoalResourceVM
+import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
 import kotlinx.android.synthetic.main.activity_create_resource.*
 
 class CreateResourceActivity : AppCompatActivity() {
 
-    private lateinit var model : FABGoalResourceVM
+    private lateinit var model : CreateGoalViewModel
     private var userId:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +28,7 @@ class CreateResourceActivity : AppCompatActivity() {
 
         userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null) {
-            model = ViewModelProviders.of(this).get(FABGoalResourceVM::class.java)
+            model = ViewModelProviders.of(this).get(CreateGoalViewModel::class.java)
             createResourceButton.setOnClickListener { createEventListener() }
         }else{
             Log.e("CREATE A GOAL: ", "COULD NOT GET AUTHENTICATED USER")
