@@ -19,9 +19,7 @@
         <activity
             android:name=".ui.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.UserActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -64,6 +62,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.OnboardingActivity" />
         </activity>
+        <activity
+            android:name=".ui.SignupActivity"
+            android:label="@string/title_activity_signup">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.OnboardingActivity" />
+        </activity>
+        <activity android:name=".ui.EditProfileActivity" />
+        <activity android:name=".ui.ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

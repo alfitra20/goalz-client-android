@@ -143,7 +143,6 @@ open class BaseActivity : AppCompatActivity() {
                     val intent = Intent(this, OnboardingActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-
                 }
 
             // Without login menu
@@ -153,10 +152,11 @@ open class BaseActivity : AppCompatActivity() {
 
                 }
                 R.id.nav_signup -> {
-
+                    val intent = Intent(this, SignupActivity::class.java)
+                    startActivity(intent)
                 }
             }
-            item.setChecked(true)
+            item.isChecked = true
 
             // Set selected/ default fragment and appbarTitle
             val transaction = supportFragmentManager.beginTransaction()
