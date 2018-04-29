@@ -47,7 +47,7 @@
             android:fontFamily="@font/catamaran_semibold"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="test descriotion"
+            android:text="test description"
             android:textColor="#FFFF"
             android:textSize="14sp" />
 
