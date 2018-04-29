@@ -3,6 +3,7 @@ package emse.mobisocial.goalz.ui
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -49,7 +50,7 @@ class ExploreGoalsFragment : Fragment() {
 
         // Get current location
         client = LocationServices.getFusedLocationProviderClient(activity)
-        client.lastLocation.addOnSuccessListener(activity) { location: Location ->
+        client.lastLocation.addOnSuccessListener(activity) { location: Location? ->
             if (location != null) {
                 currentLocation = location
             }
@@ -238,6 +239,13 @@ class ExploreGoalsFragment : Fragment() {
                 goalTitle = itemView.findViewById<View>(R.id.goal_title) as TextView
                 goalTopic = itemView.findViewById<View>(R.id.goal_topic) as TextView
                 goalStatusImage = itemView.findViewById(R.id.status_image) as ImageView
+
+                itemView.setOnClickListener {
+                    val goalId = mGoals[adapterPosition].id
+                    val intent = Intent(activity, GoalActivity::class.java)
+                    intent.putExtra("goal_id", goalId)
+                    startActivity(intent)
+                }
             }
         }
 

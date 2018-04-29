@@ -24,5 +24,39 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search</string>
     <string name="filter_title">Filter</string>
-    <string name="title_activity_signup">SignupActivity</string>
+
+    <string name="title_activity_signup">Sign up</string>
+
+
+    <!-- Create Goal Activity texts-->
+    <string name="create_goal_activity_appbar_title">Create Goal</string>
+    <string name="create_goal_activity_invalid_fields_toast">Invalid Fields</string>
+    <string name="create_goal_activity_success_toast">Goal Successfully Created</string>
+
+    <!-- Goal Activity texts-->
+    <string name="goal_activity_subgoals_tab">Subgoals</string>
+    <string name="goal_activity_resources_tab">Resources</string>
+    <string name="goal_activity_status_template">%</string>
+    <string name="goal_activity_deadline_days_template">&#160;days left</string>
+    <string name="goal_activity_deadline_day_template">&#160;day left</string>
+    <string name="goal_activity_deadline_no_set">No deadline set</string>
+    <string name="goal_activity_title">Goal Info</string>
+    <string name="goal_activity_delete_menu_item_title">Delete</string>
+    <string name="goal_activity_edit_menu_item_title">Edit</string>
+    <string name="goal_activity_recommend_menu_item_title">Recommend</string>
+    <string name="goal_activity_clone_menu_item_title">Clone</string>
+    <string name="goal_activity_delete_dialog_messages">Are you sure you want to delete this goal?</string>
+    <string name="goal_activity_delete_dialog_positive">Confirm</string>
+    <string name="goal_activity_delete_dialog_negative">Cancel</string>
+    <string name="goal_activity_delete_dialog_tag">DELETE DIALOG</string>
+    <string name="goal_activity_delete_goal_success_toast">Goal Successfully Removed</string>
+    <string name="goal_activity_delete_goal_fail_toast">Cannot Delete Goal</string>
+    <string name="goal_activity_progress_dialog_message">Set new progress value</string>
+    <string name="goal_activity_progress_dialog_tag">PROGRESS DIALOG</string>
+    <string name="goal_activity_update_status_success_toast">Status Successfully Updated</string>
+    <string name="goal_activity_update_status_fail_toast">Cannot Update Status</string>
+
+    <!-- Edit Goal Activity texts-->
+    <string name="edit_goal_activity_done_menu_item_title">Done</string>
+>>>>>>> f96949da4200596bfa966dc998eef21a0140353c
 </resources>

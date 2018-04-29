@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,16 +16,17 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.ui.resource_library.ResourceLibraryFragment
 import kotlinx.android.synthetic.main.activity_base.*
 import android.preference.PreferenceManager
 import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 
-
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
 
     private var loggedIn =  false
     private lateinit var mContext:Context
@@ -32,8 +34,11 @@ open class BaseActivity : AppCompatActivity() {
     private lateinit var mFirebaseAuth : FirebaseAuth
     private lateinit var mSnackbar: Snackbar
 
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    override fun onFragmentInteraction(uri: Uri) {
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
@@ -129,7 +134,7 @@ open class BaseActivity : AppCompatActivity() {
                     actionBarTitle = getString(R.string.app_bar_goals)
                 }
                 R.id.nav_library -> {
-                    displayedFragment = UsersLibraryFragment()
+                    displayedFragment = ResourceLibraryFragment()
                     actionBarTitle = getString(R.string.app_bar_users_library)
                 }
                 R.id.nav_timeline -> {

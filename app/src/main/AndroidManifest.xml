@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="emse.mobisocial.goalz">
 
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -19,7 +21,7 @@
         <activity
             android:name=".ui.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.UserActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -38,7 +40,8 @@
         <activity
             android:name=".ui.GoalActivity"
             android:label="@string/title_activity_goal"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -69,8 +72,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.OnboardingActivity" />
         </activity>
-        <activity android:name=".ui.EditProfileActivity" />
-        <activity android:name=".ui.ChangePasswordActivity"></activity>
+        <activity android:name=".ui.EditProfileActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.UserActivity" />
+        </activity>
+        <activity android:name=".ui.ChangePasswordActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.EditProfileActivity" />
+        </activity>
+        <activity android:name=".ui.resource_library.WebViewActivity"/>
+        <activity android:name=".ui.EditGoalActivity"/>
     </application>
 
 </manifest>

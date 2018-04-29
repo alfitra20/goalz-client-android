@@ -96,6 +96,7 @@ class GoalRepository(
             updateInfo["description"] = goal.description
             updateInfo["latitude"] = goal.location.latitude
             updateInfo["longitude"] = goal.location.longitude
+            updateInfo["status"] = goal.status
             var deadlineTmp = goal.deadline
             var newDeadline = if (deadlineTmp != null) deadlineTmp.time / 1000 else null
             updateInfo["deadline"] = newDeadline

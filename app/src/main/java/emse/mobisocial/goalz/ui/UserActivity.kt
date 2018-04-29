@@ -4,8 +4,11 @@ import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.graphics.drawable.RotateDrawable
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
@@ -20,7 +23,7 @@ import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.User
-import emse.mobisocial.goalz.ui.viewModels.FABGoalResourceVM
+import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
 import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
 import kotlinx.android.synthetic.main.activity_create_goal.*
 import kotlinx.android.synthetic.main.activity_edit_profile.*
@@ -37,7 +40,6 @@ class UserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
-        val actionbar = supportActionBar
 
         model = ViewModelProviders.of(this).get(UserProfileViewModel::class.java)
 
@@ -53,6 +55,7 @@ class UserActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun initializeObservers() {
         model.userData.observe(this, Observer<User> { user ->
             Log.d("check", "check")
@@ -73,6 +76,8 @@ class UserActivity : AppCompatActivity() {
                 }
                 val rating = user.rating
                 user_point_text.text = rating.toString()
+
+                rangkingProgress.progress = rating.toInt()
                 when(rating){
                     in 0..10 -> {
                         image_ranking.setImageResource(R.drawable.level_1)
@@ -91,12 +96,13 @@ class UserActivity : AppCompatActivity() {
                     }
                     else -> {
                         image_ranking.setImageResource(R.drawable.level_4)
-                        user_point_text.text = ""
+                        point_needed_text.text = ""
                         point_needed_description_text.text=""
-                        rangkingProgress.visibility = View.INVISIBLE
+                        rangkingProgress.max = 100
+
+                        rangkingProgress.progress = 100
                     }
                 }
-                rangkingProgress.progress = rating.toInt()
             }
         })
         model.usersGoal.observe(this, Observer<List<Goal>> { goals ->

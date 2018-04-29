@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.UserMinimal
-import emse.mobisocial.goalz.ui.viewModels.FABGoalResourceVM
+import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
 import kotlinx.android.synthetic.main.fragment_signup_nickname_fragment.*
 import java.util.ArrayList
 
@@ -19,7 +19,7 @@ private const val NICKNAME_PARAM = "nickname"
 
 class SignupNicknameFragment: Fragment() {
 
-    private lateinit var model : FABGoalResourceVM
+    private lateinit var model : CreateGoalViewModel
     private lateinit var mContext :Context
     private var nickname:String? = null
     private lateinit var usersList : ArrayList<UserMinimal>

@@ -11,7 +11,10 @@ import emse.mobisocial.goalz.dal.IUserRepository
 import emse.mobisocial.goalz.model.*
 
 
-class FABGoalResourceVM (application: Application) : AndroidViewModel(application){
+class CreateGoalViewModel(application: Application) : AndroidViewModel(application){
+
+    var userId: String? = null
+
     private val goalRepository : IGoalRepository = (application as GoalzApp).goalRepository
     private val userRepository : IUserRepository = (application as GoalzApp).userRepository
     private val resourceRepository : IResourceRepository = (application as GoalzApp).resourceRepository
@@ -19,6 +22,7 @@ class FABGoalResourceVM (application: Application) : AndroidViewModel(applicatio
     lateinit var userGoalsList: LiveData<List<Goal>>
 
     fun setUser(userId: String){
+        this.userId = userId
         userGoalsList = goalRepository.getGoalsForUser(userId)
     }
 
