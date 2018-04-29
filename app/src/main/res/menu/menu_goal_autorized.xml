@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="emse.mobisocial.goalz.ui.GoalActivity">
+
+    <item android:id="@+id/goal_activity_recommend_menu_item"
+        android:title="@string/goal_activity_recommend_menu_item_title"
+        android:icon="@drawable/ic_mode_comment_white_24dp"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/goal_activity_edit_menu_item"
+        android:title="@string/goal_activity_edit_menu_item_title"
+        android:icon="@drawable/ic_edit_white_24dp"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/goal_activity_delete_menu_item"
+        android:title="@string/goal_activity_delete_menu_item_title"
+        android:icon="@drawable/ic_delete_white_24dp"
+        app:showAsAction="always"/>
+</menu>

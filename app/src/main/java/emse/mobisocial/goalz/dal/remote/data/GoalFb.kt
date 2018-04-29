@@ -31,7 +31,9 @@ class GoalFb constructor() : FirebaseData<Goal> {
         latitude = template.location.latitude
         longitude = template.location.longitude
         status =  template.status
-        deadline = if (template.deadline == null) null else null
+
+        val x = template.deadline
+        deadline = if (x == null) null else (x.time) / 1000
     }
 
     override fun toEntity(id : String) : Goal {

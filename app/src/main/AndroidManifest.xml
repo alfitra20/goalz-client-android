@@ -40,7 +40,8 @@
         <activity
             android:name=".ui.GoalActivity"
             android:label="@string/title_activity_goal"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -64,7 +65,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.OnboardingActivity" />
         </activity>
+<<<<<<< HEAD
         <activity android:name=".ui.resource_library.WebViewActivity"></activity>
+=======
+        <activity android:name=".ui.EditGoalActivity"></activity>
+>>>>>>> 9da534a48cafb2ebd059490c27043f1e4cfd8011
     </application>
 
 </manifest>

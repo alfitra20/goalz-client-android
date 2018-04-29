@@ -21,4 +21,18 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search</string>
     <string name="filter_title">Filter</string>
+
+    <!-- Goal Activity texts-->
+    <string name="goal_activity_subgoals_tab">Subgoals</string>
+    <string name="goal_activity_resources_tab">Resources</string>
+    <string name="goal_activity_status_template"> %</string>
+    <string name="goal_activity_deadline_days_template"> days left</string>
+    <string name="goal_activity_deadline_day_template"> day left</string>
+    <string name="goal_activity_deadline_no_set"></string>
+    <string name="goal_activity_title">Goal Info</string>
+    <string name="goal_activity_delete_menu_item_title">Delete</string>
+    <string name="goal_activity_edit_menu_item_title">Edit</string>
+    <string name="goal_activity_recommend_menu_item_title">Recommend</string>
+    <string name="goal_activity_clone_menu_item_title">Clone</string>
+
 </resources>

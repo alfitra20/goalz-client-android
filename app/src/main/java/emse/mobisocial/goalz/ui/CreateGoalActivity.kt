@@ -154,7 +154,7 @@ class CreateGoalActivity : AppCompatActivity() {
             model.addGoal(newGoal).observe(this, Observer<DalResponse> { response ->
                 if (response?.status == DalResponseStatus.SUCCESS){
                     val intent = Intent(this, GoalActivity::class.java)
-                    intent.putExtra("new_goal_id", response.id)
+                    intent.putExtra("goal_id", response.id)
                     startActivity(intent)
                     Toast.makeText(this, "Goal Successfully Created", Toast.LENGTH_LONG).show()
                     finish()
