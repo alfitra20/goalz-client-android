@@ -65,11 +65,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.OnboardingActivity" />
         </activity>
-<<<<<<< HEAD
         <activity android:name=".ui.resource_library.WebViewActivity"></activity>
-=======
         <activity android:name=".ui.EditGoalActivity"></activity>
->>>>>>> 9da534a48cafb2ebd059490c27043f1e4cfd8011
     </application>
 
 </manifest>
