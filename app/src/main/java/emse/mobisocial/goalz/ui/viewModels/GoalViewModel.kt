@@ -2,9 +2,11 @@ package emse.mobisocial.goalz.ui.viewModels
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.GoalzApp
+import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.IGoalRepository
 
 /**
@@ -27,5 +29,16 @@ class GoalViewModel(application: Application, val goalId : String): AndroidViewM
 
     fun changeState(newState : State){
         state.postValue(newState)
+    }
+
+    fun deleteGoal() : LiveData<DalResponse> {
+        return goalRepository.deleteGoal(goalId)
+    }
+
+    fun updateProgress(newStatus : Int) : LiveData<DalResponse>? {
+        val updateState = goal.value ?: return null
+        updateState.status = newStatus
+
+        return goalRepository.updateGoal(updateState)
     }
 }

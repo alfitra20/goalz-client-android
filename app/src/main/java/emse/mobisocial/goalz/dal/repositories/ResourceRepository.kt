@@ -13,6 +13,7 @@ import emse.mobisocial.goalz.dal.remote.data.LibraryEntryFb
 import emse.mobisocial.goalz.dal.remote.data.ResourceFb
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.ResourceTemplate
+import emse.mobisocial.goalz.util.ImageExtractor
 import java.util.concurrent.Executor
 
 /**
@@ -60,7 +61,9 @@ class ResourceRepository(
 
         networkExecutor.execute {
             val newId = remoteResourceTable.push().key
-            val resourceFb = ResourceFb(template)
+            val imageUrl = ImageExtractor.extractImageUrl(template.link)
+            val resourceFb = ResourceFb(template, imageUrl)
+
             remoteResourceTable.child(newId).setValue(resourceFb , {
                 error, _ -> run {
                     if (error == null) {

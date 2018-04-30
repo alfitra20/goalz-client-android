@@ -1,5 +1,6 @@
 package emse.mobisocial.goalz.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
@@ -77,16 +78,17 @@ class GoalActivitySubgoalsFragment : Fragment() {
         }
 
         inner class GoalViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            internal var goalCard: CardView
-            internal var goalTitle: TextView
-            internal var goalTopic: TextView
-            internal var goalStatusImage: ImageView
+            internal var goalTitle: TextView = itemView.findViewById<View>(R.id.goal_title) as TextView
+            internal var goalTopic: TextView = itemView.findViewById<View>(R.id.goal_topic) as TextView
+            internal var goalStatusImage: ImageView = itemView.findViewById(R.id.status_image) as ImageView
 
             init {
-                goalCard = itemView.findViewById<View>(R.id.goal_card_view) as CardView
-                goalTitle = itemView.findViewById<View>(R.id.goal_title) as TextView
-                goalTopic = itemView.findViewById<View>(R.id.goal_topic) as TextView
-                goalStatusImage = itemView.findViewById(R.id.status_image) as ImageView
+                itemView.setOnClickListener {
+                    val goalId = values[adapterPosition].id
+                    val intent = Intent(activity, GoalActivity::class.java)
+                    intent.putExtra("goal_id", goalId)
+                    startActivity(intent)
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz.ui.resource_library;
+package emse.mobisocial.goalz.util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

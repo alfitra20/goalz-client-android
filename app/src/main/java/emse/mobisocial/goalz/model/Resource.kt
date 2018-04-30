@@ -20,6 +20,8 @@ data class Resource constructor(
         var user_id : String?, //AUTHOR - DO NOT UPDATE
         @ColumnInfo(name = "link")
         var link : String, //DO NOT UPDATE
+        @ColumnInfo(name = "image_url")
+        var imageUrl : String?, //DO NOT UPDATE
         @ColumnInfo(name = "title")
         var title : String, //DO NOT UPDATE
         @ColumnInfo(name = "topic")

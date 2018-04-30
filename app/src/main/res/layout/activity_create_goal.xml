@@ -9,234 +9,167 @@
     tools:layout_editor_absoluteY="81dp">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="81dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="15dp"
+        android:id="@+id/create_goal_activity_logo_iw"
+        android:layout_width="100dp"
+        android:layout_height="79dp"
         android:layout_marginEnd="151dp"
         android:layout_marginStart="152dp"
         android:layout_marginTop="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_title_et"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/goal_white" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="23dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+    <EditText
+        android:id="@+id/create_goal_activity_title_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="#808080"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="Title"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_topic_et"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_logo_iw" />
 
-        <EditText
-            android:id="@+id/goalTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:backgroundTint="#808080"
-            android:ems="10"
-            android:fontFamily="sans-serif"
-            android:hint="Title"
-            android:inputType="textPersonName"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+    <EditText
+        android:id="@+id/create_goal_activity_topic_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="#808080"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="Description"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_description_et"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_title_et" />
 
-        <EditText
-            android:id="@+id/goalDescriptionText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:backgroundTint="#808080"
-            android:ems="10"
-            android:fontFamily="sans-serif"
-            android:hint="Description"
-            android:inputType="textPersonName"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+    <EditText
+        android:id="@+id/create_goal_activity_description_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:backgroundTint="#808080"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="Goal Topic"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_deadline_et"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_topic_et" />
 
-        <EditText
-            android:id="@+id/goalTopicText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:backgroundTint="#808080"
-            android:ems="10"
-            android:fontFamily="sans-serif"
-            android:hint="Goal Topic"
-            android:inputType="textPersonName"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="54dp" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/create_goal_activity_deadline_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="#808080"
+        android:ems="10"
+        android:enabled="false"
+        android:fontFamily="sans-serif"
+        android:hint="Deadline"
+        android:inputType="none"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_divider"
+        app:layout_constraintEnd_toStartOf="@+id/create_goal_activity_pick_date_ib"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_description_et" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout9"
+    <ImageButton
+        android:id="@+id/create_goal_activity_pick_date_ib"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/create_goal_activity_deadline_et"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+        app:srcCompat="@drawable/calendar_icon" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/goalDeadlineText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:backgroundTint="#808080"
-                android:ems="10"
-                android:fontFamily="sans-serif"
-                android:hint="Deadline"
-                android:inputType="none"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="308dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/pickDate"
-                android:layout_width="43dp"
-                android:layout_height="43dp"
-                android:background="@null"
-                app:srcCompat="@drawable/calendar_icon"
-                tools:layout_editor_absoluteX="293dp"
-                tools:layout_editor_absoluteY="308dp" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout8"
+    <View
+        android:id="@+id/create_goal_activity_divider"
         android:layout_width="match_parent"
-        android:layout_height="7dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout9"
+        android:layout_height="3dp"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="#FFFF"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_parent_tw"
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_deadline_et"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/create_goal_activity_parent_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="#FFFF"
+        android:fontFamily="sans-serif"
+        android:text="Create the goal under:"
+        android:textColor="#d9d9d9"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_parent_sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_divider" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
-            android:background="?android:attr/listDivider"
-            android:backgroundTint="#FFFF"
-            android:visibility="visible" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout10"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout11"
+    <Spinner
+        android:id="@+id/create_goal_activity_parent_sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="#808080"
+        android:textColor="#FFFF"
+        app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_submit_btn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_parent_tw" />
 
-        <Spinner
-            android:id="@+id/userGoalSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:backgroundTint="#808080"
-            android:textColor="#FFFF" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout9"
-        android:layout_width="match_parent"
-        android:layout_height="27dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="2dp"
-            android:backgroundTint="#FFFF"
-            android:fontFamily="sans-serif"
-            android:text="Create the goal under:"
-            android:textColor="#d9d9d9" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout11"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="7dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
+    <Button
+        android:id="@+id/create_goal_activity_submit_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="#0099ff"
+        android:shadowColor="@color/colorPrimary"
+        android:text="CREATE GOAL"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
-
-        <Button
-            android:id="@+id/createGoalButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:backgroundTint="#0099ff"
-            android:shadowColor="@color/colorPrimary"
-            android:text="CREATE GOAL"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
-
+        app:layout_constraintTop_toBottomOf="@+id/create_goal_activity_parent_sp" />
 
 
 </android.support.constraint.ConstraintLayout>
