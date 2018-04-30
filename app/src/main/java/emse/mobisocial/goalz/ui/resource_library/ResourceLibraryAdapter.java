@@ -2,7 +2,9 @@ package emse.mobisocial.goalz.ui.resource_library;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -239,10 +241,12 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
 
         holder.frameLayout.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                //Log.i("OnClick", "!!!!!");
-                Intent intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra("url", resources.get(position).getLink());
-                context.startActivity(intent);
+                //Intent intent = new Intent(context, WebViewActivity.class);
+                //intent.putExtra("url", resources.get(position).getLink());
+                //context.startActivity(intent);
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(context, Uri.parse(resources.get(position).getLink()));
             }
         });
     }
