@@ -86,7 +86,7 @@
         android:id="@+id/create_goal_activity_submit_btn"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="45dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"

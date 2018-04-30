@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+
 import android.support.design.widget.Snackbar
-import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -15,31 +15,34 @@ import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.ResourceTemplate
-import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
-import kotlinx.android.synthetic.main.activity_create_goal.*
+
+import emse.mobisocial.goalz.ui.viewModels.CreateResourceViewModel
+
 import kotlinx.android.synthetic.main.activity_create_resource.*
 
 class CreateResourceActivity : AppCompatActivity() {
 
-    private lateinit var model : CreateGoalViewModel
+    private lateinit var model : CreateResourceViewModel
     private var userId:String? = null
     private lateinit var mSnackbar: Snackbar
     private var redColor = Color.parseColor("#FF6347")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val tmpId = FirebaseAuth.getInstance().currentUser?.uid ?: finish()
+
+        userId = tmpId as String
+        model = ViewModelProviders.of(this).get(CreateResourceViewModel::class.java)
+
+
         setContentView(R.layout.activity_create_resource)
-        supportActionBar?.title = "Create a new Resource"
+        supportActionBar?.title = getString(R.string.create_resource_activity_appbar_title)
         supportActionBar?.elevation = 0F
 
-        userId = FirebaseAuth.getInstance().currentUser?.uid
-        if (userId != null) {
-            model = ViewModelProviders.of(this).get(CreateGoalViewModel::class.java)
-            createResourceButton.setOnClickListener { createEventListener() }
-        }else{
-            Log.e("CREATE A GOAL: ", "COULD NOT GET AUTHENTICATED USER")
-        }
+        createResourceButton.setOnClickListener { createEventListener() }
     }
+
     private fun  createEventListener(){
         val newResource = ResourceTemplate(
                 userId!!,
@@ -51,29 +54,32 @@ class CreateResourceActivity : AppCompatActivity() {
     }
 
     private fun addResource(newResource:ResourceTemplate){
-        if(resourceTitleText.text.toString()!=""&&resourceTopicText.text.toString()!=""&&resourceUrlText.text.toString()!="") {
-            if(!URLUtil.isValidUrl(resourceUrlText.text.toString())) {
-                launchSnackbar("Invalid URL")
-            }else {
-                model.addResource(newResource).observe(this, Observer<DalResponse> { response ->
-                    if(response?.status == DalResponseStatus.SUCCESS){
-                        Toast.makeText(this, "Resource Successfully Created", Toast.LENGTH_LONG).show()
-                        finish()
-                    }
-                    if(response?.status == DalResponseStatus.FAIL){
-                        Toast.makeText(this, "Resource Creation Failed", Toast.LENGTH_LONG).show()
-                        finish()
-                    }
-                })
-
-            }
-        }else{
-            launchSnackbar("Invalid Fields")
+        if (resourceTitleText.text.toString() == "" || resourceTopicText.text.toString() == "" ||
+            resourceUrlText.text.toString() == "") {
+            launchSnackbar(getString(R.string.create_resource_activity_invalid_fields_toast))
+            return
         }
+
+        if(!URLUtil.isValidUrl(resourceUrlText.text.toString())) {
+            launchSnackbar(getString(R.string.create_resource_activity_invalid_uri_toast))
+            return
+        }
+
+        model.addResource(newResource).observe(this, Observer<DalResponse> { response ->
+            if(response?.status == DalResponseStatus.SUCCESS){
+                Toast.makeText(this, getString(R.string.create_resource_activity_success_toast),
+                        Toast.LENGTH_LONG).show()
+                finish()
+            }
+            if(response?.status == DalResponseStatus.FAIL){
+                Toast.makeText(this, getString(R.string.create_resource_activity_fail_toast), Toast.LENGTH_LONG).show()
+                finish()
+            }
+        })
     }
 
     private fun launchSnackbar(title: String) {
-        mSnackbar = Snackbar.make(create_goal_layout, title, Snackbar.LENGTH_SHORT)
+        mSnackbar = Snackbar.make(create_resource_layout, title, Snackbar.LENGTH_SHORT)
         mSnackbar.view.background = ColorDrawable(redColor)
         mSnackbar.show()
     }

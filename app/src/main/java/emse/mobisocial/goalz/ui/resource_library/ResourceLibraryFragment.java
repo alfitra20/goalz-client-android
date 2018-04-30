@@ -95,10 +95,10 @@ public class ResourceLibraryFragment extends Fragment {
         // here user's Id will be taken from shared preferences
         String userId = "1";
 
-        //initializeObservers(userId);
+        initializeObservers(userId);
         // temporary, above and below
-        List<Resource> meh = new ArrayList<>();
-        tempData(meh);
+        //List<Resource> meh = new ArrayList<>();
+        //tempData(meh);
 
         /*Gson gson = new Gson();
         SharedPreferences prefs = getContext().getSharedPreferences("imgUrls", Context.MODE_PRIVATE);
@@ -111,12 +111,12 @@ public class ResourceLibraryFragment extends Fragment {
             imgUrls = gson.fromJson(storedImgUrls, type);
         }*/
 
-        mAdapter = new ResourceLibraryAdapter(getContext(), meh, new HashMap<String, String>());
-        mRecyclerView.setAdapter(mAdapter);
+        //mAdapter = new ResourceLibraryAdapter(getContext(), meh, new HashMap<String, String>());
+        //mRecyclerView.setAdapter(mAdapter);
         return view;
     }
 
-    private void tempData(List<Resource> meh) {
+    /*private void tempData(List<Resource> meh) {
         Resource resource = new Resource("1", "1", "https://www.bbcgoodfood.com/howto/guide/25-skills-every-cook-should-know",
                 "Title", "Meh topic", -2.9, 5, 40);
         meh.add(resource);
@@ -153,7 +153,7 @@ public class ResourceLibraryFragment extends Fragment {
         Resource resource12 = new Resource("12", "1", "https://www.wikihow.com/Play-Basketball",
                 "Title", "Meh topic", 0, 5, 500);
         meh.add(resource12);
-    }
+    }*/
 
     private void initializeObservers(String userId) {
         model.resources.observe(this, resources -> {

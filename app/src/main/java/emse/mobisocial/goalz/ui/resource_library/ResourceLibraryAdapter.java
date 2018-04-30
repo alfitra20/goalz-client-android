@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -20,6 +18,7 @@ import java.util.List;
 
 import emse.mobisocial.goalz.R;
 import emse.mobisocial.goalz.model.Resource;
+import emse.mobisocial.goalz.util.ImageExtractor;
 
 public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibraryAdapter.ResourceViewHolder> {
     private Context context;
@@ -197,7 +196,20 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
             }
         }
 
-        Thread thread = new Thread(new Runnable() {
+        String imageUrl = resources.get(position).getImageUrl();
+        if(imageUrl != null){
+            Glide.with(context).resumeRequests();
+            Glide.with(context)
+                    .load(imageUrl)
+                    .priority(Priority.IMMEDIATE)
+                    .crossFade()
+                    //.override(holder.image.getMeasuredWidth(), holder.image.getMeasuredHeight())
+                    //.centerCrop()
+                    //.diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.image);
+        }
+
+        /*Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try  {
@@ -235,7 +247,7 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
             }
         });
         thread.setName("Fckin thread");
-        thread.start();
+        thread.start();*/
 
         holder.frameLayout.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {

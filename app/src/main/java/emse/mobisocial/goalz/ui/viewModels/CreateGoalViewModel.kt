@@ -14,11 +14,7 @@ import emse.mobisocial.goalz.model.*
 class CreateGoalViewModel(application: Application) : AndroidViewModel(application){
 
     var userId: String? = null
-
     private val goalRepository : IGoalRepository = (application as GoalzApp).goalRepository
-    private val userRepository : IUserRepository = (application as GoalzApp).userRepository
-    private val resourceRepository : IResourceRepository = (application as GoalzApp).resourceRepository
-
     lateinit var userGoalsList: LiveData<List<Goal>>
 
     fun setUser(userId: String){
@@ -28,14 +24,6 @@ class CreateGoalViewModel(application: Application) : AndroidViewModel(applicati
 
     fun addGoal(newGoal:GoalTemplate) : LiveData<DalResponse> {
         return goalRepository.addGoal(newGoal)
-    }
-
-    fun addResource(newResource: ResourceTemplate) : LiveData<DalResponse> {
-        return resourceRepository.addResource(newResource)
-    }
-
-    fun addUser(newUser:UserTemplate):LiveData<DalResponse>{
-        return userRepository.registerUser(newUser)
     }
 
 }

@@ -17,7 +17,7 @@ class EditGoalViewModel(application: Application, val goalId : String): AndroidV
 
     val goal = goalRepository.getGoal(goalId)
 
-    fun updateGoal(title : String, topic : String, description : String, deadline : Date) : LiveData<DalResponse>? {
+    fun updateGoal(title : String, topic : String, description : String, deadline : Date?) : LiveData<DalResponse>? {
         val updateState = goal.value ?: return null
 
         updateState.title = title

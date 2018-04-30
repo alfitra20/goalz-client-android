@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".ui.EditGoalActivity"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context=".ui.EditGoalActivity">
 
     <ImageView
         android:id="@+id/edit_goal_activity_logo_iw"
@@ -84,7 +83,7 @@
         android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/edit_goal_activity_deadline_et"
-        app:srcCompat="@drawable/ic_date_range_black_24dp" />
+        app:srcCompat="@drawable/calendar_grey" />
 
     <View
         android:id="@+id/edit_goal_activity_divider"

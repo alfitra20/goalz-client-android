@@ -35,6 +35,23 @@
     <string name="create_goal_activity_invalid_fields_toast">Invalid Fields</string>
     <string name="create_goal_activity_success_toast">Goal Successfully Created</string>
 
+    <!-- Create Resource Activity texts-->
+    <string name="create_resource_activity_appbar_title">Create Resource</string>
+    <string name="create_resource_activity_invalid_fields_toast">Invalid Fields</string>
+    <string name="create_resource_activity_invalid_uri_toast">Invalid URL</string>
+    <string name="create_resource_activity_success_toast">Resource Successfully Created</string>
+    <string name="create_resource_activity_fail_toast">Resource Creation Failed</string>
+
+    <!-- Create Recommendation Activity texts-->
+    <string name="create_recommendation_activity_title_hint">Title</string>
+    <string name="create_recommendation_activity_topic_hint">Required Time</string>
+    <string name="create_recommendation_activity_resource_tw_text">Resource</string>
+    <string name="create_recommendation_activity_description_hint">Description</string>
+    <string name="create_recommendation_activity_post_btn_text">Post</string>
+    <string name="create_recommendation_activity_invalid_fields_toast">Invalid Fields</string>
+    <string name="create_recommendation_activity_success_toast">Recommendation Successfully Created</string>
+    <string name="create_recommendation_activity_fail_toast">Recommendation Creation Failed</string>
+
     <!-- Goal Activity texts-->
     <string name="goal_activity_subgoals_tab">Subgoals</string>
     <string name="goal_activity_resources_tab">Resources</string>
@@ -60,5 +77,7 @@
 
     <!-- Edit Goal Activity texts-->
     <string name="edit_goal_activity_done_menu_item_title">Done</string>
->>>>>>> f96949da4200596bfa966dc998eef21a0140353c
+    <string name="edit_goal_activity_update_goal_success_toast">Goal Successfully Updated</string>
+    <string name="edit_goal_activity_update_goal_fail_toast">Cannot Update Goal</string>
+
 </resources>

@@ -1,15 +1,18 @@
 package emse.mobisocial.goalz.ui
 
+import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.ui.viewModels.EditGoalViewModel
 import java.text.SimpleDateFormat
@@ -24,6 +27,7 @@ class EditGoalActivity : AppCompatActivity() {
     private lateinit var topicEt: EditText
     private lateinit var descriptionEt: EditText
     private lateinit var deadlineEt: EditText
+    private lateinit var datePicker:ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,7 @@ class EditGoalActivity : AppCompatActivity() {
         topicEt = findViewById(R.id.edit_goal_activity_topic_et)
         deadlineEt = findViewById(R.id.edit_goal_activity_deadline_et)
         descriptionEt = findViewById(R.id.edit_goal_activity_description_et)
+        datePicker = findViewById(R.id.edit_goal_activity_pick_date_ib)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true);
         supportActionBar!!.setDisplayShowHomeEnabled(true);
@@ -49,6 +54,9 @@ class EditGoalActivity : AppCompatActivity() {
 
         //Set model observers
         model.goal.observe(this, GoalInfoObserver())
+
+        //Set action listeners
+        datePicker.setOnClickListener(PickDateOnClickListener())
     }
 
     //Menu
@@ -62,8 +70,17 @@ class EditGoalActivity : AppCompatActivity() {
 
         when (id) {
             R.id.edit_goal_activity_done_menu_item -> {
-                finish()
+                val title = titleEt.text.toString()
+                val topic = topicEt.text.toString()
+                val description = descriptionEt.text.toString()
+                val deadline = if (deadlineEt.text.toString() == "") null else stringToDate(deadlineEt.text.toString())
+
+                model.updateGoal(title, topic, description, deadline)?.observe(this, UpdateResponseObserver())
                 return true
+            }
+            android.R.id.home -> {
+                onBackPressed();
+                return true;
             }
         }
 
@@ -71,7 +88,7 @@ class EditGoalActivity : AppCompatActivity() {
     }
 
     //Helper methods
-    private fun stringToDate(dateText : String) : Date {
+    private fun stringToDate(dateText : String?) : Date {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.parse(dateText)
     }
@@ -80,6 +97,30 @@ class EditGoalActivity : AppCompatActivity() {
         if (date == null) return ""
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.format(date)
+    }
+
+    // Control listeners
+    inner class DateListener : DatePickerDialog.OnDateSetListener {
+        override fun onDateSet(datePicker : DatePicker, year : Int, month : Int, day : Int ) {
+            val dateStr = day.toString() + "/" + (month + 1).toString() + "/" + year.toString()
+            deadlineEt.setText(dateStr)
+        }
+
+    }
+
+    inner class PickDateOnClickListener : View.OnClickListener {
+        override fun onClick(view: View) {
+            val calendar:Calendar = Calendar.getInstance()
+            val year:Int = calendar.get(Calendar.YEAR)
+            val month:Int = calendar.get(Calendar.MONTH)
+            val day:Int = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val dialog = DatePickerDialog (this@EditGoalActivity, R.style.Theme_AppCompat_DayNight_Dialog_MinWidth,
+                    DateListener(), year, month, day)
+            dialog.datePicker.minDate = System.currentTimeMillis()-1000
+            dialog.show()
+        }
+
     }
 
     //Observers
@@ -91,6 +132,19 @@ class EditGoalActivity : AppCompatActivity() {
             topicEt.setText(goal.topic, TextView.BufferType.EDITABLE)
             deadlineEt.setText(dateToString(goal.deadline), TextView.BufferType.EDITABLE)
             descriptionEt.setText(goal.description, TextView.BufferType.EDITABLE)
+        }
+    }
+
+    inner class UpdateResponseObserver : Observer<DalResponse> {
+        override fun onChanged(response: DalResponse?) {
+            if (response?.status == DalResponseStatus.SUCCESS) {
+                Toast.makeText(application, application.getString(R.string.edit_goal_activity_update_goal_success_toast),
+                        Toast.LENGTH_LONG).show()
+                this@EditGoalActivity.finish()
+            } else if (response?.status == DalResponseStatus.FAIL) {
+                Toast.makeText(application, application.getString(R.string.edit_goal_activity_update_goal_fail_toast),
+                        Toast.LENGTH_LONG).show()
+            }
         }
     }
 
