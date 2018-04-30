@@ -44,7 +44,6 @@
     <string name="create_recommendation_activity_success_toast">Recommendation Successfully Created</string>
     <string name="create_recommendation_activity_fail_toast">Recommendation Creation Failed</string>
 
-
     <!-- Goal Activity texts-->
     <string name="goal_activity_subgoals_tab">Subgoals</string>
     <string name="goal_activity_resources_tab">Resources</string>

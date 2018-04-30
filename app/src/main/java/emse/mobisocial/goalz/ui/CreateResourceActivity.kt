@@ -26,12 +26,13 @@ class CreateResourceActivity : AppCompatActivity() {
 
         userId = tmpId as String
         model = ViewModelProviders.of(this).get(CreateResourceViewModel::class.java)
-        createResourceButton.setOnClickListener { createEventListener() }
+
 
         setContentView(R.layout.activity_create_resource)
         supportActionBar?.title = getString(R.string.create_resource_activity_appbar_title)
         supportActionBar?.elevation = 0F
 
+        createResourceButton.setOnClickListener { createEventListener() }
     }
 
     private fun  createEventListener(){
