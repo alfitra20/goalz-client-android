@@ -52,4 +52,6 @@
 
     <!-- Edit Goal Activity texts-->
     <string name="edit_goal_activity_done_menu_item_title">Done</string>
+    <string name="edit_goal_activity_update_goal_success_toast">Goal Successfully Updated</string>
+    <string name="edit_goal_activity_update_goal_fail_toast">Cannot Update Goal</string>
 </resources>

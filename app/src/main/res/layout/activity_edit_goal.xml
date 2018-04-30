@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".ui.EditGoalActivity"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context=".ui.EditGoalActivity">
 
     <ImageView
         android:id="@+id/edit_goal_activity_logo_iw"

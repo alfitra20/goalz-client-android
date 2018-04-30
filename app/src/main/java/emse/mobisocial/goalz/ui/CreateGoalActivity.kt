@@ -19,6 +19,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.support.v4.app.ActivityCompat
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -85,8 +86,11 @@ class CreateGoalActivity : AppCompatActivity() {
 
         //Start initializing the view
         setContentView(R.layout.activity_create_goal)
-        supportActionBar?.title = getString(R.string.create_goal_activity_appbar_title)
-        supportActionBar?.elevation = 0F
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        supportActionBar!!.setDisplayShowHomeEnabled(true);
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.title = getString(R.string.create_goal_activity_appbar_title)
+        supportActionBar!!.elevation = 0F
 
         titleEt = findViewById(R.id.create_goal_activity_title_et)
         topicEt = findViewById(R.id.create_goal_activity_description_et)
@@ -106,6 +110,20 @@ class CreateGoalActivity : AppCompatActivity() {
         pickDateIb.setOnClickListener(PickDateOnClickListener())
         submitBtn.setOnClickListener(CreateBtnOnClickListener())
 
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        when (id) {
+            android.R.id.home -> {
+                onBackPressed();
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun addGoal(newGoal:GoalTemplate){
