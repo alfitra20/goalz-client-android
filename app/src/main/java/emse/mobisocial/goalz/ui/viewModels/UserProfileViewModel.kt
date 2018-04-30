@@ -38,17 +38,20 @@ class UserProfileViewModel(application: Application): AndroidViewModel(applicati
         userData = userRepository.getUser(userId)
     }
 
-    fun modidyUserData(userId: String, newUserData : UserTemplate ): LiveData<DalResponse> {
-        var userData: LiveData<User> = userRepository.getUser(userId)
-        var user = userData.value
-        if (user != null) {
-            user.website = newUserData.website
-            user.firstName = newUserData.firstname
-            user.lastName = newUserData.lastname
-            user.age = newUserData.age!!
-            user.gender = newUserData.gender!!
-        }
-        return userRepository.updateUser(user!!)
+    fun modifyUserData(nickname : String, firstname:String, lastname:String, userAge:Int, website:String, gender:Gender ): LiveData<DalResponse>? {
+        val updateState = userData.value ?: return null
+
+        updateState.nickname = nickname
+        updateState.firstName = firstname
+        updateState.lastName = lastname
+        updateState.age = userAge
+        updateState.website = website
+        updateState.gender = gender
+
+        return userRepository.updateUser(updateState)
     }
 
+    fun registerNewUser(newUserData : UserTemplate ): LiveData<DalResponse> {
+        return userRepository.registerUser(newUserData)
+    }
 }

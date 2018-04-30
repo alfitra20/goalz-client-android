@@ -25,6 +25,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
+import java.text.FieldPosition
 
 open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
 
@@ -56,10 +57,34 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
         mContext = this@BaseActivity
 
-        setInitialFragment()
+        val receivedRequest:Int? = intent.getIntExtra("position", 0)
+        if (receivedRequest != null) {
+            setRequestedFragment(receivedRequest)
+        }else{
+            setInitialFragment()
+        }
         setUpNav()
         toggle.syncState()
         ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),1)
+    }
+
+    private fun setRequestedFragment(position: Int){
+        var fragment : Fragment? = null
+        var title : String? = null
+        when (position) {
+            0 -> {
+                fragment = GoalsFragment()
+                title = getString(R.string.app_bar_goals)
+            }
+            2 -> {
+                fragment = ResourceLibraryFragment()
+                title = getString(R.string.app_bar_users_library)
+            }
+        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.content_frame, fragment)
+        transaction.commit()
+        supportActionBar?.title = title
     }
 
     private fun setInitialFragment() {
@@ -136,12 +161,6 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
                 R.id.nav_library -> {
                     displayedFragment = ResourceLibraryFragment()
                     actionBarTitle = getString(R.string.app_bar_users_library)
-                }
-                R.id.nav_timeline -> {
-
-                }
-                R.id.nav_setting -> {
-
                 }
                 R.id.nav_logout -> {
                     FirebaseAuth.getInstance().signOut()

@@ -2,8 +2,11 @@ package emse.mobisocial.goalz.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
@@ -13,12 +16,15 @@ import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.ResourceTemplate
 import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
+import kotlinx.android.synthetic.main.activity_create_goal.*
 import kotlinx.android.synthetic.main.activity_create_resource.*
 
 class CreateResourceActivity : AppCompatActivity() {
 
     private lateinit var model : CreateGoalViewModel
     private var userId:String? = null
+    private lateinit var mSnackbar: Snackbar
+    private var redColor = Color.parseColor("#FF6347")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +53,7 @@ class CreateResourceActivity : AppCompatActivity() {
     private fun addResource(newResource:ResourceTemplate){
         if(resourceTitleText.text.toString()!=""&&resourceTopicText.text.toString()!=""&&resourceUrlText.text.toString()!="") {
             if(!URLUtil.isValidUrl(resourceUrlText.text.toString())) {
-                Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show()
+                launchSnackbar("Invalid URL")
             }else {
                 model.addResource(newResource).observe(this, Observer<DalResponse> { response ->
                     if(response?.status == DalResponseStatus.SUCCESS){
@@ -62,8 +68,14 @@ class CreateResourceActivity : AppCompatActivity() {
 
             }
         }else{
-            Toast.makeText(this, "Invalid Fields", Toast.LENGTH_SHORT).show()
+            launchSnackbar("Invalid Fields")
         }
+    }
+
+    private fun launchSnackbar(title: String) {
+        mSnackbar = Snackbar.make(create_goal_layout, title, Snackbar.LENGTH_SHORT)
+        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.show()
     }
 
 

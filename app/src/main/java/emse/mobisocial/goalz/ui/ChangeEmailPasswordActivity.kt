@@ -4,10 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import emse.mobisocial.goalz.R
 
-class ChangePasswordActivity : AppCompatActivity() {
+class ChangeEmailPasswordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_password)
+        setContentView(R.layout.activity_change_email_and_password)
     }
 }

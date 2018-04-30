@@ -1,5 +1,6 @@
 package emse.mobisocial.goalz.ui
 
+import android.annotation.TargetApi
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -8,18 +9,21 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.annotation.RequiresApi
-import android.util.Log
+import android.support.design.widget.Snackbar
 import android.util.Patterns
 import android.view.WindowManager
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_login.*
 
+
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAuth : FirebaseAuth
+    private lateinit var mSnackbar: Snackbar
+    private var redColor = Color.parseColor("#FF6347")
 
+    @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +37,17 @@ class LoginActivity : AppCompatActivity() {
 
         login_button.setOnClickListener {login() }
     }
-    private fun login(){
-        if(email_text.text.toString()!=""&&password_text.text.toString()!=""){
-            if(Patterns.EMAIL_ADDRESS.matcher(email_text.text).matches()){
 
+    private fun login(){
+        val email = email_text.text.toString().trim()
+        val password = password_text.text.toString().trim()
+        val checkEmail = Patterns.EMAIL_ADDRESS.matcher(email_text.text).matches()
+        if(email !=""&& password !=""){
+            if(checkEmail){
                 mFirebaseAuth = FirebaseAuth.getInstance()
-                mFirebaseAuth.signInWithEmailAndPassword(email_text.text.toString(), password_text.text.toString()).addOnCompleteListener { task ->
+                mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.d("SIGNIN", "login success")
-                        Toast.makeText(this, "Login Success", Toast.LENGTH_LONG).show()
+                        launchSnackbar("Login Success")
                         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                         preferences.edit()
                                 .putBoolean("without_login", false)
@@ -50,20 +56,24 @@ class LoginActivity : AppCompatActivity() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     } else {
-                        Log.d("SIGNIN", "login fail")
-                        Toast.makeText(this, "Login Failed, check your credentials", Toast.LENGTH_LONG).show()
+                        launchSnackbar("Login Failed, check your credentials")
                     }
                 }
             }else{
-                Toast.makeText(this, "Wrong Email Format", Toast.LENGTH_SHORT).show()
+                launchSnackbar("Wrong Email Format")
             }
-        }else{
-            if(!Patterns.EMAIL_ADDRESS.matcher(email_text.text).matches()){
-                Toast.makeText(this, "Wrong Email Format", Toast.LENGTH_SHORT).show()
-            }else {
-                Toast.makeText(this, "Invalid Fields", Toast.LENGTH_SHORT).show()
-            }
+        }else if (email =="" && password =="") {
+            launchSnackbar("Invalid Fields")
+        } else if (password ==""){
+            launchSnackbar("Password Required")
+        } else{
+            launchSnackbar("Email Required")
         }
 
+    }
+    private fun launchSnackbar(title: String) {
+        mSnackbar = Snackbar.make(login_layout, title, Snackbar.LENGTH_LONG)
+        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.show()
     }
 }

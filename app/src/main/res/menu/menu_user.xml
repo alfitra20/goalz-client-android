@@ -4,8 +4,7 @@
     tools:context="emse.mobisocial.goalz.ui.UserActivity">
     <item
         android:id="@+id/action_edit_profile"
-        android:orderInCategory="100"
-        android:title="Edit Profile"
-        app:showAsAction="never"
-        android:icon="@drawable/edit_icon"/>
+        android:title="@string/goal_activity_edit_menu_item_title"
+        android:icon="@drawable/ic_edit_white_24dp"
+        app:showAsAction="always"/>
 </menu>

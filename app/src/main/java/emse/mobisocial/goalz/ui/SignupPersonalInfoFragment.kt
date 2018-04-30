@@ -1,44 +1,41 @@
 package emse.mobisocial.goalz.ui
 
 import android.app.DatePickerDialog
-import android.arch.lifecycle.Observer
 import android.content.Context
-import android.content.Intent
-import android.icu.lang.UCharacter.getAge
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import emse.mobisocial.goalz.GoalzApp
-
 import emse.mobisocial.goalz.R
-import emse.mobisocial.goalz.dal.DalResponse
-import emse.mobisocial.goalz.dal.DalResponseStatus
-import emse.mobisocial.goalz.model.UserTemplate
-import kotlinx.android.synthetic.main.activity_create_goal.*
 import kotlinx.android.synthetic.main.fragment_signup_personal_info.*
-import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 private const val NICKNAME_PARAM = "nickname"
-private const val EMAIL_PARAM = "email"
-private const val PASSWORD_PARAM = "password"
+private const val FIRSTNAME_PARAM = "firstname"
+private const val LASTNAME_PARAM = "lastname"
+private const val AGE_PARAM = "age"
 
 class SignupPersonalInfoFragment : Fragment() {
 
     private lateinit var mDateListener:DatePickerDialog.OnDateSetListener
-    private var nickname : String? = null
-    private var email : String? = null
-    private var password : String? = null
-    private lateinit var first_name : String
-    private lateinit var  last_name : String
+    private lateinit var firstName : String
+    private lateinit var  lastName : String
     private lateinit var birthdate : String
     private lateinit var mContext : Context
+    private lateinit var firstnameText :EditText
+    private lateinit var lastnameText: EditText
+    private lateinit var birthdateText: EditText
     private lateinit var pickBirthdate : ImageButton
-    private var age = 0
+    private lateinit var mSnackbar: Snackbar
+    private var redColor = Color.parseColor("#FF6347")
+    private var nickname : String? = null
+    private var age : Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,39 +43,23 @@ class SignupPersonalInfoFragment : Fragment() {
         mContext = activity.applicationContext
         arguments?.let {
             nickname = it.getString(NICKNAME_PARAM)
-            email = it.getString(EMAIL_PARAM)
-            password = it.getString(PASSWORD_PARAM)
-
         }
-        Log.d("email", email)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_signup_personal_info, container, false)
-        val firstnameText = view.findViewById<EditText>(R.id.firstname_text)
-        val lastnameText  = view.findViewById<EditText>(R.id.lastname_text)
-        val birthdateText = view.findViewById<EditText>(R.id.birthdate_text)
-        val button = view.findViewById<Button>(R.id.register_button)
+        firstnameText = view.findViewById(R.id.firstname_text)
+        lastnameText  = view.findViewById(R.id.lastname_text)
+        birthdateText = view.findViewById(R.id.birthdate_text)
+        val button = view.findViewById<Button>(R.id.next_in_personal_info)
         pickBirthdate = view.findViewById(R.id.pickBirthDate) as ImageButton
-
-        first_name = firstnameText.text.toString()
-        last_name = lastnameText.text.toString()
-        birthdate = birthdateText.text.toString()
 
         birthdateText.isEnabled = false
         pickDateListener()
         button.setOnClickListener { registerUser() }
         return view
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 
     private fun pickDateListener(){
@@ -101,38 +82,55 @@ class SignupPersonalInfoFragment : Fragment() {
     }
 
     private fun registerUser(){
-        if(first_name == "" && last_name == "" && birthdate == ""){
+        firstName = firstnameText.text.toString().trim()
+        lastName = lastnameText.text.toString().trim()
+        birthdate = birthdateText.text.toString().trim()
+
+        if(firstName != "" && lastName != "" && birthdate != ""){
             val calendar = Calendar.getInstance()
             val birthYear = calendar.get(Calendar.YEAR) - age
             if(birthYear < 12){
-                Toast.makeText(mContext, "Need to be at least 12 years old to register", Toast.LENGTH_SHORT).show()
+                launchSnackbar("Need to be at least 12 years old to register")
             }else {
-               val newUser = UserTemplate(
-                        nickname!!,
-                        password!!,
-                        first_name,
-                        last_name,
-                        email!!,
-                        birthYear
-                )
-                val userRepository = (activity.application as GoalzApp).userRepository
-                userRepository.registerUser(newUser).observe(this, Observer<DalResponse> { response ->
-                    if (response?.status == DalResponseStatus.SUCCESS){
-                        val intent = Intent(mContext, BaseActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        Toast.makeText(mContext, "Successfully Registered", Toast.LENGTH_LONG).show()
-                    }else if (response?.status == DalResponseStatus.FAIL){
-                        Toast.makeText(mContext, "Register unsuccessful, Try again", Toast.LENGTH_LONG).show()
-                    }
-                })
+                var check = checkForSpecialCharacters(firstName, lastName)
+                if (check) {
+                    val args = Bundle()
+                    args.putString(NICKNAME_PARAM, nickname)
+                    args.putString(FIRSTNAME_PARAM, firstName)
+                    args.putString(LASTNAME_PARAM, lastName)
+                    args.putInt(AGE_PARAM, birthYear)
+                    val newFragment = SignupCredentialsFragment()
+                    newFragment.arguments = args
+                    val transaction = activity.supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.signup_frame, newFragment).addToBackStack("tag")
+                    transaction.commit()
+                }
             }
-        }else if (first_name != ""){
-            Toast.makeText(mContext, "First Name required", Toast.LENGTH_SHORT).show()
-        }else if (last_name != ""){
-            Toast.makeText(mContext, "Last Name required", Toast.LENGTH_SHORT).show()
-        }else if (birthdate != ""){
-            Toast.makeText(mContext, "Birth date required", Toast.LENGTH_SHORT).show()
+        }else if (firstName == ""){
+            launchSnackbar("First Name required")
+        }else if (lastName == ""){
+            launchSnackbar("Last Name required")
+        }else if (birthdate == ""){
+            launchSnackbar("Birth date required")
         }
     }
+
+    private fun checkForSpecialCharacters(firstname:String, lastname:String):Boolean{
+        val pattern = Pattern.compile("[a-zA-Z.? ]*")
+        val firstnameCheck = pattern.matcher(firstname)
+        val lastnameCheck = pattern.matcher(firstname)
+        var check = true
+        if (!firstnameCheck.matches() && !lastnameCheck.matches()) {
+            launchSnackbar("Invalid Fields")
+            check = false
+        }
+        return check
+    }
+
+    private fun launchSnackbar(title: String) {
+        mSnackbar = Snackbar.make(signup_personal_info_layout, title, Snackbar.LENGTH_LONG)
+        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.show()
+    }
+
 }

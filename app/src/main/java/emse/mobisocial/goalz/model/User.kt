@@ -26,7 +26,7 @@ data class User(
         @ColumnInfo(name = "email")
         var email : String, //DO NOT UPDATE
         @ColumnInfo(name = "age")
-        var age : Int,
+        var age : Int?,
         @ColumnInfo(name = "gender")
         var gender : Gender){
 

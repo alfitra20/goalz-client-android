@@ -16,8 +16,11 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.location.LocationManager
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.view.View
 import android.widget.*
@@ -27,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.dal.db.converter.LocationConverter
+import kotlinx.android.synthetic.main.fragment_signup_credentials.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -47,6 +51,8 @@ class CreateGoalActivity : AppCompatActivity() {
     private lateinit var parentSpinner: Spinner
     private lateinit var submitBtn : Button
     private lateinit var pickDateIb : ImageButton
+    private lateinit var mSnackbar: Snackbar
+    private var redColor = Color.parseColor("#FF6347")
 
     private var selectedParentId : String? = null
 
@@ -147,7 +153,7 @@ class CreateGoalActivity : AppCompatActivity() {
             val topic = topicEt.text.toString()
             var date : Date? = null
             if(!areValidFields(title, topic, description)) {
-                showInvalidFieldsToast()
+                launchSnackbar(getString(R.string.create_goal_activity_invalid_fields_toast))
                 return
             }
 
@@ -167,9 +173,10 @@ class CreateGoalActivity : AppCompatActivity() {
             return title != "" && description != "" && topic != ""
         }
 
-        private fun showInvalidFieldsToast() {
-            Toast.makeText(this@CreateGoalActivity, getString(R.string.create_goal_activity_invalid_fields_toast),
-                    Toast.LENGTH_SHORT).show()
+        private fun launchSnackbar(title: String) {
+            mSnackbar = Snackbar.make(create_goal_layout, title, Snackbar.LENGTH_SHORT)
+            mSnackbar.view.background = ColorDrawable(redColor)
+            mSnackbar.show()
         }
     }
 
@@ -209,6 +216,7 @@ class CreateGoalActivity : AppCompatActivity() {
                 val intent = Intent(this@CreateGoalActivity, GoalActivity::class.java)
                 intent.putExtra("goal_id", response.id)
                 startActivity(intent)
+
                 Toast.makeText(this@CreateGoalActivity,
                         getString(R.string.create_goal_activity_success_toast),
                         Toast.LENGTH_LONG).show()
