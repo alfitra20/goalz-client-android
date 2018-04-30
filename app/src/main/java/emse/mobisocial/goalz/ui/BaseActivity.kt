@@ -25,6 +25,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
+import emse.mobisocial.goalz.GoalzApp
 
 open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
 
@@ -144,6 +145,8 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
                 }
                 R.id.nav_logout -> {
+                    val userRepository = (application as GoalzApp).userRepository
+                    userRepository.removeMessagingToken( FirebaseAuth.getInstance().currentUser!!.uid)
                     FirebaseAuth.getInstance().signOut()
                     val intent = Intent(this, OnboardingActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

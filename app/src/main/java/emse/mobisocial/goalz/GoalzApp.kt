@@ -16,6 +16,7 @@ import emse.mobisocial.goalz.dal.repositories.ResourceRepository
 import emse.mobisocial.goalz.dal.remote.ISynchronizer
 import emse.mobisocial.goalz.dal.remote.synchronizers.*
 import emse.mobisocial.goalz.model.*
+import emse.mobisocial.goalz.notification.NotificationRegistrationService
 
 
 /**
@@ -70,5 +71,6 @@ class GoalzApp : Application() {
 
         appExecutors = AppExecutors()
         startService(Intent(this, FirebaseConnectionService::class.java))
+        startService(Intent(this, NotificationRegistrationService::class.java))
     }
 }

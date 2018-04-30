@@ -53,16 +53,41 @@
         </activity>
         <activity android:name=".ui.resource_library.WebViewActivity" />
         <activity android:name=".ui.EditGoalActivity" />
+        <activity android:name=".ui.CreateRecommendationActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_mode_comment_white_48dp" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
         <service
             android:name=".dal.remote.FirebaseConnectionService"
             android:exported="false" />
+        <service
+            android:name=".notification.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
-        <activity android:name=".ui.CreateRecommendationActivity"></activity>
+        <service
+            android:name=".notification.NotificationRegistrationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>
