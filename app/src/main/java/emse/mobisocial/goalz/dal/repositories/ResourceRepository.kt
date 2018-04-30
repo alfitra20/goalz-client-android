@@ -61,7 +61,13 @@ class ResourceRepository(
 
         networkExecutor.execute {
             val newId = remoteResourceTable.push().key
-            val imageUrl = ImageExtractor.extractImageUrl(template.link)
+            var imageUrl : String? = null
+            try {
+                imageUrl = ImageExtractor.extractImageUrl(template.link)
+            } catch (e : Exception){
+                //The extraction of image failed. We just go on with null imageUrl
+            }
+
             val resourceFb = ResourceFb(template, imageUrl)
 
             remoteResourceTable.child(newId).setValue(resourceFb , {
