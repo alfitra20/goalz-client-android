@@ -21,13 +21,13 @@
         <activity
             android:name=".ui.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.UserActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.BaseActivity" />
         </activity>
-        <activity android:name=".ui.CreateGoalActivity"/>
+        <activity android:name=".ui.CreateGoalActivity" />
         <activity android:name=".ui.CreateResourceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -36,7 +36,7 @@
         <activity
             android:name=".ui.GoalActivity"
             android:label="@string/title_activity_goal"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.OnboardingActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -51,8 +51,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.OnboardingActivity" />
         </activity>
-        <activity android:name=".ui.resource_library.WebViewActivity"/>
-        <activity android:name=".ui.EditGoalActivity"/>
+        <activity android:name=".ui.resource_library.WebViewActivity" />
+        <activity android:name=".ui.EditGoalActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -61,6 +61,8 @@
         <service
             android:name=".dal.remote.FirebaseConnectionService"
             android:exported="false" />
+
+        <activity android:name=".ui.CreateRecommendationActivity"></activity>
     </application>
 
 </manifest>

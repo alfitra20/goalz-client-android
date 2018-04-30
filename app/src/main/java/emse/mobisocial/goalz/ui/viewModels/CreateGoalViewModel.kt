@@ -17,7 +17,6 @@ class CreateGoalViewModel(application: Application) : AndroidViewModel(applicati
     var userId: String? = null
 
     private val goalRepository : IGoalRepository = (application as GoalzApp).goalRepository
-    private val resourceRepository : IResourceRepository = (application as GoalzApp).resourceRepository
 
     lateinit var userGoalsList: LiveData<List<Goal>>
 
@@ -29,9 +28,4 @@ class CreateGoalViewModel(application: Application) : AndroidViewModel(applicati
     fun addGoal(newGoal:GoalTemplate) : LiveData<DalResponse> {
         return goalRepository.addGoal(newGoal)
     }
-
-    fun addResource(newResource: ResourceTemplate) : LiveData<DalResponse> {
-        return resourceRepository.addResource(newResource)
-    }
-
 }

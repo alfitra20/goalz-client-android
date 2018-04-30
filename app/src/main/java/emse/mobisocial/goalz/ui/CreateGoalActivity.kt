@@ -112,7 +112,6 @@ class CreateGoalActivity : AppCompatActivity() {
 
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 

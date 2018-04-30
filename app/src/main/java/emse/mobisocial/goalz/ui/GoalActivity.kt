@@ -105,7 +105,10 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
                 return true
             }
             R.id.goal_activity_recommend_menu_item -> {
-                //TODO: add logic for creating recommendation
+                val intent = Intent(this, CreateRecommendationActivity::class.java)
+                intent.putExtra("goal_id", model.goalId)
+                startActivity(intent)
+                return true
             }
             R.id.goal_activity_subgoal_menu_item -> {
                 val intent = Intent(this, CreateGoalActivity::class.java)
