@@ -410,15 +410,18 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                     for (Goal goal : data.getValue()) {
                         goalTitles.add(goal.getTitle());
                     }
-                    checkedItem = -1; // cow
+                    checkedItem = -1;
                     builder.setSingleChoiceItems(goalTitles.toArray(new String[goalTitles.size()]), checkedItem, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // user checked an item
-                            checkedItem = which;
-
-
-
+                            if (checkedItem == which) {
+                                // let's uncheck now
+                                //checkedItem = -1;
+                                // sadness, I don't know how to uncheck the button
+                            } else {
+                                checkedItem = which;
+                            }
                         }
                     });
 
