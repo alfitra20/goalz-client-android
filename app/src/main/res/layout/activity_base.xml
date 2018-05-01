@@ -56,6 +56,7 @@
                 android:layout_width="wrap_content"
                 app:fab_label="Create a new Goal"
                 app:fab_size="normal"
+                app:fab_colorPressed="@color/colorSecondaryLight"
                 app:fab_colorNormal="@color/colorSecondary"
                 android:id="@+id/addGoalButton"
                 android:src="@drawable/goal_icon_black"/>
@@ -66,6 +67,7 @@
                 app:fab_label="Create a new Resource"
                 app:fab_size="normal"
                 app:fab_colorNormal="@color/colorSecondary"
+                app:fab_colorPressed="@color/colorSecondaryLight"
                 android:id="@+id/addResourceButton"
                 android:src="@drawable/resource_icon_black"/>
         </com.github.clans.fab.FloatingActionMenu>

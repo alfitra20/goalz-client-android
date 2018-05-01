@@ -39,6 +39,7 @@
             android:hint="@string/signup_activity_nickname_hint"
             android:inputType="textFilter"
             android:maxLength="15"
+            android:backgroundTint="@color/colorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
