@@ -77,6 +77,12 @@ public class ResourceLibraryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // Let's pre-connect to Chrome
+        try {
+
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

@@ -1,14 +1,21 @@
 package emse.mobisocial.goalz.ui.resource_library;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.customtabs.CustomTabsCallback;
+import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.customtabs.CustomTabsSession;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,35 +33,40 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     private Context context;
     private List<Resource> resources;
     private HashMap imageUrls;
+    public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
 
     public static class ResourceViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
         public TextView title;
-        public TextView link;
+        //public TextView link;
         public TextView topic;
         public ImageView image;
         public TextView avgReqTime;
-        public TextView avgReqTimeText;
+        //public TextView avgReqTimeText;
         public ImageView rating_level1;
         public ImageView rating_level2;
         public ImageView rating_level3;
         public ImageView rating_level4;
         public ImageView rating_level5;
-        public View frameLayout;
+        //public View frameLayout;
+        //
+        CustomTabsServiceConnection mCustomTabsServiceConnection;
+        CustomTabsSession mCustomTabsSession;
+        CustomTabsClient mClient;
 
         public ResourceViewHolder(View v) {
             super(v);
             title = (TextView) itemView.findViewById(R.id.resource_title);
             topic = (TextView) itemView.findViewById(R.id.resource_topic);
-            link = (TextView) itemView.findViewById(R.id.resource_link);
+            //link = (TextView) itemView.findViewById(R.id.resource_link);
             image = (ImageView) itemView.findViewById(R.id.resource_image);
             avgReqTime = (TextView) itemView.findViewById(R.id.resource_time);
-            avgReqTimeText = (TextView) itemView.findViewById(R.id.resource_time_word);
+            //avgReqTimeText = (TextView) itemView.findViewById(R.id.resource_time_word);
             rating_level1 = (ImageView) itemView.findViewById(R.id.resource_rating_level_1);
             rating_level2 = (ImageView) itemView.findViewById(R.id.resource_rating_level_2);
             rating_level3 = (ImageView) itemView.findViewById(R.id.resource_rating_level_3);
             rating_level4 = (ImageView) itemView.findViewById(R.id.resource_rating_level_4);
             rating_level5 = (ImageView) itemView.findViewById(R.id.resource_rating_level_5);
-            frameLayout = (FrameLayout) itemView.findViewById(R.id.resource_frame);
+           // frameLayout = (FrameLayout) itemView.findViewById(R.id.resource_frame);
         }
 
         /*@Override
@@ -67,6 +79,20 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         this.context = context;
         this.resources = resources;
         this.imageUrls =  imageUrls;
+
+        /*CustomTabsClient.bindCustomTabsService(context, CUSTOM_TAB_PACKAGE_NAME, new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName name, CustomTabsClient client) {
+                // mClient is now valid.
+                mClient = client;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                // mClient is no longer valid. This also invalidates sessions.
+                mClient = null;
+            }
+        });*/
     }
 
     public HashMap getImageUrls() {
@@ -83,7 +109,7 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     public void onBindViewHolder(ResourceViewHolder holder, int position) {
         Glide.with(context).pauseRequests(); //doesn't make sense to me but it solves the problem, at least partly
         Glide.clear(holder.image); // because fckin magic!
-        holder.image.setImageResource(R.drawable.light);
+        //holder.image.setImageResource(null);
         holder.topic.setText(resources.get(position).getTopic());
         holder.title.setText(resources.get(position).getTitle());
 
@@ -94,22 +120,24 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         if (!link.startsWith("www")) {
             link = "www." + link;
         }
-        holder.link.setText(link);
+        //holder.link.setText(link);
 
         int avgReqTime = resources.get(position).getAvgReqTime();
         if(avgReqTime/60 < 1) { // less than an hour
-            if(avgReqTime == 1) {
+            /*if(avgReqTime == 1) {
                 holder.avgReqTimeText.setText("minute");
             } else {
                 holder.avgReqTimeText.setText("minutes");
-            }
+            }*/
+            //holder.avgReqTimeText.setText("min");
         } else {
             avgReqTime /= 60;
-            if(avgReqTime == 1) {
+            /*if(avgReqTime == 1) {
                 holder.avgReqTimeText.setText("hour");
             } else {
                 holder.avgReqTimeText.setText("hours");
-            }
+            }*/
+            //holder.avgReqTimeText.setText("hr");
         }
         holder.avgReqTime.setText(String.valueOf(avgReqTime));
 
@@ -211,56 +239,68 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                     .into(holder.image);
         }
 
-        /*Thread thread = new Thread(new Runnable() {
+       /* Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try  {
-                    String imgUrl;
-                    if(imageUrls.containsKey(resources.get(position).getId())) {
-                        imgUrl = (String) imageUrls.get(resources.get(position).getId());
-                    } else {
-                        imgUrl = ImageExtractor.extractImageUrl(resources.get(position).getLink());
-                        imageUrls.put(resources.get(position).getId(), imgUrl);
+                Log.i("UNICORNS!!", "running in the thread");
+                holder.mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+                    @Override
+                    public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+                        holder.mClient = customTabsClient;
+                        holder.mClient.warmup(0);
+                        holder.mCustomTabsSession = holder.mClient.newSession(null);
+                        Log.i("UNICORNS!", "so, now client is created");
+                        holder.mCustomTabsSession.mayLaunchUrl(Uri.parse(resources.get(position).getLink()), null, null);
                     }
 
-                    // now after the image url is ready, let's add it to UI
-                    if (imgUrl != null && holder.image.getMeasuredWidth() *
-                            holder.image.getMeasuredHeight() != 0) {  // because sh*t happens!! :(
-                        Runnable updateViewRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                Glide.with(context).resumeRequests();
-                                Glide.with(context)
-                                        .load(imgUrl)
-                                        .priority(Priority.IMMEDIATE)
-                                        .crossFade()
-                                        //.override(holder.image.getMeasuredWidth(), holder.image.getMeasuredHeight())
-                                        //.centerCrop()
-                                        //.diskCacheStrategy(DiskCacheStrategy.ALL)
-                                        .into(holder.image);
-                            }
-                        };
-                        Handler handler = new Handler(context.getApplicationContext().getMainLooper());
-                        handler.post(updateViewRunnable);
+                    @Override
+                    public void onServiceDisconnected(ComponentName name) {
+                        Log.e("TAG","onServiceDisconnected");
+                        holder.mClient = null;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                };
+                Log.i("UNICORNS!!", "let's bind the service");
+                CustomTabsClient.bindCustomTabsService(context, CUSTOM_TAB_PACKAGE_NAME, holder.mCustomTabsServiceConnection);
             }
         });
         thread.setName("Fckin thread");
         thread.start();*/
 
-        holder.frameLayout.setOnClickListener(new View.OnClickListener(){
+        /*holder.frameLayout.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 //Intent intent = new Intent(context, WebViewActivity.class);
                 //intent.putExtra("url", resources.get(position).getLink());
                 //context.startActivity(intent);
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.launchUrl(context, Uri.parse(resources.get(position).getLink()));
+                v.startAnimation(AnimationUtils.loadAnimation(context, R.anim.resource_click));
+                try {
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    //builder.setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left);
+                    //builder.setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right);
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(context, Uri.parse(resources.get(position).getLink()));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Intent intent = new Intent(context, WebViewActivity.class); // if there is no google chrome browser
+                    intent.putExtra("url", resources.get(position).getLink());
+                    context.startActivity(intent);
+                }
             }
         });
+        holder.link.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                v.startAnimation(AnimationUtils.loadAnimation(context, R.anim.resource_click));
+                try {
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(context, Uri.parse(resources.get(position).getLink()));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Intent intent = new Intent(context, WebViewActivity.class); // if there is no google chrome browser
+                    intent.putExtra("url", resources.get(position).getLink());
+                    context.startActivity(intent);
+                }
+            }
+        });*/
     }
 
     @Override
