@@ -2,6 +2,8 @@ package emse.mobisocial.goalz.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +19,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     private var networkInfo:Boolean = false
     private lateinit var mSnackbar: Snackbar
+    private var grey_color = ColorDrawable( Color.parseColor("#A9A9A9"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,9 @@ class OnboardingActivity : AppCompatActivity() {
         if (!networkInfo){
             mSnackbar.show()
             login_button.isEnabled = false
+            login_button.background = grey_color
             signup_button.isEnabled = false
+            signup_button.background = grey_color
             without_login_button.isEnabled = false
         }
 
@@ -51,7 +56,8 @@ class OnboardingActivity : AppCompatActivity() {
             startActivity(intent)
         }
         signup_button.setOnClickListener{
-
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
         without_login_button.setOnClickListener{
             preferences.edit()

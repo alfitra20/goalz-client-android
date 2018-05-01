@@ -52,6 +52,7 @@ class GoalsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_goals, container, false)
         setHasOptionsMenu(true)
 
+        recyclerView = view.findViewById(R.id.goals_recycler_view) as RecyclerView
 
         userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null) {
@@ -59,7 +60,7 @@ class GoalsFragment : Fragment() {
 
             // Initialize data
             filterView = view.findViewById(R.id.goals_filters) as MultiSelectToggleGroup
-            recyclerView = view.findViewById(R.id.goals_recycler_view) as RecyclerView
+
             model = ViewModelProviders.of(this).get(GoalsViewModel::class.java)
             model.initialize(userId!!)
 

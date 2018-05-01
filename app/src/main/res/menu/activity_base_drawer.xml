@@ -16,14 +16,6 @@
             android:id="@+id/nav_library"
             android:icon="@drawable/resource_color"
             android:title="Resources Library" />
-        <item
-            android:id="@+id/nav_timeline"
-            android:icon="@drawable/timeline_icon"
-            android:title="Timeline" />
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/setting_icon"
-            android:title="Setting" />
     </group>
 
     <item android:title="Account">

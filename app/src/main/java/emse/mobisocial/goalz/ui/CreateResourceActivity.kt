@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.webkit.URLUtil
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +20,7 @@ class CreateResourceActivity : AppCompatActivity() {
 
     private lateinit var model : CreateResourceViewModel
     private var userId:String? = null
+    private lateinit var mSnackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,15 +51,12 @@ class CreateResourceActivity : AppCompatActivity() {
     private fun addResource(newResource:ResourceTemplate){
         if (resourceTitleText.text.toString() == "" || resourceTopicText.text.toString() == "" ||
             resourceUrlText.text.toString() == "") {
-
-            Toast.makeText(this, getString(R.string.create_resource_activity_invalid_fields_toast),
-                    Toast.LENGTH_SHORT).show()
+            launchSnackbar(getString(R.string.create_resource_activity_invalid_fields_toast))
             return
         }
 
         if(!URLUtil.isValidUrl(resourceUrlText.text.toString())) {
-            Toast.makeText(this, getString(R.string.create_resource_activity_invalid_uri_toast),
-                    Toast.LENGTH_SHORT).show()
+            launchSnackbar(getString(R.string.create_resource_activity_invalid_uri_toast))
             return
         }
 
@@ -71,6 +71,12 @@ class CreateResourceActivity : AppCompatActivity() {
                 finish()
             }
         })
+    }
+
+    private fun launchSnackbar(title: String) {
+        mSnackbar = Snackbar.make(create_resource_layout, title, Snackbar.LENGTH_SHORT)
+        mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
+        mSnackbar.show()
     }
 
 

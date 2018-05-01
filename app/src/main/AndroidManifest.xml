@@ -51,6 +51,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.OnboardingActivity" />
         </activity>
+        <activity
+            android:name=".ui.SignupActivity"
+            android:label="@string/title_activity_signup">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.OnboardingActivity" />
+        </activity>
+        <activity
+            android:name=".ui.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.UserActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ChangeEmailPasswordActivity"
+            android:label="@string/title_activity_change_password">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.EditProfileActivity" />
+        </activity>
+
         <activity android:name=".ui.resource_library.WebViewActivity" />
         <activity android:name=".ui.EditGoalActivity" />
 
@@ -63,6 +85,7 @@
             android:exported="false" />
 
         <activity android:name=".ui.CreateRecommendationActivity"></activity>
+
     </application>
 
 </manifest>
