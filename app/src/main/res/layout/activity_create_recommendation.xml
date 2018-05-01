@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_recommendation_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -14,89 +15,35 @@
         android:layout_height="76dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_title_et"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout23"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_mode_comment_white_48dp" />
-
-    <EditText
-        android:id="@+id/create_recommendation_activity_title_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="#808080"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:hint="@string/create_recommendation_activity_title_hint"
-        android:inputType="textPersonName"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_reg_time_et"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_logo_iw" />
-
-    <EditText
-        android:id="@+id/create_recommendation_activity_reg_time_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:backgroundTint="#808080"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:hint="@string/create_recommendation_activity_topic_hint"
-        android:inputType="number|numberSigned"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_resource_sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_title_et" />
-
-    <EditText
-        android:id="@+id/create_recommendation_activity_description_et"
-        android:layout_width="0dp"
-        android:layout_height="97dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="#808080"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:hint="@string/create_recommendation_activity_description_hint"
-        android:inputType="text|textMultiLine"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_submit_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_resource_sp" />
 
     <Spinner
         android:id="@+id/create_recommendation_activity_resource_sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="#808080"
         android:textColor="#FFFF"
-        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_description_et"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/create_recommendation_activity_resource_tw"
-        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_reg_time_et" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout24" />
 
     <Button
         android:id="@+id/create_recommendation_activity_submit_btn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="70dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
         android:backgroundTint="#0099ff"
         android:shadowColor="@color/colorPrimary"
         android:text="@string/create_recommendation_activity_post_btn_text"
@@ -105,18 +52,79 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_description_et" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout25" />
 
     <TextView
         android:id="@+id/create_recommendation_activity_resource_tw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="8dp"
         android:text="@string/create_recommendation_activity_resource_tw_text"
+        android:textColor="#FFFF"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/create_recommendation_activity_resource_sp"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout24" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout23"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_logo_iw">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/create_recommendation_activity_title_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout24"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_resource_sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout23">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/create_recommendation_activity_reg_time_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Required Time" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout25"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_submit_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_resource_sp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/create_recommendation_activity_description_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:maxLines="2" />
+    </android.support.design.widget.TextInputLayout>
 
 
 </android.support.constraint.ConstraintLayout>

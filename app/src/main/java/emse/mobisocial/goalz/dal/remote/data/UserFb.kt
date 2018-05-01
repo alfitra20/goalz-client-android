@@ -29,7 +29,7 @@ class UserFb constructor() : FirebaseData<User> {
         lastname = template.lastname
         email = template.email
         age = template.age
-        gender = template.gender.name
+        gender = template.gender?.name
     }
 
     override fun toEntity(id: String): User {

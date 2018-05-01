@@ -25,6 +25,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
+
 import emse.mobisocial.goalz.GoalzApp
 
 open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
@@ -57,10 +58,34 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
         mContext = this@BaseActivity
 
-        setInitialFragment()
+        val receivedRequest:Int? = intent.getIntExtra("position", 0)
+        if (receivedRequest != null) {
+            setRequestedFragment(receivedRequest)
+        }else{
+            setInitialFragment()
+        }
         setUpNav()
         toggle.syncState()
         ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),1)
+    }
+
+    private fun setRequestedFragment(position: Int){
+        var fragment : Fragment? = null
+        var title : String? = null
+        when (position) {
+            0 -> {
+                fragment = GoalsFragment()
+                title = getString(R.string.app_bar_goals)
+            }
+            2 -> {
+                fragment = ResourceLibraryFragment()
+                title = getString(R.string.app_bar_users_library)
+            }
+        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.content_frame, fragment)
+        transaction.commit()
+        supportActionBar?.title = title
     }
 
     private fun setInitialFragment() {
@@ -138,12 +163,6 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
                     displayedFragment = ResourceLibraryFragment()
                     actionBarTitle = getString(R.string.app_bar_users_library)
                 }
-                R.id.nav_timeline -> {
-
-                }
-                R.id.nav_setting -> {
-
-                }
                 R.id.nav_logout -> {
                     val userRepository = (application as GoalzApp).userRepository
                     userRepository.removeMessagingToken( FirebaseAuth.getInstance().currentUser!!.uid)
@@ -151,7 +170,6 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
                     val intent = Intent(this, OnboardingActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-
                 }
 
             // Without login menu
@@ -161,10 +179,11 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
                 }
                 R.id.nav_signup -> {
-
+                    val intent = Intent(this, SignupActivity::class.java)
+                    startActivity(intent)
                 }
             }
-            item.setChecked(true)
+            item.isChecked = true
 
             // Set selected/ default fragment and appbarTitle
             val transaction = supportFragmentManager.beginTransaction()

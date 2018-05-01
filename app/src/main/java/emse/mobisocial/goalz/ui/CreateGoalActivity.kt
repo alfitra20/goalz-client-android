@@ -11,14 +11,15 @@ import emse.mobisocial.goalz.model.GoalTemplate
 import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
 import kotlinx.android.synthetic.main.activity_create_goal.*
 import java.text.SimpleDateFormat
-
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
+import android.support.v7.content.res.AppCompatResources
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -48,6 +49,7 @@ class CreateGoalActivity : AppCompatActivity() {
     private lateinit var parentSpinner: Spinner
     private lateinit var submitBtn : Button
     private lateinit var pickDateIb : ImageButton
+    private lateinit var mSnackbar: Snackbar
 
     private var selectedParentId : String? = null
 
@@ -99,6 +101,8 @@ class CreateGoalActivity : AppCompatActivity() {
         parentSpinner = findViewById(R.id.create_goal_activity_parent_sp)
         submitBtn = findViewById(R.id.create_goal_activity_submit_btn)
         pickDateIb = findViewById(R.id.create_goal_activity_pick_date_ib)
+
+        deadlineEt.isEnabled = false
 
         //Set initial values in case we come from a clone action
         if (title != null) titleEt.setText(title)
@@ -164,7 +168,7 @@ class CreateGoalActivity : AppCompatActivity() {
             val topic = topicEt.text.toString()
             var date : Date? = null
             if(!areValidFields(title, topic, description)) {
-                showInvalidFieldsToast()
+                launchSnackbar(getString(R.string.create_goal_activity_invalid_fields_toast))
                 return
             }
 
@@ -184,9 +188,10 @@ class CreateGoalActivity : AppCompatActivity() {
             return title != "" && description != "" && topic != ""
         }
 
-        private fun showInvalidFieldsToast() {
-            Toast.makeText(this@CreateGoalActivity, getString(R.string.create_goal_activity_invalid_fields_toast),
-                    Toast.LENGTH_SHORT).show()
+        private fun launchSnackbar(title: String) {
+            mSnackbar = Snackbar.make(create_goal_layout, title, Snackbar.LENGTH_SHORT)
+            mSnackbar.view.background = AppCompatResources.getDrawable(this@CreateGoalActivity, R.color.snackbarErrorColor)
+            mSnackbar.show()
         }
     }
 
@@ -226,6 +231,7 @@ class CreateGoalActivity : AppCompatActivity() {
                 val intent = Intent(this@CreateGoalActivity, GoalActivity::class.java)
                 intent.putExtra("goal_id", response.id)
                 startActivity(intent)
+
                 Toast.makeText(this@CreateGoalActivity,
                         getString(R.string.create_goal_activity_success_toast),
                         Toast.LENGTH_LONG).show()

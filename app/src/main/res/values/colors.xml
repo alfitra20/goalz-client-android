@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="progressBarFG">#2a9aea</color>
     <color name="progressBarBG">#a6adb2</color>
+    <color name="snackbarErrorColor">#FF6347</color>
+    <color name="snackbarActionColor">#FFFFFF</color>
 </resources>

@@ -19,9 +19,9 @@ data class UserDetails(
         @ColumnInfo(name = "user_id")
         var userId : String, //DO NOT UPDATE
         @ColumnInfo(name = "first_name")
-        var firstName : String,
+        var firstName : String?,
         @ColumnInfo(name = "last_name")
-        var lastName : String,
+        var lastName : String?,
         @ColumnInfo(name = "email")
         var email : String,
         @ColumnInfo(name = "age")
