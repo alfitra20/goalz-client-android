@@ -21,6 +21,7 @@ import java.util.*
 import android.widget.Toast
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
+import emse.mobisocial.goalz.util.IDialogResultListener
 
 class GoalActivity : AppCompatActivity(), IDialogResultListener {
 
@@ -278,7 +279,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
     inner class SubgoalsListObserver : Observer<List<Goal>> {
         override fun onChanged(goals: List<Goal>?) {
             if (goals != null) {
-                subgoalFragment.updateContent(goals)
+                subgoalFragment.updateContent(goals, model.state != GoalViewModel.State.UNAUTH)
             }
         }
     }

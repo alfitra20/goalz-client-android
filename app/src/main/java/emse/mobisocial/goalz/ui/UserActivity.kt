@@ -21,26 +21,22 @@ import kotlinx.android.synthetic.main.activity_user.*
 class UserActivity : AppCompatActivity() {
     private lateinit var model : UserProfileViewModel
     private var userId:String? = null
-    private var loggedin = false
+    private var isOwnProfile = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
+
+        val userId = intent.getStringExtra("user_id") ?: finish()
+        val authUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        isOwnProfile = (authUserId != null && userId == authUserId)
 
         model = ViewModelProviders.of(this).get(UserProfileViewModel::class.java)
-        val userIdFromExplore : String? = intent.getStringExtra("user_id")
-        userId = FirebaseAuth.getInstance().currentUser?.uid
+        initializeModel(userId as String)
 
+        setContentView(R.layout.activity_user)
 
-        if(userIdFromExplore != null){
-            initializeModel(userIdFromExplore)
-        }else{
-            if(userId!=null) {
-                initializeModel(userId!!)
-                loggedin = true
-            }
-        }
         initializeOnCLickListener()
     }
 
@@ -65,7 +61,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if(loggedin) {
+        if(isOwnProfile) {
             menuInflater.inflate(R.menu.menu_user, menu)
         }
         return true
@@ -100,9 +96,20 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun launchIntent(position:Int){
-        val intent = Intent(this, BaseActivity::class.java)
-        intent.putExtra("position", position)
-        startActivity(intent)
+        if (position == 0 && !isOwnProfile){
+            val user = model.userData.value ?: return
+
+            val intent = Intent(this, GoalsActivity::class.java)
+            intent.putExtra("user_id", user.id)
+            intent.putExtra("user_nickname", user.nickname)
+            startActivity(intent)
+        }
+        else {
+            val intent = Intent(this, BaseActivity::class.java)
+            intent.putExtra("position", position)
+            startActivity(intent)
+        }
+
     }
 
     private fun setUserData(user:User){

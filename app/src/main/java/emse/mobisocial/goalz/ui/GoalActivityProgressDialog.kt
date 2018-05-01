@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.widget.SeekBar
 import android.widget.TextView
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.util.IDialogResultListener
 
 /**
  * Created by MobiSocial EMSE Team on 4/28/2018.

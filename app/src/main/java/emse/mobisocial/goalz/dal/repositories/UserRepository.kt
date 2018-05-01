@@ -14,6 +14,7 @@ import java.util.concurrent.Executor
 import com.google.firebase.auth.AuthResult
 import com.google.android.gms.tasks.OnCompleteListener
 import android.util.Log
+import com.google.firebase.iid.FirebaseInstanceId
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.dal.remote.data.UserFb
@@ -83,6 +84,35 @@ class UserRepository private constructor(
             })
 
         return result
+    }
+
+    override fun setMessagingToken(userId : String, token : String) {
+        networkExecutor.execute {
+            val updateInfo = HashMap<String, Any?>()
+            updateInfo["token"] = token
+            remoteUserTable.child(userId).child("tokens").child(token).setValue(true, { error, _ ->
+                if (error == null) {
+                    Log.d("TOKEN SERVICE", "Successfully save token")
+                }
+                else {
+                    Log.d("TOKEN SERVICE", "Fail to save token")
+                }
+            })
+        }
+    }
+
+    override fun removeMessagingToken(userId : String) {
+        networkExecutor.execute {
+            val token = FirebaseInstanceId.getInstance().token
+            remoteUserTable.child(userId).child("tokens").child(token).removeValue({ error, _ ->
+                if (error == null) {
+                    Log.d("TOKEN SERVICE", "Successfully remove token")
+                }
+                else {
+                    Log.d("TOKEN SERVICE", "Fail to remove token")
+                }
+            })
+        }
     }
 
     //Update

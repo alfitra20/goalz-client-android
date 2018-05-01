@@ -20,6 +20,10 @@ interface IUserRepository {
     //Insert
     fun registerUser(template: UserTemplate) : LiveData<DalResponse>
 
+    fun setMessagingToken(userId : String, token : String)
+
+    fun removeMessagingToken(userId : String)
+
     //Update
     fun updateUser(user: User) : LiveData<DalResponse>
 }
