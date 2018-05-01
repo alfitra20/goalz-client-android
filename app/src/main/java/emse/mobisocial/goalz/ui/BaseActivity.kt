@@ -22,6 +22,7 @@ import android.preference.PreferenceManager
 import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
+import android.support.v7.content.res.AppCompatResources
 import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
@@ -126,6 +127,7 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
             }
+
             addGoalButton.setOnClickListener {
                 val intent = Intent(this, CreateGoalActivity::class.java)
                 startActivity(intent)

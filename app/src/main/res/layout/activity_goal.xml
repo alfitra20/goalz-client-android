@@ -154,9 +154,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabIndicatorColor="@color/colorSecondary"
                 app:tabSelectedTextColor="@color/colorPrimary"
-                app:tabTextColor="@android:color/holo_blue_dark">
+                app:tabTextColor="@color/colorPrimary">
 
                 <android.support.design.widget.TabItem
                     android:id="@+id/goal_activity_subgoals_tab"

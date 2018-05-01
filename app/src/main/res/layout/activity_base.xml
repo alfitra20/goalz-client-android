@@ -26,7 +26,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorPrimaryDark"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.AppBarLayout>
@@ -45,27 +45,29 @@
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
             app:menu_showShadow="true"
-            app:menu_colorNormal="#DA4336"
-            app:menu_colorPressed="#E75043"
-            app:menu_colorRipple="#99FFFFFF"
+            app:menu_colorNormal="@color/colorSecondary"
+            app:menu_colorPressed="@color/colorSecondaryLight"
+            app:menu_colorRipple="@color/colorSecondary"
             app:menu_openDirection="up"
-            app:srcCompat="@android:drawable/ic_menu_add">
+            app:menu_icon="@drawable/ic_add_black_24dp">
 
             <com.github.clans.fab.FloatingActionButton
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 app:fab_label="Create a new Goal"
                 app:fab_size="normal"
+                app:fab_colorNormal="@color/colorSecondary"
                 android:id="@+id/addGoalButton"
-                android:src="@drawable/goal_white"/>
+                android:src="@drawable/goal_icon_black"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 app:fab_label="Create a new Resource"
                 app:fab_size="normal"
+                app:fab_colorNormal="@color/colorSecondary"
                 android:id="@+id/addResourceButton"
-                android:src="@drawable/resource_white"/>
+                android:src="@drawable/resource_icon_black"/>
         </com.github.clans.fab.FloatingActionMenu>
 
         <android.support.v4.view.ViewPager
