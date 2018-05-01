@@ -279,7 +279,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
     inner class SubgoalsListObserver : Observer<List<Goal>> {
         override fun onChanged(goals: List<Goal>?) {
             if (goals != null) {
-                subgoalFragment.updateContent(goals)
+                subgoalFragment.updateContent(goals, model.state != GoalViewModel.State.UNAUTH)
             }
         }
     }

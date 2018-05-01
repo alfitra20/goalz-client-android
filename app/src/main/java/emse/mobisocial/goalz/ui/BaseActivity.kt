@@ -23,17 +23,14 @@ import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.util.Log
-import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 
 import emse.mobisocial.goalz.GoalzApp
 
 open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
 
-    private var loggedIn =  false
-    private lateinit var mContext:Context
+    private var loggedInUserId : String? = null
     private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var mFirebaseAuth : FirebaseAuth
     private lateinit var mSnackbar: Snackbar
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -46,17 +43,15 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         setContentView(R.layout.activity_base)
         setSupportActionBar(toolbar)
         Log.d("support", supportActionBar.toString())
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val withoutLogin= preferences.getBoolean("without_login", false)
-        if (!withoutLogin){
-            loggedIn = true
-        }
-        mSnackbar = Snackbar.make(base_layout,
-                                "You are not logged in", Snackbar.LENGTH_LONG)
-        val loginIntent = Intent(this, LoginActivity::class.java)
-        mSnackbar.setAction("Login") { startActivity(loginIntent) }
 
-        mContext = this@BaseActivity
+        loggedInUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if(loggedInUserId == null) {
+            mSnackbar = Snackbar.make(base_layout,
+                    "You are not logged in", Snackbar.LENGTH_LONG)
+            val loginIntent = Intent(this, LoginActivity::class.java)
+            mSnackbar.setAction("Login") { startActivity(loginIntent) }
+        }
 
         val receivedRequest:Int? = intent.getIntExtra("position", 0)
         if (receivedRequest != null) {
@@ -64,8 +59,11 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         }else{
             setInitialFragment()
         }
+
         setUpNav()
+
         toggle.syncState()
+
         ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),1)
     }
 
@@ -74,7 +72,7 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         var title : String? = null
         when (position) {
             0 -> {
-                fragment = GoalsFragment()
+                fragment = MyGoalsFragment()
                 title = getString(R.string.app_bar_goals)
             }
             2 -> {
@@ -89,9 +87,9 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
     }
 
     private fun setInitialFragment() {
-        if (loggedIn) {
+        if (loggedInUserId != null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.content_frame, GoalsFragment())
+            transaction.replace(R.id.content_frame, MyGoalsFragment())
             transaction.commit()
             supportActionBar?.title = getString(R.string.app_bar_goals)
         } else {
@@ -118,13 +116,15 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         // Initialize default views
         // When the user logged in the profile picture and nickname will redirect to user's profile
         // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
-        if (loggedIn) {
+        if (loggedInUserId != null) {
             sidebarNickname.setOnClickListener {
                 val intent = Intent(this, UserActivity::class.java)
+
                 startActivity(intent)
             }
             profileImage.setOnClickListener {
                 val intent = Intent(this, UserActivity::class.java)
+                intent.putExtra("user_id", loggedInUserId)
                 startActivity(intent)
             }
             addGoalButton.setOnClickListener {
@@ -156,7 +156,7 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
             // Available only for user who login
                 R.id.nav_goals -> {
-                    displayedFragment = GoalsFragment()
+                    displayedFragment = MyGoalsFragment()
                     actionBarTitle = getString(R.string.app_bar_goals)
                 }
                 R.id.nav_library -> {

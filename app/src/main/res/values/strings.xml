@@ -82,4 +82,7 @@
 
     <!-- Notification -->
     <string name="notification_new_recommendation_title">New Recommendation</string>
+
+    <!-- Goals Activity -->
+    <string name="goals_activity_appbar_title">\'s goals</string>
 </resources>

@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
                         launchSnackbar("Login Success")
                         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                         preferences.edit()
-                                .putBoolean("without_login", false)
+                                .putBoolean("without_onboarding", false)
                                 .apply()
                         val intent = Intent(this, BaseActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

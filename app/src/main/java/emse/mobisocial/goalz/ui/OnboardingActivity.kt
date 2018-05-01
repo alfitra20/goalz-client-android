@@ -25,7 +25,7 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val withoutLogin  = preferences.getBoolean("without_login", false)
+        val withoutLogin  = preferences.getBoolean("without_onboarding", false)
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (withoutLogin || userId!=null){
             val intent = Intent(this, BaseActivity::class.java)
@@ -61,7 +61,7 @@ class OnboardingActivity : AppCompatActivity() {
         }
         without_login_button.setOnClickListener{
             preferences.edit()
-                    .putBoolean("without_login", true)
+                    .putBoolean("without_onboarding", true)
                     .apply()
             val intent = Intent(this, BaseActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

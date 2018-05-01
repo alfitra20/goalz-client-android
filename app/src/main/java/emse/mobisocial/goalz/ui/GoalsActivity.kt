@@ -1,57 +1,96 @@
 package emse.mobisocial.goalz.ui
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.Guideline
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ProgressBar
+import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
+import emse.mobisocial.goalz.ui.viewModels.GoalsViewModel
+import java.util.ArrayList
 
+class GoalsActivity : AppCompatActivity() {
 
-class GoalActivitySubgoalsFragment : Fragment() {
+    private lateinit var model : GoalsViewModel
 
-    private var isAuth : Boolean = false
     private lateinit var recyclerView : RecyclerView
-    private var recyclerViewAdapter : RecyclerViewAdapter = RecyclerViewAdapter(ArrayList<Goal>())
+    private lateinit var recyclerViewAdapter : RecyclerViewAdapter
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        val view = inflater!!.inflate(R.layout.fragment_goal_activity_subgoals, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        val layoutManager = LinearLayoutManager(activity)
+        var userId = intent.getStringExtra("user_id") ?: finish()
+        var userNickname = intent.getStringExtra("user_nickname") ?: finish()
 
-        recyclerView = view.findViewById(R.id.goal_activity_list)
+        //Initialize model and user
+        val authUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if(authUserId != null && authUserId == (userId as String)){
+            // Normally should not reach this point. In case you do redirect to my user fragment
+            // TODO: Add code here
+        }
+        model = ViewModelProviders.of(this).get(GoalsViewModel::class.java)
+        model.initialize(userId as String, userNickname as String)
+
+        //Initialize view
+        setContentView(R.layout.activity_goals)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        supportActionBar!!.setDisplayShowHomeEnabled(true);
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.title = "${model.userNickname}${getString(R.string.goals_activity_appbar_title)}"
+
+        recyclerView = findViewById(R.id.goals_activity_reciclerview)
+
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = layoutManager
-
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerViewAdapter = RecyclerViewAdapter(ArrayList<Goal>())
         recyclerView.adapter = recyclerViewAdapter
 
-        return view
+        // Initialize model observers
+        model.goals.observe(this, Observer<List<Goal>> { goals ->
+            if (goals != null) {
+                recyclerViewAdapter.addItems(goals)
+            }
+        })
     }
 
-    fun updateContent(subgoalsList : List<Goal>, isAuth : Boolean) {
-        this.isAuth = isAuth
-        recyclerViewAdapter.addItems(subgoalsList)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        when (id) {
+            android.R.id.home -> {
+                onBackPressed();
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
-    inner class RecyclerViewAdapter(values : List<Goal>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
-        private var values: List<Goal> = values
+    // Recycler view adapter
+    inner class RecyclerViewAdapter(goalsParam: ArrayList<Goal>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
+        private var mGoals: List<Goal> = goalsParam
 
         override fun getItemCount(): Int {
-            return values.size
+            return mGoals.size
         }
 
         fun addItems(newGoalsList: List<Goal>) {
-            this.values = newGoalsList
+            this.mGoals = newGoalsList
             notifyDataSetChanged()
         }
 
@@ -62,7 +101,7 @@ class GoalActivitySubgoalsFragment : Fragment() {
 
         override fun onBindViewHolder(goalViewHolder: GoalViewHolder, i: Int) {
             // The data from the goal model is retrieved and bound to the card View here.
-            val goal = values[i]
+            val goal = mGoals[i]
 
             goalViewHolder.goalTitle.text = goal.title
             goalViewHolder.goalTopic.text = goal.topic
@@ -78,12 +117,12 @@ class GoalActivitySubgoalsFragment : Fragment() {
 
             goalViewHolder.itemView.setOnClickListener {
                 val goalId = goal.id
-                val intent = Intent(activity, GoalActivity::class.java)
+                val intent = Intent(this@GoalsActivity, GoalActivity::class.java)
                 intent.putExtra("goal_id", goalId)
                 startActivity(intent)
             }
             goalViewHolder.cloneBtn.setOnClickListener {
-                val intent = Intent(activity, CreateGoalActivity::class.java)
+                val intent = Intent(this@GoalsActivity, CreateGoalActivity::class.java)
                 intent.putExtra("title", goal.title)
                 intent.putExtra("topic", goal.topic)
                 intent.putExtra("description", goal.description)
@@ -91,7 +130,7 @@ class GoalActivitySubgoalsFragment : Fragment() {
             }
             goalViewHolder.contributeBtn.setOnClickListener {
                 val goalId = goal.id
-                val intent = Intent(activity, CreateRecommendationActivity::class.java)
+                val intent = Intent(this@GoalsActivity, CreateRecommendationActivity::class.java)
                 intent.putExtra("goal_id", goalId)
                 startActivity(intent)
             }
@@ -118,6 +157,7 @@ class GoalActivitySubgoalsFragment : Fragment() {
                 expandBtn.setImageResource(R.drawable.ic_expand_more_black_36dp)
 
                 expandBtn.setOnClickListener {
+                    Log.d("CARD","Click occurred")
                     isExpanded = !isExpanded
 
                     if (isExpanded) {
@@ -125,7 +165,7 @@ class GoalActivitySubgoalsFragment : Fragment() {
                         guideline.visibility = View.GONE
                         expandBtn.setImageResource(R.drawable.ic_expand_less_black_36dp)
 
-                        if(isAuth) {
+                        if(model.userId != null) {
                             cloneBtn.visibility = View.VISIBLE
                             contributeBtn.visibility = View.VISIBLE
                         }
