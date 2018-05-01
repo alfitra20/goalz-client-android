@@ -6,7 +6,7 @@
         android:toAlpha = "0.5"
         android:duration = "300">
     </alpha>
-    <scale
+    <!--<scale
         android:fromXScale = "1"
         android:toXScale = "0.9"
         android:fromYScale = "1"
@@ -14,5 +14,5 @@
         android:pivotX="50%"
         android:pivotY="50%"
         android:duration = "50">
-    </scale>
+    </scale>-->
 </set>

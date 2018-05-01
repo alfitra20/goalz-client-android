@@ -1,8 +1,12 @@
 package emse.mobisocial.goalz.ui.resource_library;
 
+import android.app.AlertDialog;
+import android.arch.lifecycle.LiveData;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.customtabs.CustomTabsCallback;
@@ -16,24 +20,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
 import java.util.List;
 
 import emse.mobisocial.goalz.R;
 import emse.mobisocial.goalz.model.Resource;
+import emse.mobisocial.goalz.model.ResourceKt;
+import emse.mobisocial.goalz.ui.viewModels.ResourceLibraryViewModel;
 import emse.mobisocial.goalz.util.ImageExtractor;
 
 public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibraryAdapter.ResourceViewHolder> {
+    ResourceLibraryViewModel model;
     private Context context;
     private List<Resource> resources;
-    private HashMap imageUrls;
     public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
+    String userId;
 
     public static class ResourceViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
         public TextView title;
@@ -47,11 +58,15 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         public ImageView rating_level3;
         public ImageView rating_level4;
         public ImageView rating_level5;
+        public TextView resource_rating_count;
+        public Button deleteButton;
+        public Button addToGoalButton;
         //public View frameLayout;
         //
-        CustomTabsServiceConnection mCustomTabsServiceConnection;
-        CustomTabsSession mCustomTabsSession;
-        CustomTabsClient mClient;
+        //CustomTabsServiceConnection mCustomTabsServiceConnection;
+        //CustomTabsSession mCustomTabsSession;
+        //CustomTabsClient mClient;
+        public ImageView timeIcon;
 
         public ResourceViewHolder(View v) {
             super(v);
@@ -60,12 +75,14 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
             //link = (TextView) itemView.findViewById(R.id.resource_link);
             image = (ImageView) itemView.findViewById(R.id.resource_image);
             avgReqTime = (TextView) itemView.findViewById(R.id.resource_time);
-            //avgReqTimeText = (TextView) itemView.findViewById(R.id.resource_time_word);
             rating_level1 = (ImageView) itemView.findViewById(R.id.resource_rating_level_1);
             rating_level2 = (ImageView) itemView.findViewById(R.id.resource_rating_level_2);
             rating_level3 = (ImageView) itemView.findViewById(R.id.resource_rating_level_3);
             rating_level4 = (ImageView) itemView.findViewById(R.id.resource_rating_level_4);
             rating_level5 = (ImageView) itemView.findViewById(R.id.resource_rating_level_5);
+            timeIcon = (ImageView) itemView.findViewById(R.id.resource_time_icon);
+            resource_rating_count = (TextView) itemView.findViewById(R.id.resource_rating_count);
+            deleteButton = (Button) itemView.findViewById(R.id.delete_button);
            // frameLayout = (FrameLayout) itemView.findViewById(R.id.resource_frame);
         }
 
@@ -75,10 +92,12 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         }*/
     }
 
-    public ResourceLibraryAdapter(Context context, List<Resource> resources, HashMap<String, String> imageUrls) {
+    public ResourceLibraryAdapter(Context context, List<Resource> resources,
+                                  ResourceLibraryViewModel model, String userId) {
         this.context = context;
         this.resources = resources;
-        this.imageUrls =  imageUrls;
+        this.model = model;
+        this.userId = userId;
 
         /*CustomTabsClient.bindCustomTabsService(context, CUSTOM_TAB_PACKAGE_NAME, new CustomTabsServiceConnection() {
             @Override
@@ -95,10 +114,6 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         });*/
     }
 
-    public HashMap getImageUrls() {
-        return imageUrls;
-    }
-
     @Override
     public ResourceViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.resource_library_card, viewGroup, false);
@@ -113,23 +128,30 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         holder.topic.setText(resources.get(position).getTopic());
         holder.title.setText(resources.get(position).getTitle());
 
-        String link = resources.get(position).getLink();
+
+
+        /*String link = resources.get(position).getLink();
         int i1 = link.indexOf("//")+2;
         int i2 = link.indexOf('/', i1);
         link = link.substring(i1, i2);
         if (!link.startsWith("www")) {
             link = "www." + link;
-        }
+        }*/
         //holder.link.setText(link);
 
         int avgReqTime = resources.get(position).getAvgReqTime();
-        if(avgReqTime/60 < 1) { // less than an hour
+        if(avgReqTime == ResourceKt.DEFAULT_RESOURCE_AVG_TIME) {
+            holder.avgReqTime.setText("");
+            holder.timeIcon.setImageDrawable(null);
+        } else if(avgReqTime/60 < 1) { // less than an hour
             /*if(avgReqTime == 1) {
                 holder.avgReqTimeText.setText("minute");
             } else {
                 holder.avgReqTimeText.setText("minutes");
             }*/
             //holder.avgReqTimeText.setText("min");
+            holder.avgReqTime.setText(String.valueOf(avgReqTime) + " min");
+            holder.timeIcon.setImageResource(R.drawable.clock_outline2);
         } else {
             avgReqTime /= 60;
             /*if(avgReqTime == 1) {
@@ -138,8 +160,10 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                 holder.avgReqTimeText.setText("hours");
             }*/
             //holder.avgReqTimeText.setText("hr");
+            holder.avgReqTime.setText("  "+String.valueOf(avgReqTime) + " hr");
+            holder.timeIcon.setImageResource(R.drawable.clock_outline2);
         }
-        holder.avgReqTime.setText(String.valueOf(avgReqTime));
+
 
         // setting rating:
         int rating = (int) Math.round(resources.get(position).getRating());
@@ -226,6 +250,12 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
             }
         }
 
+        if(resources.get(position).getRecommendation_no() == 1) {
+            holder.resource_rating_count.setText(resources.get(position).getRecommendation_no()+" review");
+        } else {
+            holder.resource_rating_count.setText(resources.get(position).getRecommendation_no()+" reviews");
+        }
+
         String imageUrl = resources.get(position).getImageUrl();
         if(imageUrl != null){
             Glide.with(context).resumeRequests();
@@ -266,7 +296,7 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         thread.setName("Fckin thread");
         thread.start();*/
 
-        /*holder.frameLayout.setOnClickListener(new View.OnClickListener(){
+        holder.image.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 //Intent intent = new Intent(context, WebViewActivity.class);
                 //intent.putExtra("url", resources.get(position).getLink());
@@ -286,7 +316,7 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                 }
             }
         });
-        holder.link.setOnClickListener(new View.OnClickListener(){
+        /*holder.link.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 v.startAnimation(AnimationUtils.loadAnimation(context, R.anim.resource_click));
                 try {
@@ -301,6 +331,42 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                 }
             }
         });*/
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Resource Library");
+
+                builder.setMessage("Are you sure you want to delete the resource?");
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        LiveData response = model.deleteResource(userId, resources.get(position).getId());
+                        CharSequence text = "Resource deleted";
+
+                        resources.remove(holder.getAdapterPosition());
+                        notifyItemRemoved(holder.getAdapterPosition());
+
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+                Button nbutton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                nbutton.setTextColor(Color.rgb(82, 190, 128));
+                Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                pbutton.setTextColor(Color.rgb(203, 67, 53));
+            }
+        });
     }
 
     @Override

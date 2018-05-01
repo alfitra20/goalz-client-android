@@ -61,9 +61,9 @@
         <activity
             android:name=".ui.EditProfileActivity"
             android:label="@string/title_activity_edit_profile">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".ui.UserActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.UserActivity" />
         </activity>
         <activity
             android:name=".ui.ChangeEmailPasswordActivity"
@@ -72,7 +72,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.EditProfileActivity" />
         </activity>
-
         <activity android:name=".ui.resource_library.WebViewActivity" />
         <activity android:name=".ui.EditGoalActivity" />
 
@@ -84,8 +83,8 @@
             android:name=".dal.remote.FirebaseConnectionService"
             android:exported="false" />
 
-        <activity android:name=".ui.CreateRecommendationActivity"></activity>
-
+        <activity android:name=".ui.CreateRecommendationActivity" />
+        <activity android:name=".ui.resource_library.AlertDialogActivity"></activity>
     </application>
 
 </manifest>

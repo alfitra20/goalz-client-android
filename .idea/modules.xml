@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/goalz-client-android.iml" filepath="$PROJECT_DIR$/goalz-client-android.iml" />
-=======
-      <module fileurl="file://$PROJECT_DIR$/Goalz.iml" filepath="$PROJECT_DIR$/Goalz.iml" />
-      <module fileurl="file://C:/Projects/EMSE - Oulu/goalz-client-android/Goalz.iml" filepath="C:/Projects/EMSE - Oulu/goalz-client-android/Goalz.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/goalz-client-android.iml" filepath="$PROJECT_DIR$/goalz-client-android.iml" />
-      <module fileurl="file://E:/Documents/Projects/AndroidProjects/Goalz/goalz-client-android.iml" filepath="E:/Documents/Projects/AndroidProjects/Goalz/goalz-client-android.iml" />
->>>>>>> 4ddb516588936fbf3c44ca23b63ab3645daeb629
     </modules>
   </component>
 </project>

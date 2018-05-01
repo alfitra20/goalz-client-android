@@ -14,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,25 +96,14 @@ public class ResourceLibraryFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.resource_library_recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        // here user's Id will be taken from shared preferences
-        String userId = "1";
 
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) getActivity().finish();
+        String userId  = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        model.getResourceLibrary(userId);
         initializeObservers(userId);
         // temporary, above and below
         //List<Resource> meh = new ArrayList<>();
         //tempData(meh);
-
-        /*Gson gson = new Gson();
-        SharedPreferences prefs = getContext().getSharedPreferences("imgUrls", Context.MODE_PRIVATE);
-        String storedImgUrls = prefs.getString("imgUrls", "");
-        HashMap<String, String> imgUrls;
-        if(storedImgUrls.equals("")) {
-            imgUrls = new HashMap<String, String>();
-        } else {
-            java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>(){}.getType();
-            imgUrls = gson.fromJson(storedImgUrls, type);
-        }*/
-
         //mAdapter = new ResourceLibraryAdapter(getContext(), meh, new HashMap<String, String>());
         //mRecyclerView.setAdapter(mAdapter);
         return view;
@@ -158,7 +150,7 @@ public class ResourceLibraryFragment extends Fragment {
 
     private void initializeObservers(String userId) {
         model.resources.observe(this, resources -> {
-            mAdapter = new ResourceLibraryAdapter(getContext(), resources, new HashMap<>());
+            mAdapter = new ResourceLibraryAdapter(getContext(), resources, model, userId);
             mRecyclerView.setAdapter(mAdapter);
         });
     }
