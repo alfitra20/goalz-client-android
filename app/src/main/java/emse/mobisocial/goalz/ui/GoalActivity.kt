@@ -21,6 +21,7 @@ import java.util.*
 import android.widget.Toast
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
+import emse.mobisocial.goalz.util.IDialogResultListener
 
 class GoalActivity : AppCompatActivity(), IDialogResultListener {
 

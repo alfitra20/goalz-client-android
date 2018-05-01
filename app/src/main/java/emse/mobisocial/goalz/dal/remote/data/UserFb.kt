@@ -20,6 +20,7 @@ class UserFb constructor() : FirebaseData<User> {
     var email : String? = null
     var age : Int? = null
     var gender : String? = null
+    var avatar : Int = 0
 
     constructor(template: UserTemplate) : this() {
         nickname = template.nickname
@@ -33,7 +34,7 @@ class UserFb constructor() : FirebaseData<User> {
 
     override fun toEntity(id: String): User {
         return User(id, nickname!!, rating, website, Date(registrationDate*1000), firstname!!
-                , lastname!!, email!!, age!!, Gender.valueOf(gender!!))
+                , lastname!!, email!!, age!!, Gender.valueOf(gender!!), avatar)
     }
 
 }

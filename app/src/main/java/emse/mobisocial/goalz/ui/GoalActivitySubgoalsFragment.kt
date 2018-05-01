@@ -3,7 +3,6 @@ package emse.mobisocial.goalz.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -63,14 +62,14 @@ class GoalActivitySubgoalsFragment : Fragment() {
         }
 
         override fun onBindViewHolder(goalViewHolder: GoalViewHolder, i: Int) {
-            // The data from the goal model is retrieved and bound to the card View here.
+            /*// The data from the goal model is retrieved and bound to the card View here.
             goalViewHolder.goalTitle.text = values[i].title
             goalViewHolder.goalTopic.text = values[i].topic
             if (values[i].status == 0){
                 goalViewHolder.goalStatusImage.setImageResource(R.drawable.incomplete)
             }else{
                 goalViewHolder.goalStatusImage.setImageResource(R.drawable.completed2)
-            }
+            }*/
         }
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
@@ -78,7 +77,7 @@ class GoalActivitySubgoalsFragment : Fragment() {
         }
 
         inner class GoalViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            internal var goalTitle: TextView = itemView.findViewById<View>(R.id.goal_title) as TextView
+            /*internal var goalTitle: TextView = itemView.findViewById<View>(R.id.goal_card_title) as TextView
             internal var goalTopic: TextView = itemView.findViewById<View>(R.id.goal_topic) as TextView
             internal var goalStatusImage: ImageView = itemView.findViewById(R.id.status_image) as ImageView
 
@@ -89,7 +88,7 @@ class GoalActivitySubgoalsFragment : Fragment() {
                     intent.putExtra("goal_id", goalId)
                     startActivity(intent)
                 }
-            }
+            }*/
         }
     }
 }

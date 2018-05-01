@@ -28,10 +28,12 @@ data class User(
         @ColumnInfo(name = "age")
         var age : Int,
         @ColumnInfo(name = "gender")
-        var gender : Gender){
+        var gender : Gender,
+        @ColumnInfo(name = "avatar")
+        var avatar : Int ){
 
         fun getUserMinimal() : UserMinimal {
-                return UserMinimal(id, nickname, rating, website, registrationDate)
+                return UserMinimal(id, nickname, rating, website, registrationDate, avatar)
         }
 
         fun getUserDetails() : UserDetails {

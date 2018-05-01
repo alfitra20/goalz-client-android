@@ -2,10 +2,10 @@ package emse.mobisocial.goalz.ui
 
 import android.app.Dialog
 import android.app.DialogFragment
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import emse.mobisocial.goalz.R
+import emse.mobisocial.goalz.util.IDialogResultListener
 
 /**
  * Created by MobiSocial EMSE Team on 4/28/2018.
