@@ -17,10 +17,7 @@
     <color name="snackbarErrorColor">#FF6347</color>
     <color name="snackbarActionColor">#FFFFFF</color>
     <color name="greyColor">#CCCCCC</color>
-<<<<<<< HEAD
-
-=======
     <color name="textHintNotActive">#A9A9A9</color>
->>>>>>> 116966287316b3e80a685e07486a2a347084b774
+
 </resources>
 
