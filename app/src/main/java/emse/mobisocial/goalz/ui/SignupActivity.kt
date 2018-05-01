@@ -21,7 +21,7 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        supportActionBar?.title = "Sign up"
+        supportActionBar?.title = application.getString(R.string.signup_activity_appbar_title)
         transaction.replace(R.id.signup_frame, SignupNicknameFragment())
         transaction.commit()
     }

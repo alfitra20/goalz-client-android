@@ -18,7 +18,7 @@
             android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="70dp"
-            android:text="Enter your"
+            android:text="@string/signup_activity_enter_your_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/appCompatTextView3"
@@ -33,7 +33,7 @@
             android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="8dp"
-            android:text="Personal Information"
+            android:text="@string/signup_activity_personal_information_heading"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textSize="28sp"
             app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
@@ -65,7 +65,7 @@
             android:layout_marginTop="25dp"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/source_sans_pro_bold"
-            android:text="Next"
+            android:text="@string/signup_activity_next_button"
             android:textColor="#FFF"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +90,7 @@
                 android:id="@+id/firstname_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First Name"
+                android:hint="@string/signup_activity_firstname_hint"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
@@ -110,7 +110,7 @@
                 android:id="@+id/lastname_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Last Name"
+                android:hint="@string/signup_activity_lastname_hint"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
@@ -130,7 +130,7 @@
                 android:id="@+id/birthdate_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Birth date" />
+                android:hint="@string/signup_activity_birthdate_hint" />
         </android.support.design.widget.TextInputLayout>
 
     </android.support.constraint.ConstraintLayout>

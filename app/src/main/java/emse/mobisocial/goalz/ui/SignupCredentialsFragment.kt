@@ -27,6 +27,7 @@ private const val NICKNAME_PARAM = "nickname"
 private const val FIRSTNAME_PARAM = "firstname"
 private const val LASTNAME_PARAM = "lastname"
 private const val AGE_PARAM = "age"
+private const val LOGIN_ACTION = "login"
 
 class SignupCredentialsFragment : Fragment() {
 
@@ -67,9 +68,9 @@ class SignupCredentialsFragment : Fragment() {
             if (email != "" && password != "" && confirmPassword != "") {
                 if (checkEmail) {
                     if (password != confirmPassword) {
-                        launchSnackbar("Confirm password must be the same")
+                        launchSnackbar(activity.application.getString(R.string.signup_activity_wrong_password))
                     } else if (password.length < 8){
-                        launchSnackbar("Password is too short, Min: 8 Characters")
+                        launchSnackbar(activity.application.getString(R.string.signup_activity_password_too_short))
                     } else {
 
                         val newUser = UserTemplate(
@@ -83,16 +84,16 @@ class SignupCredentialsFragment : Fragment() {
                         registerUser(newUser)
                     }
                 } else {
-                    launchSnackbar("Wrong Email Format")
+                    launchSnackbar(activity.application.getString(R.string.signup_activity_wrong_email_format))
                 }
             }else if (email == "" && password == "" && confirmPassword == ""){
-                launchSnackbar("Please fill in all the Fields")
+                launchSnackbar(activity.application.getString(R.string.signup_activity_invalid_fields_snackbar))
             }else if (email == ""){
-                launchSnackbar("Email is required")
+                launchSnackbar(activity.application.getString(R.string.signup_activity_email_required))
             }else if (password == ""){
-                launchSnackbar("Password is required")
+                launchSnackbar(activity.application.getString(R.string.signup_activity_password_required))
             }else if (confirmPassword == ""){
-                launchSnackbar("Confirm Password required")
+                launchSnackbar(activity.application.getString(R.string.signup_activity_confirm_password_required))
             }
         }
         return view
@@ -115,12 +116,12 @@ class SignupCredentialsFragment : Fragment() {
                 val intent = Intent(mContext, BaseActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-                Toast.makeText(mContext, "Successfully Registered", Toast.LENGTH_LONG).show()
+                Toast.makeText(mContext, activity.application.getString(R.string.signup_activity_successful_toast), Toast.LENGTH_LONG).show()
             } else if (response?.status == DalResponseStatus.FAIL) {
                 val loginIntent = Intent(mContext, LoginActivity::class.java)
-                mSnackbar = Snackbar.make(signup_credentials_layout, "Email already Registered", Snackbar.LENGTH_LONG)
+                mSnackbar = Snackbar.make(signup_credentials_layout, activity.application.getString(R.string.signup_activity_email_registered_snackbar), Snackbar.LENGTH_LONG)
                 mSnackbar.view.background = getDrawable(mContext, R.color.snackbarErrorColor)
-                mSnackbar.setAction("Login") { startActivity(loginIntent) }
+                mSnackbar.setAction(LOGIN_ACTION) { startActivity(loginIntent) }
                 mSnackbar.setActionTextColor(R.color.snackbarActionColor)
                 mSnackbar.show()
             }

@@ -74,16 +74,28 @@ class EditGoalActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
+        var dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
         when (id) {
+
             R.id.edit_goal_activity_done_menu_item -> {
                 val title = titleEt.text.toString()
                 val topic = topicEt.text.toString()
                 val description = descriptionEt.text.toString()
                 val deadline = if (deadlineEt.text.toString() == "") null else stringToDate(deadlineEt.text.toString())
 
-                model.updateGoal(title, topic, description, deadline)?.observe(this, UpdateResponseObserver())
-                return true
+                if(!areValidFields(title, topic, description)) {
+                    launchSnackbar(getString(R.string.create_goal_activity_invalid_fields_toast))
+                }else {
+                    try {
+                        var date = dateFormat.parse(deadlineEt.text.toString())
+                    } catch (e: Exception) {
+                        //This block should be empty because if no date is given we proceed with null date
+                    }
+
+                    model.updateGoal(title, topic, description, deadline)?.observe(this, UpdateResponseObserver())
+                    return true
+                }
             }
             android.R.id.home -> {
                 onBackPressed()
@@ -92,6 +104,10 @@ class EditGoalActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun areValidFields(title : String, topic : String, description: String) : Boolean{
+        return title != "" && description != "" && topic != ""
     }
 
     //Helper methods
@@ -159,5 +175,4 @@ class EditGoalActivity : AppCompatActivity() {
         mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
-
 }

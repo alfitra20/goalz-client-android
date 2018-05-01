@@ -44,10 +44,10 @@ class CreateRecommendationActivity : AppCompatActivity() {
 
         //Initialize view
         setContentView(R.layout.activity_create_recommendation)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true);
-        supportActionBar!!.setDisplayShowHomeEnabled(true);
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
-        supportActionBar!!.title = getString(R.string.create_goal_activity_appbar_title)
+        supportActionBar!!.title = getString(R.string.create_recommendation_activity_appbar_title)
         supportActionBar!!.elevation = 0F
 
         titleEt = findViewById(R.id.create_recommendation_activity_title_et)
@@ -66,8 +66,8 @@ class CreateRecommendationActivity : AppCompatActivity() {
 
         when (id) {
             android.R.id.home -> {
-                onBackPressed();
-                return true;
+                onBackPressed()
+                return true
             }
         }
 
@@ -87,7 +87,7 @@ class CreateRecommendationActivity : AppCompatActivity() {
             val regTime = regTimeEt.text.toString()
 
             if(!areValidFields(resourceId, title, regTime, description)) {
-                showInvalidFieldsToast()
+                launchSnackbar(getString(R.string.create_recommendation_activity_invalid_fields_toast))
                 return
             }
 
@@ -109,9 +109,6 @@ class CreateRecommendationActivity : AppCompatActivity() {
             return  resourceId != "none" && title != "" && description != "" && regTime != ""
         }
 
-        private fun showInvalidFieldsToast() {
-            launchSnackbar(getString(R.string.create_recommendation_activity_invalid_fields_toast))
-        }
     }
 
     // Observers

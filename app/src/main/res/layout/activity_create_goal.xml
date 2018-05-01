@@ -58,7 +58,7 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="#FFFF"
         android:fontFamily="sans-serif"
-        android:text="Create the goal under:"
+        android:text="@string/create_goal_activity_parent_hint"
         android:textColor="#d9d9d9"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/create_goal_activity_parent_sp"
@@ -92,7 +92,7 @@
         android:layout_marginTop="15dp"
         android:backgroundTint="#0099ff"
         android:shadowColor="@color/colorPrimary"
-        android:text="CREATE GOAL"
+        android:text="@string/create_goal_activity_button_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -120,7 +120,7 @@
             android:id="@+id/create_goal_activity_title_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="@string/create_goal_activity_title_hint"
             android:textColor="#FFFF" />
     </android.support.design.widget.TextInputLayout>
 
@@ -141,7 +141,7 @@
             android:id="@+id/create_goal_activity_topic_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Goal Topic"
+            android:hint="@string/create_goal_activity_topic_hint"
             android:textColor="#FFFF" />
 
     </android.support.design.widget.TextInputLayout>
@@ -164,7 +164,7 @@
             android:id="@+id/create_goal_activity_description_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
+            android:hint="@string/create_goal_activity_description_hint"
             android:textColor="#FFFF" />
     </android.support.design.widget.TextInputLayout>
 
@@ -186,7 +186,7 @@
             android:id="@+id/create_goal_activity_deadline_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Deadline"
+            android:hint="@string/create_goal_activity_deadline_hint"
             android:textColor="#FFFF" />
     </android.support.design.widget.TextInputLayout>
 

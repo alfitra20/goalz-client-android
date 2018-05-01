@@ -10,10 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import emse.mobisocial.goalz.R
-import emse.mobisocial.goalz.model.UserMinimal
 import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
 import kotlinx.android.synthetic.main.fragment_signup_nickname_fragment.*
-import java.util.ArrayList
 
 private const val NICKNAME_PARAM = "nickname"
 
@@ -22,7 +20,6 @@ class SignupNicknameFragment: Fragment() {
     private lateinit var model : CreateGoalViewModel
     private lateinit var mContext :Context
     private var nickname:String? = null
-    private lateinit var usersList : ArrayList<UserMinimal>
     private lateinit var mSnackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +45,7 @@ class SignupNicknameFragment: Fragment() {
                 transaction.replace(R.id.signup_frame, newFragment).addToBackStack("tag")
                 transaction.commit()
             }else{
-                launchSnackbar("Nickname required")
+                launchSnackbar(activity.application.getString(R.string.signup_activity_nickname_required))
             }
         }
         return view

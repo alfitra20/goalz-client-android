@@ -60,7 +60,7 @@
         </activity>
         <activity
             android:name=".ui.EditProfileActivity"
-            android:label="@string/title_activity_edit_profile">
+            android:label="@string/edit_profile_activity_appbar_title">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".ui.UserActivity" />
