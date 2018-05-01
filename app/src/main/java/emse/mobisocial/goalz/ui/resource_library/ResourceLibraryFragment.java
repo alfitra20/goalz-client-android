@@ -22,7 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import emse.mobisocial.goalz.R;
+import emse.mobisocial.goalz.model.Goal;
+import emse.mobisocial.goalz.model.Recommendation;
 import emse.mobisocial.goalz.model.Resource;
+import emse.mobisocial.goalz.ui.viewModels.CreateRecommendationViewModel;
+import emse.mobisocial.goalz.ui.viewModels.GoalsViewModel;
 import emse.mobisocial.goalz.ui.viewModels.ResourceLibraryViewModel;
 
 /**
@@ -35,7 +39,7 @@ import emse.mobisocial.goalz.ui.viewModels.ResourceLibraryViewModel;
  */
 public class ResourceLibraryFragment extends Fragment {
 
-    ResourceLibraryViewModel model;
+    ResourceLibraryViewModel resourceLibraryViewModel;
     RecyclerView mRecyclerView;
     ResourceLibraryAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -92,14 +96,15 @@ public class ResourceLibraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_resource_library, container, false);
-        model = ViewModelProviders.of(this).get(ResourceLibraryViewModel.class);
+        resourceLibraryViewModel = ViewModelProviders.of(this).get(ResourceLibraryViewModel.class);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.resource_library_recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null) getActivity().finish();
         String userId  = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        model.getResourceLibrary(userId);
+        resourceLibraryViewModel.getResourceLibrary(userId);
         initializeObservers(userId);
         // temporary, above and below
         //List<Resource> meh = new ArrayList<>();
@@ -149,9 +154,13 @@ public class ResourceLibraryFragment extends Fragment {
     }*/
 
     private void initializeObservers(String userId) {
-        model.resources.observe(this, resources -> {
-            mAdapter = new ResourceLibraryAdapter(getContext(), resources, model, userId);
+        resourceLibraryViewModel.resources.observe(this, resources -> {
+            mAdapter = new ResourceLibraryAdapter(getContext(), resources, resourceLibraryViewModel,
+                    userId);
             mRecyclerView.setAdapter(mAdapter);
+        });
+        resourceLibraryViewModel.goals.observe(this, goals -> {
+            //List<Goal> meh = resourceLibraryViewModel.goals.getValue();
         });
     }
 

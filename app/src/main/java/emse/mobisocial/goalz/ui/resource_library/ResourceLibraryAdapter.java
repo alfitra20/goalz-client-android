@@ -1,12 +1,15 @@
 package emse.mobisocial.goalz.ui.resource_library;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.customtabs.CustomTabsCallback;
@@ -14,12 +17,15 @@ import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -30,21 +36,29 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import emse.mobisocial.goalz.R;
+import emse.mobisocial.goalz.model.Goal;
+import emse.mobisocial.goalz.model.RecommendationTemplate;
 import emse.mobisocial.goalz.model.Resource;
 import emse.mobisocial.goalz.model.ResourceKt;
+import emse.mobisocial.goalz.ui.viewModels.CreateRecommendationViewModel;
+import emse.mobisocial.goalz.ui.viewModels.GoalsViewModel;
 import emse.mobisocial.goalz.ui.viewModels.ResourceLibraryViewModel;
 import emse.mobisocial.goalz.util.ImageExtractor;
 
 public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibraryAdapter.ResourceViewHolder> {
     ResourceLibraryViewModel model;
+    //GoalsViewModel goalsViewModel;
+    //CreateRecommendationViewModel createRecommendationViewModel;
     private Context context;
     private List<Resource> resources;
     public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
     String userId;
+    int checkedItem = -1;
 
     public static class ResourceViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
         public TextView title;
@@ -83,6 +97,7 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
             timeIcon = (ImageView) itemView.findViewById(R.id.resource_time_icon);
             resource_rating_count = (TextView) itemView.findViewById(R.id.resource_rating_count);
             deleteButton = (Button) itemView.findViewById(R.id.delete_button);
+            addToGoalButton = (Button) itemView.findViewById(R.id.add_to_goal_button);
            // frameLayout = (FrameLayout) itemView.findViewById(R.id.resource_frame);
         }
 
@@ -92,12 +107,13 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
         }*/
     }
 
-    public ResourceLibraryAdapter(Context context, List<Resource> resources,
-                                  ResourceLibraryViewModel model, String userId) {
+    public ResourceLibraryAdapter(Context context, List<Resource> resources, ResourceLibraryViewModel model,
+                                  String userId) {
         this.context = context;
         this.resources = resources;
         this.model = model;
         this.userId = userId;
+
 
         /*CustomTabsClient.bindCustomTabsService(context, CUSTOM_TAB_PACKAGE_NAME, new CustomTabsServiceConnection() {
             @Override
@@ -365,6 +381,96 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
                 nbutton.setTextColor(Color.rgb(82, 190, 128));
                 Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
                 pbutton.setTextColor(Color.rgb(203, 67, 53));
+            }
+        });
+
+        holder.addToGoalButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                //String[] animals = {"horse", "cow", "camel", "sheep", "goat", "horse", "cow", "camel", "sheep", "goat", "horse", "cow", "camel", "sheep", "goat", "horse", "cow", "camel", "sheep", "goat", "cow", "camel", "sheep", "goat", "horse", "cow", "camel", "sheep", "goat"};
+                LiveData<List<Goal>> data = model.goals;
+
+                List<Goal> meh = data.getValue();
+                if(data == null || data.getValue() == null) {
+                    builder.setTitle("Hey!");
+                    builder.setMessage("You do not have any goals. Go ahead and create one.");
+                    builder.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                    pbutton.setTextColor(Color.rgb(82, 190, 128));
+                } else {
+                    builder.setTitle("Choose the goal");
+
+                    ArrayList<String> goalTitles = new ArrayList<>();
+                    for (Goal goal : data.getValue()) {
+                        goalTitles.add(goal.getTitle());
+                    }
+                    checkedItem = -1; // cow
+                    builder.setSingleChoiceItems(goalTitles.toArray(new String[goalTitles.size()]), checkedItem, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // user checked an item
+                            checkedItem = which;
+
+
+
+                        }
+                    });
+
+                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if(checkedItem != -1) {
+                                // lets add recommendation
+                                Goal goal = data.getValue().get(checkedItem);
+                                RecommendationTemplate template =
+                                        new RecommendationTemplate(resources.get(position).getId(),
+                                                goal.getId(), userId, resources.get(position).getTitle(),
+                                                "", ResourceKt.DEFAULT_RESOURCE_AVG_TIME);
+
+                                model.addRecommendation(template);
+                                checkedItem = -1;
+
+                                int duration = Toast.LENGTH_LONG;
+                                Toast toast = Toast.makeText(context, "Resource has been added", duration);
+                                toast.show();
+                                dialog.dismiss();
+                            } else {
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, "Nothing was added", duration);
+                                toast.show();
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    Button nbutton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                    nbutton.setTextColor(Color.rgb(203, 67, 53));
+                    Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                    pbutton.setTextColor(Color.rgb(82, 190, 128));
+
+                    /*Rect displayRectangle = new Rect();
+                    Window window = ((Activity) context).getWindow();
+
+                    window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+
+                    alert.getWindow().setLayout((int)(displayRectangle.width() * 0.95f),
+                            (int)(displayRectangle.height() * 0.65f));*/
+                }
+
+
             }
         });
     }
