@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
@@ -22,17 +21,17 @@ import com.nex3z.togglebuttongroup.button.LabelToggle
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.Recommendation
-import emse.mobisocial.goalz.ui.viewModels.GoalsViewModel
+import emse.mobisocial.goalz.ui.viewModels.MyGoalsViewModel
 import java.util.*
 
 
-class GoalsFragment : Fragment() {
+class MyGoalsFragment : Fragment() {
 
     private lateinit var filterView: MultiSelectToggleGroup
-    private lateinit var model : GoalsViewModel
+    private lateinit var modelMy: MyGoalsViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: SearchView
-    private lateinit var recyclerViewAdapter: GoalsFragment.RecyclerViewAdapter
+    private lateinit var recyclerViewAdapter: MyGoalsFragment.RecyclerViewAdapter
 
     private lateinit var topicFilter: LabelToggle
     private lateinit var deadlineFilter: LabelToggle
@@ -40,11 +39,6 @@ class GoalsFragment : Fragment() {
 
     private var filterOpen: Boolean = false
     private var userId: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -61,8 +55,8 @@ class GoalsFragment : Fragment() {
             // Initialize data
             filterView = view.findViewById(R.id.goals_filters) as MultiSelectToggleGroup
 
-            model = ViewModelProviders.of(this).get(GoalsViewModel::class.java)
-            model.initialize(userId!!)
+            modelMy = ViewModelProviders.of(this).get(MyGoalsViewModel::class.java)
+            modelMy.initialize(userId!!)
 
             deadlineFilter = view.findViewById(R.id.order_goals_deadline)
             topicFilter = view.findViewById(R.id.order_goals_topic)
@@ -88,12 +82,12 @@ class GoalsFragment : Fragment() {
     }
 
     private fun initializeObservers() {
-        model.goalsList.observe(this, Observer<List<Goal>> { goals ->
+        modelMy.goalsList.observe(this, Observer<List<Goal>> { goals ->
             if (goals != null) {
                 recyclerViewAdapter.addGoals(goals)
             }
         })
-        model.recommendationsList.observe(this, Observer<List<Recommendation>> { recommendations ->
+        modelMy.recommendationsList.observe(this, Observer<List<Recommendation>> { recommendations ->
             if (recommendations != null) {
                 recyclerViewAdapter.addRecommendations(recommendations)
             }
@@ -107,7 +101,7 @@ class GoalsFragment : Fragment() {
                     uncheckOthers(checkedId)
                     recyclerViewAdapter.filterRecyclerView()
                 } else {
-                    model.reset(userId!!)
+                    modelMy.reset(userId!!)
                 }
             }
         })
@@ -143,14 +137,14 @@ class GoalsFragment : Fragment() {
 
             override fun onQueryTextSubmit(searchQuery: String?): Boolean {
                 if (userId != null) {
-                    model.searchGoalsForUser(searchQuery!!, userId!!)
+                    modelMy.searchGoalsForUser(searchQuery!!, userId!!)
                 }
                 return true
             }
 
             override fun onQueryTextChange(searchQuery: String?): Boolean {
                 if (userId != null ) {
-                    model.searchGoalsForUser(searchQuery!!, userId!!)
+                    modelMy.searchGoalsForUser(searchQuery!!, userId!!)
                 }
                 return true
             }
@@ -216,7 +210,7 @@ class GoalsFragment : Fragment() {
 
 
         override fun onBindViewHolder(goalViewHolder: GoalViewHolder, i: Int) {
-            // The data from the goal model is retrieved and bound to the card View here.
+            // The data from the goal modelMy is retrieved and bound to the card View here.
             val deadline = mGoals[i].deadline
             val recommendations_count = countRecommendationsForGoal(mGoals[i].id)
             goalViewHolder.goalTitle.text = mGoals[i].title

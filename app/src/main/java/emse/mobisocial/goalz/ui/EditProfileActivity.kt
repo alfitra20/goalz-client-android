@@ -164,7 +164,7 @@ class EditProfileActivity : AppCompatActivity() {
             val day:Int = calendar.get(Calendar.DAY_OF_MONTH)
 
             val dialog = DatePickerDialog (
-                    this, R.style.Theme_AppCompat_DayNight_Dialog_MinWidth, mDateListener, year, month, day)
+                    this, R.style.ThemeOverlay_AppCompat_Dialog, mDateListener, year, month, day)
             dialog.datePicker.maxDate = System.currentTimeMillis()-1000
             dialog.show()
         }

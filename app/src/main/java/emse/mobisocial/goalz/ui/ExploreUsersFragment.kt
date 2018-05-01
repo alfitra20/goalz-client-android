@@ -2,6 +2,7 @@ package emse.mobisocial.goalz.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -132,10 +133,13 @@ class ExploreUsersFragment : Fragment() {
                 else -> userViewHolder.ratingImage.setImageResource(R.drawable.level_4)
             }
             userViewHolder.rating.text = rating.toString()
-        }
 
-        override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
-            super.onAttachedToRecyclerView(recyclerView)
+            userViewHolder.itemView.setOnClickListener {
+                val intent = Intent(activity, UserActivity::class.java)
+                intent.putExtra("user_id", mUsers[i].id)
+                intent.putExtra("user_nickname", mUsers[i].nickname)
+                startActivity(intent)
+            }
         }
 
         fun filter() {
@@ -146,20 +150,9 @@ class ExploreUsersFragment : Fragment() {
         }
 
         inner class UserViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            internal var userCard: CardView
-            internal var userNickname: TextView
-            internal var ratingImage:ImageView
-            internal var rating:TextView
-
-
-            init {
-                userCard = itemView.findViewById<View>(R.id.user_card_view) as CardView
-                userNickname = itemView.findViewById<View>(R.id.user_nickname) as TextView
-                ratingImage = itemView.findViewById(R.id.rating_icon) as ImageView
-                rating = itemView.findViewById<View>(R.id.rating_text) as TextView
-
-
-            }
+            internal var userNickname: TextView = itemView.findViewById<View>(R.id.user_nickname) as TextView
+            internal var ratingImage:ImageView = itemView.findViewById(R.id.rating_icon) as ImageView
+            internal var rating:TextView = itemView.findViewById<View>(R.id.rating_text) as TextView
         }
 
     }

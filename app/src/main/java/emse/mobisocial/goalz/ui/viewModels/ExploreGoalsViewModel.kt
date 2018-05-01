@@ -15,7 +15,9 @@ class ExploreGoalsViewModel(application: Application): AndroidViewModel(applicat
 
     private val goalRepository: IGoalRepository = (application as GoalzApp).goalRepository
     private var goalsListDb = MutableLiveData<LiveData<List<Goal>>>()
+
     val goalsList: LiveData<List<Goal>> = Transformations.switchMap(goalsListDb) { it }
+    var userId : String? = null
 
     init {
         goalsListDb.postValue(goalRepository.getGoals())

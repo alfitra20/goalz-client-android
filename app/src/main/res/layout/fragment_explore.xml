@@ -17,7 +17,7 @@
         app:tabTextColor="#A9A9"
         android:elevation="10dp"
         android:minHeight="130dp"
-        app:tabIndicatorColor="#FFFF"
+        app:tabIndicatorColor="@color/colorSecondary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <android.support.v4.view.ViewPager

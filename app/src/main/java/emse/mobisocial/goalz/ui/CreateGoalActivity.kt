@@ -149,7 +149,7 @@ class CreateGoalActivity : AppCompatActivity() {
             val month:Int = calendar.get(Calendar.MONTH)
             val day:Int = calendar.get(Calendar.DAY_OF_MONTH)
 
-            val dialog = DatePickerDialog (this@CreateGoalActivity, R.style.Theme_AppCompat_DayNight_Dialog_MinWidth,
+            val dialog = DatePickerDialog (this@CreateGoalActivity, R.style.ThemeOverlay_AppCompat_Dialog,
                     DateListener(), year, month, day)
             dialog.datePicker.minDate = System.currentTimeMillis()-1000
             dialog.show()
