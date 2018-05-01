@@ -71,7 +71,7 @@
             android:id="@+id/edit_goal_activity_title_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title" />
+            android:hint="@string/edit_goal_activity_title_hint" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -90,7 +90,7 @@
             android:id="@+id/edit_goal_activity_topic_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Goal Topic" />
+            android:hint="@string/edit_goal_activity_topic_hint" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -109,7 +109,7 @@
             android:id="@+id/edit_goal_activity_deadline_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Deadline" />
+            android:hint="@string/edit_goal_activity_deadline_hint" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -129,7 +129,7 @@
             android:id="@+id/edit_goal_activity_description_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description" />
+            android:hint="@string/edit_goal_activity_description_hint" />
     </android.support.design.widget.TextInputLayout>
 
 

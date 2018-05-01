@@ -18,6 +18,7 @@
 
     <string name="AlphaNumeric">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
     <string name="Alphabet_only">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="Numeric_only">0123456789</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -34,6 +35,13 @@
     <string name="create_goal_activity_appbar_title">Create Goal</string>
     <string name="create_goal_activity_invalid_fields_toast">Invalid Fields</string>
     <string name="create_goal_activity_success_toast">Goal Successfully Created</string>
+    <string name="create_goal_activity_title_hint">Title</string>
+    <string name="create_goal_activity_topic_hint">Goal Topic</string>
+    <string name="create_goal_activity_description_hint">Description</string>
+    <string name="create_goal_activity_deadline_hint">Deadline</string>
+    <string name="create_goal_activity_parent_hint">Create the goal under:</string>
+    <string name="create_goal_activity_button_text">Create Goal</string>
+
 
     <!-- Create Resource Activity texts-->
     <string name="create_resource_activity_appbar_title">Create Resource</string>
@@ -41,10 +49,15 @@
     <string name="create_resource_activity_invalid_uri_toast">Invalid URL</string>
     <string name="create_resource_activity_success_toast">Resource Successfully Created</string>
     <string name="create_resource_activity_fail_toast">Resource Creation Failed</string>
+    <string name="create_resource_activity_title_hint">Title</string>
+    <string name="create_resource_activity_topic_hint">Topic</string>
+    <string name="create_resource_activity_url_hint">URL</string>
+    <string name="create_resource_activity_button_text">Create Resource</string>
 
     <!-- Create Recommendation Activity texts-->
+    <string name="create_recommendation_activity_appbar_title">Create Recommendation</string>
     <string name="create_recommendation_activity_title_hint">Title</string>
-    <string name="create_recommendation_activity_topic_hint">Required Time</string>
+    <string name="create_recommendation_activity_required_time_hint">Required Time (in minures)</string>
     <string name="create_recommendation_activity_resource_tw_text">Resource</string>
     <string name="create_recommendation_activity_description_hint">Description</string>
     <string name="create_recommendation_activity_post_btn_text">Post</string>
@@ -79,6 +92,88 @@
     <string name="edit_goal_activity_done_menu_item_title">Done</string>
     <string name="edit_goal_activity_update_goal_success_toast">Goal Successfully Updated</string>
     <string name="edit_goal_activity_update_goal_fail_toast">Cannot Update Goal</string>
+    <string name="edit_goal_activity_title_hint">Title</string>
+    <string name="edit_goal_activity_topic_hint">Goal Topic</string>
+    <string name="edit_goal_activity_deadline_hint">Deadline</string>
+    <string name="edit_goal_activity_description_hint">Description</string>
+
+    <!-- Edit Profile Activity texts-->
+    <string name="edit_profile_activity_appbar_title">Edit Profile</string>
+    <string name="edit_profile_update_profile_success_toast">Profile successfully updated</string>
+    <string name="edit_profile_update_profile_failed_snackbar">Unable to update the profile</string>
+    <string name="edit_profile_activity_minimum_age_snackbar">Minimum Age = 12</string>
+    <string name="edit_profile_activity_invalid_fields_snackbar">Invalid Fields</string>
+    <string name="edit_profile_activity_account_information_subtitle">Account Information</string>
+    <string name="edit_profile_activity_nickname_hint">Nickname</string>
+    <string name="edit_profile_activity_edit_email_and_password_button">Change the Email and Password</string>
+    <string name="edit_profile_activity_personal_information_subtitle">Personal Information</string>
+    <string name="edit_profile_activity_first_name_hint">First Name</string>
+    <string name="edit_profile_activity_last_name_hint">Last Name</string>
+    <string name="edit_profile_activity_birthdate_hint">Birth Date</string>
+    <string name="edit_profile_activity_gender_hint">Gender :</string>
+    <string name="edit_profile_activity_website_hint">Website</string>
+
+    <!-- Login Activity texts-->
+    <string name="login_activity_appbar_title">Login</string>
+    <string name="login_activity_login_success">Login Success</string>
+    <string name="login_activity_login_failed">Login Failed, check your credentials</string>
+    <string name="login_activity_wrong_email_format_snackbar">Wrong Email Format</string>
+    <string name="login_activity_invalid_fields_snackbar">Invalid Fields</string>
+    <string name="login_activity_email_required_snackbar">Email Required</string>
+    <string name="login_activity_password_required_snackbar">Password Required</string>
+    <string name="login_activity_email_hint">Email</string>
+    <string name="login_activity_password_hint">Password</string>
+    <string name="login_activity_forgot_password_button">Forgot Password?</string>
+    <string name="login_activity_login_button">Login</string>
+
+    <!-- Onboarding Activity texts-->
+    <string name="onboarding_activity_not_connected">You are not connected to the Internet</string>
+    <string name="onboarding_activity_login_button">LOGIN</string>
+    <string name="onboarding_activity_signup_button">SIGN UP</string>
+    <string name="onboarding_activity_without_login_button">Use Goalz Tracker without login</string>
+
+    <!-- Sign Up Activity texts-->
+    <string name="signup_activity_appbar_title">Sign Up</string>
+    <string name="signup_activity_nickname_required">Nickname required</string>
+    <string name="signup_activity_enter_your_text">Enter your</string>
+    <string name="signup_activity_nickname_heading">Nickname</string>
+    <string name="signup_activity_nickname_hint">Ex: mynickname</string>
+    <string name="signup_activity_next_button">NEXT</string>
+    <string name="signup_activity_register_button">REGISTER</string>
+    <string name="signup_activity_personal_information_heading">Personal Information</string>
+    <string name="signup_activity_account_credentials_heading">Account Credentials</string>
+    <string name="signup_activity_firstname_hint">First Name</string>
+    <string name="signup_activity_lastname_hint">Last Name</string>
+    <string name="signup_activity_birthdate_hint">Birth Date</string>
+    <string name="signup_activity_email_hint">Email</string>
+    <string name="signup_activity_password_hint">Password</string>
+    <string name="signup_activity_confirm_password_hint">Confirm Password</string>
+    <string name="signup_activity_invalid_fields_snackbar">Invalid Fields</string>
+    <string name="signup_activity_email_required">Email Required</string>
+    <string name="signup_activity_password_required">Password Required</string>
+    <string name="signup_activity_confirm_password_required">Confirm Password Required</string>
+    <string name="signup_activity_birthdate_required">Birtdate Required</string>
+    <string name="signup_activity_firstname_required">First Name Required</string>
+    <string name="signup_activity_lastname_required">Last Name Required</string>
+    <string name="signup_activity_minimum_age">Need to be at least 12 years old to register</string>
+    <string name="signup_activity_wrong_password">Confirm password must be the same</string>
+    <string name="signup_activity_password_too_short">Password is too short, Min: 8 Characters</string>
+    <string name="signup_activity_wrong_email_format">Wrong Email Format</string>
+    <string name="signup_activity_successful_toast">Successfully Registered</string>
+    <string name="signup_activity_email_registered_snackbar">Email already Registered</string>
+
+    <!-- User Activity texts-->
+    <string name="user_activity_points_needed">Points to the next level</string>
+    <string name="user_activity_goals_created">Goals Created</string>
+    <string name="user_activity_goals_completed">Goals Completed</string>
+    <string name="user_activity_resources">Resources</string>
+    <string name="user_activity_age">Age:</string>
+    <string name="user_activity_website">Website:</string>
+    <string name="user_activity_gender">Gender:</string>
+
+
+
+
 
     <!-- Notification -->
     <string name="notification_new_recommendation_title">New Recommendation</string>

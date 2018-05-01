@@ -7,4 +7,5 @@
     <color name="progressBarBG">#a6adb2</color>
     <color name="snackbarErrorColor">#FF6347</color>
     <color name="snackbarActionColor">#FFFFFF</color>
+    <color name="greyColor">#CCCCCC</color>
 </resources>

@@ -75,6 +75,7 @@
         <activity android:name=".ui.resource_library.WebViewActivity" />
         <activity android:name=".ui.EditGoalActivity" />
         <activity android:name=".ui.CreateRecommendationActivity" />
+        <activity android:name=".ui.GoalsActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -108,8 +109,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <activity android:name=".ui.GoalsActivity"></activity>
+        
     </application>
 
 </manifest>

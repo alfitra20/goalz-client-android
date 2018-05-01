@@ -88,7 +88,7 @@ class SignupPersonalInfoFragment : Fragment() {
             val calendar = Calendar.getInstance()
             val birthYear = calendar.get(Calendar.YEAR) - age
             if(birthYear < 12){
-                launchSnackbar("Need to be at least 12 years old to register")
+                launchSnackbar(activity.application.getString(R.string.signup_activity_minimum_age))
             }else {
                 var check = checkForSpecialCharacters(firstName, lastName)
                 if (check) {
@@ -105,21 +105,21 @@ class SignupPersonalInfoFragment : Fragment() {
                 }
             }
         }else if (firstName == ""){
-            launchSnackbar("First Name required")
+            launchSnackbar(activity.application.getString(R.string.signup_activity_firstname_required))
         }else if (lastName == ""){
-            launchSnackbar("Last Name required")
+            launchSnackbar(activity.application.getString(R.string.signup_activity_lastname_required))
         }else if (birthdate == ""){
-            launchSnackbar("Birth date required")
+            launchSnackbar(activity.application.getString(R.string.signup_activity_birthdate_required))
         }
     }
 
     private fun checkForSpecialCharacters(firstname:String, lastname:String):Boolean{
         val pattern = Pattern.compile("[a-zA-Z.? ]*")
         val firstnameCheck = pattern.matcher(firstname)
-        val lastnameCheck = pattern.matcher(firstname)
+        val lastnameCheck = pattern.matcher(lastname)
         var check = true
         if (!firstnameCheck.matches() && !lastnameCheck.matches()) {
-            launchSnackbar("Invalid Fields")
+            launchSnackbar(activity.application.getString(R.string.signup_activity_invalid_fields_snackbar))
             check = false
         }
         return check

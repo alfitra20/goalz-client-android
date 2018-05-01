@@ -52,10 +52,10 @@
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="28dp"
+        android:layout_width="29dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:text="Age:"
+        android:text="@string/user_activity_age"
         app:layout_constraintBaseline_toBaselineOf="@+id/age_text"
         app:layout_constraintEnd_toStartOf="@+id/age_text"
         app:layout_constraintStart_toEndOf="@+id/circleImageView" />
@@ -66,7 +66,7 @@
         android:layout_height="18dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="8dp"
-        android:text="Website:"
+        android:text="@string/user_activity_website"
         app:layout_constraintStart_toEndOf="@+id/circleImageView"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Goal Created"
+        android:text="@string/user_activity_goals_created"
         app:layout_constraintBaseline_toBaselineOf="@+id/goal_completed_text_button"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -86,7 +86,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Goal Completed"
+        android:text="@string/user_activity_goals_completed"
         app:layout_constraintBottom_toTopOf="@+id/goal_completed_count_text"
         app:layout_constraintEnd_toStartOf="@+id/resource_text_button"
         app:layout_constraintStart_toEndOf="@+id/goal_created_text_button"
@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:text="Resource"
+        android:text="@string/user_activity_resources"
         app:layout_constraintBaseline_toBaselineOf="@+id/goal_completed_text_button"
         app:layout_constraintEnd_toEndOf="@+id/barrier3" />
 
@@ -182,7 +182,7 @@
         android:layout_marginEnd="72dp"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/alef_bold"
-        android:text="Points to the next level"
+        android:text="@string/user_activity_points_needed"
         app:layout_constraintBottom_toTopOf="@+id/barrier2"
         app:layout_constraintEnd_toEndOf="@+id/barrier3"
         app:layout_constraintTop_toBottomOf="@+id/user_point_text" />
@@ -202,7 +202,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
         android:layout_marginTop="8dp"
-        android:text="Gender:"
+        android:text="@string/user_activity_gender"
         app:layout_constraintEnd_toStartOf="@+id/gender_text"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/age_text"

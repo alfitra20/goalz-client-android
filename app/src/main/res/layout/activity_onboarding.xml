@@ -56,13 +56,13 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/onboarding_login_button"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:background="#CCCC"
                 android:fontFamily="@font/source_sans_pro_bold"
-                android:text="Login"
+                android:text="@string/onboarding_activity_login_button"
                 android:textColor="#FFFF"
                 android:textSize="17sp" />
         </LinearLayout>
@@ -80,7 +80,7 @@
                 android:layout_height="65dp"
                 android:background="@color/colorPrimary"
                 android:fontFamily="@font/source_sans_pro_bold"
-                android:text=" Sign Up"
+                android:text="@string/onboarding_activity_signup_button"
                 android:textColor="#FFF"
                 android:textSize="17sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -97,7 +97,7 @@
         android:layout_marginStart="8dp"
         android:fontFamily="@font/catamaran_semibold"
         android:gravity="center"
-        android:text="Use Goalz Tracker without Login"
+        android:text="@string/onboarding_activity_without_login_button"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
