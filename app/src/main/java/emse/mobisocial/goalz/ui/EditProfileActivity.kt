@@ -4,11 +4,12 @@ import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -23,16 +24,13 @@ import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
 import emse.mobisocial.goalz.util.Gender
 import kotlinx.android.synthetic.main.activity_create_goal.*
 import kotlinx.android.synthetic.main.activity_edit_profile.*
-import kotlinx.android.synthetic.main.fragment_signup_personal_info.*
 import java.util.*
+
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var model : UserProfileViewModel
     private lateinit var mDateListener:DatePickerDialog.OnDateSetListener
     private lateinit var mSnackbar: Snackbar
-    private var redColor = Color.parseColor("#FF6347")
-    private var userId : String = ""
-    private var gender = "MALE"
     private var birthYear = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +59,7 @@ class EditProfileActivity : AppCompatActivity() {
         return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_save_edit_profile -> {
@@ -104,6 +103,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
     }
+
     private fun updateUserData() {
         var website = ""
 
@@ -163,7 +163,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun launchSnackbar(title: String) {
         mSnackbar = Snackbar.make(create_goal_layout, title, Snackbar.LENGTH_SHORT)
-        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
 }

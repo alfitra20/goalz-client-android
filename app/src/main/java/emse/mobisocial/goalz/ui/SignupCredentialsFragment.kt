@@ -1,10 +1,9 @@
 package emse.mobisocial.goalz.ui
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -16,7 +15,7 @@ import android.widget.EditText
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.fragment_signup_credentials.*
 import android.content.Intent
-import android.util.Log
+import android.support.v7.content.res.AppCompatResources.getDrawable
 import android.widget.Toast
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
@@ -38,8 +37,6 @@ class SignupCredentialsFragment : Fragment() {
     private var age : Int? = null
     private lateinit var mContext :Context
     private lateinit var mSnackbar: Snackbar
-    private var redColor = Color.parseColor("#FF6347")
-    private var whiteColor = Color.parseColor("#FFFFFF")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,10 +104,11 @@ class SignupCredentialsFragment : Fragment() {
     }
     private fun launchSnackbar(title: String) {
         mSnackbar = Snackbar.make(signup_credentials_layout, title, Snackbar.LENGTH_LONG)
-        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.view.background = getDrawable(mContext, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun registerUser(newUser: UserTemplate) {
         model.registerNewUser(newUser).observe(this, Observer<DalResponse> { response ->
             if (response?.status == DalResponseStatus.SUCCESS) {
@@ -121,9 +119,9 @@ class SignupCredentialsFragment : Fragment() {
             } else if (response?.status == DalResponseStatus.FAIL) {
                 val loginIntent = Intent(mContext, LoginActivity::class.java)
                 mSnackbar = Snackbar.make(signup_credentials_layout, "Email already Registered", Snackbar.LENGTH_LONG)
-                mSnackbar.view.background = ColorDrawable(redColor)
+                mSnackbar.view.background = getDrawable(mContext, R.color.snackbarErrorColor)
                 mSnackbar.setAction("Login") { startActivity(loginIntent) }
-                mSnackbar.setActionTextColor(whiteColor)
+                mSnackbar.setActionTextColor(R.color.snackbarActionColor)
                 mSnackbar.show()
             }
         })

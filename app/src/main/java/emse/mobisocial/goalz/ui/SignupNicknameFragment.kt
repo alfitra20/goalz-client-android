@@ -1,11 +1,10 @@
 package emse.mobisocial.goalz.ui
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.content.res.AppCompatResources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +24,6 @@ class SignupNicknameFragment: Fragment() {
     private var nickname:String? = null
     private lateinit var usersList : ArrayList<UserMinimal>
     private lateinit var mSnackbar: Snackbar
-    var redColor = Color.parseColor("#FF6347")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +56,7 @@ class SignupNicknameFragment: Fragment() {
 
     private fun launchSnackbar(title: String) {
         mSnackbar = Snackbar.make(signup_nickname_layout, title, Snackbar.LENGTH_LONG)
-        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.view.background = AppCompatResources.getDrawable(mContext, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
 }

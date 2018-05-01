@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -14,6 +16,7 @@ import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.RecommendationTemplate
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.ui.viewModels.CreateRecommendationViewModel
+import kotlinx.android.synthetic.main.activity_create_recommendation.*
 import java.util.*
 
 class CreateRecommendationActivity : AppCompatActivity() {
@@ -27,6 +30,7 @@ class CreateRecommendationActivity : AppCompatActivity() {
     private lateinit var descriptionEt : EditText
     private lateinit var resourceSp : Spinner
     private lateinit var postBtn : Button
+    private lateinit var mSnackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,9 +110,7 @@ class CreateRecommendationActivity : AppCompatActivity() {
         }
 
         private fun showInvalidFieldsToast() {
-            Toast.makeText(this@CreateRecommendationActivity,
-                    getString(R.string.create_recommendation_activity_invalid_fields_toast),
-                    Toast.LENGTH_SHORT).show()
+            launchSnackbar(getString(R.string.create_recommendation_activity_invalid_fields_toast))
         }
     }
 
@@ -142,11 +144,14 @@ class CreateRecommendationActivity : AppCompatActivity() {
                 finish()
             }
             else if (response?.status == DalResponseStatus.FAIL){
-                Toast.makeText(this@CreateRecommendationActivity,
-                        getString(R.string.create_recommendation_activity_fail_toast),
-                        Toast.LENGTH_LONG).show()
+                launchSnackbar(getString(R.string.create_recommendation_activity_fail_toast))
             }
         }
+    }
 
+    private fun launchSnackbar(title: String) {
+        mSnackbar = Snackbar.make(create_recommendation_layout, title, Snackbar.LENGTH_SHORT)
+        mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
+        mSnackbar.show()
     }
 }

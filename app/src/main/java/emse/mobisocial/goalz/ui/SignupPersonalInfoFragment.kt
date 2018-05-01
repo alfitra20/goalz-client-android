@@ -2,11 +2,10 @@ package emse.mobisocial.goalz.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.content.res.AppCompatResources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,6 @@ class SignupPersonalInfoFragment : Fragment() {
     private lateinit var birthdateText: EditText
     private lateinit var pickBirthdate : ImageButton
     private lateinit var mSnackbar: Snackbar
-    private var redColor = Color.parseColor("#FF6347")
     private var nickname : String? = null
     private var age : Int = 0
 
@@ -129,7 +127,7 @@ class SignupPersonalInfoFragment : Fragment() {
 
     private fun launchSnackbar(title: String) {
         mSnackbar = Snackbar.make(signup_personal_info_layout, title, Snackbar.LENGTH_LONG)
-        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.view.background = AppCompatResources.getDrawable(mContext, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
 

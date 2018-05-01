@@ -10,18 +10,17 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.util.Patterns
 import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_login.*
 
-
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAuth : FirebaseAuth
     private lateinit var mSnackbar: Snackbar
-    private var redColor = Color.parseColor("#FF6347")
 
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -73,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun launchSnackbar(title: String) {
         mSnackbar = Snackbar.make(login_layout, title, Snackbar.LENGTH_LONG)
-        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
 }

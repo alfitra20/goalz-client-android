@@ -11,17 +11,15 @@ import emse.mobisocial.goalz.model.GoalTemplate
 import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
 import kotlinx.android.synthetic.main.activity_create_goal.*
 import java.text.SimpleDateFormat
-
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.location.LocationManager
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
+import android.support.v7.content.res.AppCompatResources
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -31,7 +29,6 @@ import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.dal.db.converter.LocationConverter
-import kotlinx.android.synthetic.main.fragment_signup_credentials.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -53,7 +50,6 @@ class CreateGoalActivity : AppCompatActivity() {
     private lateinit var submitBtn : Button
     private lateinit var pickDateIb : ImageButton
     private lateinit var mSnackbar: Snackbar
-    private var redColor = Color.parseColor("#FF6347")
 
     private var selectedParentId : String? = null
 
@@ -194,7 +190,7 @@ class CreateGoalActivity : AppCompatActivity() {
 
         private fun launchSnackbar(title: String) {
             mSnackbar = Snackbar.make(create_goal_layout, title, Snackbar.LENGTH_SHORT)
-            mSnackbar.view.background = ColorDrawable(redColor)
+            mSnackbar.view.background = AppCompatResources.getDrawable(this@CreateGoalActivity, R.color.snackbarErrorColor)
             mSnackbar.show()
         }
     }

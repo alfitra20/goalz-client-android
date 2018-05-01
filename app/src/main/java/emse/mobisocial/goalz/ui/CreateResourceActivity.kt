@@ -2,12 +2,10 @@ package emse.mobisocial.goalz.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-
 import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.webkit.URLUtil
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -15,9 +13,7 @@ import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.ResourceTemplate
-
 import emse.mobisocial.goalz.ui.viewModels.CreateResourceViewModel
-
 import kotlinx.android.synthetic.main.activity_create_resource.*
 
 class CreateResourceActivity : AppCompatActivity() {
@@ -25,7 +21,6 @@ class CreateResourceActivity : AppCompatActivity() {
     private lateinit var model : CreateResourceViewModel
     private var userId:String? = null
     private lateinit var mSnackbar: Snackbar
-    private var redColor = Color.parseColor("#FF6347")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +75,7 @@ class CreateResourceActivity : AppCompatActivity() {
 
     private fun launchSnackbar(title: String) {
         mSnackbar = Snackbar.make(create_resource_layout, title, Snackbar.LENGTH_SHORT)
-        mSnackbar.view.background = ColorDrawable(redColor)
+        mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
 

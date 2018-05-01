@@ -5,128 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".ui.EditGoalActivity">
+    android:id="@+id/edit_goal_layout"
+    tools:context=".ui.EditGoalActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <ImageView
         android:id="@+id/edit_goal_activity_logo_iw"
         android:layout_width="77dp"
         android:layout_height="45dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit_goal_activity_title_et"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/goal_grey" />
-
-    <EditText
-        android:id="@+id/edit_goal_activity_title_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#808080"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:inputType="textPersonName"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_goal_activity_logo_iw"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/edit_text_activity_topic_tw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="32dp"
-        android:text="Topic"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_divider" />
-
-    <EditText
-        android:id="@+id/edit_goal_activity_topic_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#808080"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:inputType="textPersonName"
-        android:textColor="@android:color/black"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_activity_topic_tw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-    <EditText
-        android:id="@+id/edit_goal_activity_deadline_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#808080"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:hint="not defined"
-        android:inputType="none"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edit_goal_activity_deadline_tw"
-        app:layout_constraintEnd_toStartOf="@+id/edit_goal_activity_pick_date_ib"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <ImageButton
         android:id="@+id/edit_goal_activity_pick_date_ib"
-        android:layout_width="43dp"
-        android:layout_height="43dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="50dp"
+        android:layout_height="67dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit_goal_activity_deadline_et"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout18"
         app:srcCompat="@drawable/calendar_grey" />
 
     <View
         android:id="@+id/edit_goal_activity_divider"
         android:layout_width="0dp"
         android:layout_height="3dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
         android:background="?android:attr/listDivider"
         android:backgroundTint="@color/colorPrimary"
         android:foreground="@color/colorPrimary"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_title_et" />
-
-    <TextView
-        android:id="@+id/edit_goal_activity_deadline_tw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="24dp"
-        android:text="Deadline"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_activity_topic_tw" />
-
-    <TextView
-        android:id="@+id/edit_goal_activity_description_tw"
-        android:layout_width="94dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="24dp"
-        android:text="Description"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_deadline_tw" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_logo_iw" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -135,20 +56,81 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="101dp" />
 
-    <EditText
-        android:id="@+id/edit_goal_activity_description_et"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout15"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:scrollHorizontally="false"
-        android:singleLine="false"
-        android:textColor="@android:color/black"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit_goal_activity_logo_iw"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_goal_activity_title_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout18"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_description_tw" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_divider">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_goal_activity_topic_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Goal Topic" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout21"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout22"
+        app:layout_constraintEnd_toStartOf="@+id/edit_goal_activity_pick_date_ib"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout18">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_goal_activity_deadline_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Deadline" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout22"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="230dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout21">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_goal_activity_description_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description" />
+    </android.support.design.widget.TextInputLayout>
 
 
 </android.support.constraint.ConstraintLayout>

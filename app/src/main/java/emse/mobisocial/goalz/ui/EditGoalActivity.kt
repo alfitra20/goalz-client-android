@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +17,7 @@ import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.ui.viewModels.EditGoalViewModel
+import kotlinx.android.synthetic.main.activity_edit_goal.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +31,8 @@ class EditGoalActivity : AppCompatActivity() {
     private lateinit var descriptionEt: EditText
     private lateinit var deadlineEt: EditText
     private lateinit var datePicker:ImageButton
+    private lateinit var mSnackbar: Snackbar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,8 @@ class EditGoalActivity : AppCompatActivity() {
         deadlineEt = findViewById(R.id.edit_goal_activity_deadline_et)
         descriptionEt = findViewById(R.id.edit_goal_activity_description_et)
         datePicker = findViewById(R.id.edit_goal_activity_pick_date_ib)
+
+        deadlineEt.isEnabled = false
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true);
         supportActionBar!!.setDisplayShowHomeEnabled(true);
@@ -79,8 +86,8 @@ class EditGoalActivity : AppCompatActivity() {
                 return true
             }
             android.R.id.home -> {
-                onBackPressed();
-                return true;
+                onBackPressed()
+                return true
             }
         }
 
@@ -142,10 +149,15 @@ class EditGoalActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG).show()
                 this@EditGoalActivity.finish()
             } else if (response?.status == DalResponseStatus.FAIL) {
-                Toast.makeText(application, application.getString(R.string.edit_goal_activity_update_goal_fail_toast),
-                        Toast.LENGTH_LONG).show()
+                launchSnackbar(application.getString(R.string.edit_goal_activity_update_goal_fail_toast))
             }
         }
+    }
+
+    private fun launchSnackbar(title: String) {
+        mSnackbar = Snackbar.make(edit_goal_layout, title, Snackbar.LENGTH_SHORT)
+        mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
+        mSnackbar.show()
     }
 
 }
