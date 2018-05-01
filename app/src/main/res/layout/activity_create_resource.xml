@@ -33,7 +33,7 @@
         android:layout_marginTop="30dp"
         android:backgroundTint="#0099ff"
         android:shadowColor="@color/colorPrimary"
-        android:text="CREATE RESOURCE"
+        android:text="@string/create_resource_activity_button_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +57,7 @@
             android:id="@+id/resourceTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title" />
+            android:hint="@string/create_resource_activity_title_hint" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -77,7 +77,7 @@
             android:id="@+id/resourceTopicText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Topic" />
+            android:hint="@string/create_resource_activity_topic_hint" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -98,6 +98,6 @@
             android:id="@+id/resourceUrlText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="URL" />
+            android:hint="@string/create_resource_activity_url_hint" />
     </android.support.design.widget.TextInputLayout>
 </android.support.constraint.ConstraintLayout>

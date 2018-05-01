@@ -13,8 +13,10 @@ import android.support.v7.content.res.AppCompatResources
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.dal.DalResponse
@@ -26,12 +28,15 @@ import kotlinx.android.synthetic.main.activity_create_goal.*
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import java.util.*
 
+private const val GENDER_MALE = "MALE"
+private const val GENDER_FEMALE = "FEMALE"
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var model : UserProfileViewModel
     private lateinit var mDateListener:DatePickerDialog.OnDateSetListener
     private lateinit var mSnackbar: Snackbar
-    private var birthYear = 0
+    private var gender :Gender? = null
+    private var birthYear:Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +77,6 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun initializeObservers() {
         model.userData.observe(this, Observer<User> { user ->
-            Log.d("check", "check")
             if (user != null) {
                 setUserData(user)
                 birthYear = user.age!!.toInt()
@@ -89,57 +93,67 @@ class EditProfileActivity : AppCompatActivity() {
 
         val spinnerArray = arrayOfNulls<String>(2)
 
-        spinnerArray[0] = "FEMALE"
-        spinnerArray[1] = "MALE"
+        spinnerArray[0] = GENDER_FEMALE
+        spinnerArray[1] = GENDER_MALE
 
-        val adapter = ArrayAdapter<String>(this, R.layout.spinner_item, spinnerArray)
+        val adapter = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         pick_gender.adapter = adapter
-
-        if (user.gender.toString() == "MALE") {
-            pick_gender.setSelection(1)
-        } else{
-            pick_gender.setSelection(0)
-        }
-
+        pick_gender.setSelection(getGenderPosition(user.gender))
     }
 
     private fun updateUserData() {
-        var website = ""
 
-        if (website_edit_text.text.toString() != ""){
-            website = website_edit_text.text.toString()
-        }
+        val website = website_edit_text.text.toString()
+        val nickname = nickname_edit_text.text.toString().trim()
+        val firstName = firstname_edit_text.text.toString().trim()
+        val lastName = lastname_edit_text.text.toString().trim()
+        gender = getGender(pick_gender.selectedItemPosition)
 
-        val nickname = nickname_edit_text.text.toString()
-        val firstname = firstname_edit_text.text.toString()
-        val  lastname = lastname_edit_text.text.toString()
-        var genderPosition = pick_gender.selectedItemPosition
-        var gender :Gender
-        if (genderPosition== 0){
-            gender = Gender.valueOf("FEMALE")
-        }else{
-            gender  = Gender.valueOf("MALE")
+        if(checkBirthYear(birthYear!!)) {
+            if (!areValidFields(nickname, firstName, lastName)) {
+                launchSnackbar(getString(R.string.edit_profile_activity_invalid_fields_snackbar))
+            } else {
+                model.modifyUserData(nickname, firstName, lastName, birthYear!!, website, gender!!)?.observe(this, Observer<DalResponse> { response ->
+                    if (response?.status == DalResponseStatus.SUCCESS) {
+                        val intent = Intent(this, UserActivity::class.java)
+                        startActivity(intent)
+                        Toast.makeText(application, application.getString(R.string.edit_profile_update_profile_success_toast),
+                                Toast.LENGTH_LONG).show()
+                        finish()
+                    } else if (response?.status == DalResponseStatus.FAIL) {
+                        launchSnackbar(getString(R.string.edit_profile_update_profile_failed_snackbar))
+                    }
+                })
+            }
         }
+    }
+
+
+    private fun checkBirthYear(birthYear:Int):Boolean{
         if(birthYear < 12) {
-            launchSnackbar("Need to be at least 12 years old")
-        }else {
-            model.modifyUserData(nickname, firstname, lastname, birthYear, website, gender)?.observe(this, Observer<DalResponse> { response ->
-                if (response?.status == DalResponseStatus.SUCCESS) {
-                    val intent = Intent(this, UserActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else if (response?.status == DalResponseStatus.FAIL) {
-                    launchSnackbar("Unable to Edit the Profile")
-                }
+            launchSnackbar(getString(R.string.edit_profile_activity_minimum_age_snackbar))
+            return false
+        }else return true
+    }
 
-            })
+    private fun getGender(position:Int) :Gender{
+        if (position== 0){
+            return Gender.valueOf(GENDER_FEMALE)
+        }else{
+            return Gender.valueOf(GENDER_MALE)
         }
     }
 
     private fun getAge(Year:Int):Int{
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.YEAR) - Year
+    }
+
+    private fun getGenderPosition(gender: Gender): Int{
+        if (gender.toString() == GENDER_MALE) {
+            return 1
+        } else return 2
     }
 
     private fun pickDateListener(){
@@ -162,8 +176,12 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun launchSnackbar(title: String) {
-        mSnackbar = Snackbar.make(create_goal_layout, title, Snackbar.LENGTH_SHORT)
+        mSnackbar = Snackbar.make(edit_profile_layout, title, Snackbar.LENGTH_SHORT)
         mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
         mSnackbar.show()
+    }
+
+    private fun areValidFields(nickname : String, firstname : String, lastname: String) : Boolean{
+        return nickname != "" && firstname != "" && lastname != ""
     }
 }

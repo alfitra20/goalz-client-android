@@ -9,23 +9,24 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.R
-import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.activity_onboarding.*
+
+private const val WITHOUT_LOGIN = "without_login"
 
 class OnboardingActivity : AppCompatActivity() {
 
     private var networkInfo:Boolean = false
     private lateinit var mSnackbar: Snackbar
-    private var grey_color = ColorDrawable( Color.parseColor("#A9A9A9"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val withoutLogin  = preferences.getBoolean("without_login", false)
+        val withoutLogin  = preferences.getBoolean(WITHOUT_LOGIN, false)
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (withoutLogin || userId!=null){
             val intent = Intent(this, BaseActivity::class.java)
@@ -39,19 +40,19 @@ class OnboardingActivity : AppCompatActivity() {
 
         networkInfo = isNetworkAvailable()
 
-        mSnackbar = Snackbar.make(onboarding_layout,
-                "You are not connected to the Internet", Snackbar.LENGTH_LONG)
+        launchSnackbar(application.getString(R.string.onboarding_activity_not_connected))
+
         if (!networkInfo){
             mSnackbar.show()
-            login_button.isEnabled = false
-            login_button.background = grey_color
+            onboarding_login_button.isEnabled = false
+            onboarding_login_button.background = AppCompatResources.getDrawable(this, R.color.greyColor)
             signup_button.isEnabled = false
-            signup_button.background = grey_color
+            signup_button.background = AppCompatResources.getDrawable(this, R.color.greyColor)
             without_login_button.isEnabled = false
         }
 
 
-        login_button.setOnClickListener {
+        onboarding_login_button.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
@@ -61,7 +62,7 @@ class OnboardingActivity : AppCompatActivity() {
         }
         without_login_button.setOnClickListener{
             preferences.edit()
-                    .putBoolean("without_login", true)
+                    .putBoolean(WITHOUT_LOGIN, true)
                     .apply()
             val intent = Intent(this, BaseActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -72,5 +73,11 @@ class OnboardingActivity : AppCompatActivity() {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+
+    private fun launchSnackbar(title: String) {
+        mSnackbar = Snackbar.make(onboarding_layout, title, Snackbar.LENGTH_LONG)
+        mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
+        mSnackbar.show()
     }
 }

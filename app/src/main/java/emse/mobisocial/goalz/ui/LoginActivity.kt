@@ -13,9 +13,12 @@ import android.support.design.widget.Snackbar
 import android.support.v7.content.res.AppCompatResources
 import android.util.Patterns
 import android.view.WindowManager
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.activity_login.*
+
+private const val WITHOUT_LOGIN = "without_login"
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,14 +30,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        supportActionBar?.title = "Login"
-        var grey_color = Color.parseColor("#CCCCCC")
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(grey_color))
+        supportActionBar?.title = application.getString(R.string.login_activity_appbar_title)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(application.getColor(R.color.greyColor)))
         supportActionBar?.elevation = 0F
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = grey_color
+        window.statusBarColor = application.getColor(R.color.greyColor)
 
-        login_button.setOnClickListener {login() }
+        onboarding_login_button.setOnClickListener {login() }
     }
 
     private fun login(){
@@ -46,27 +48,28 @@ class LoginActivity : AppCompatActivity() {
                 mFirebaseAuth = FirebaseAuth.getInstance()
                 mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        launchSnackbar("Login Success")
+                        Toast.makeText(application, application.getString(R.string.login_activity_login_success),
+                                Toast.LENGTH_LONG).show()
                         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                         preferences.edit()
-                                .putBoolean("without_login", false)
+                                .putBoolean(WITHOUT_LOGIN, false)
                                 .apply()
                         val intent = Intent(this, BaseActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     } else {
-                        launchSnackbar("Login Failed, check your credentials")
+                        launchSnackbar(application.getString(R.string.login_activity_login_failed))
                     }
                 }
             }else{
-                launchSnackbar("Wrong Email Format")
+                launchSnackbar(application.getString(R.string.login_activity_wrong_email_format_snackbar))
             }
         }else if (email =="" && password =="") {
-            launchSnackbar("Invalid Fields")
+            launchSnackbar(application.getString(R.string.login_activity_invalid_fields_snackbar))
         } else if (password ==""){
-            launchSnackbar("Password Required")
+            launchSnackbar(application.getString(R.string.login_activity_password_required_snackbar))
         } else{
-            launchSnackbar("Email Required")
+            launchSnackbar(application.getString(R.string.login_activity_email_required_snackbar))
         }
 
     }
