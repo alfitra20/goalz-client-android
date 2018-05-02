@@ -35,6 +35,10 @@
     <string name="delete_goal_success_toast">Goal Successfully Removed</string>
     <string name="delete_goal_fail_toast">Cannot Delete Goal</string>
 
+    <!-- Explore Resource fragment -->
+    <string name="explore_resource_fragment_add_to_library_success_toast">Resource successfully added</string>
+    <string name="explore_resource_fragment_add_to_library_fail_toast">Failed to add resource</string>
+
     <!-- Create Goal Activity texts-->
     <string name="create_goal_activity_appbar_title">New Goal</string>
     <string name="create_goal_activity_invalid_fields_toast">Invalid Fields</string>

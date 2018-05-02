@@ -6,7 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.CardView
 
 import emse.mobisocial.goalz.R
@@ -14,19 +16,20 @@ import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.ui.viewModels.ExploreResourcesViewModel
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.ImageView
 import android.view.*
 import android.view.animation.AnimationUtils
-import android.widget.Button
-import android.widget.SearchView
-import android.widget.TextView
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
+import com.google.firebase.auth.FirebaseAuth
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
 import com.nex3z.togglebuttongroup.button.LabelToggle
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.DEFAULT_RESOURCE_AVG_TIME
 import emse.mobisocial.goalz.ui.resource_library.ResourceLibraryAdapter
 import emse.mobisocial.goalz.ui.resource_library.WebViewActivity
+import kotlinx.android.synthetic.main.activity_edit_goal.*
 
 class ExploreResourcesFragment : Fragment() {
 
@@ -47,15 +50,18 @@ class ExploreResourcesFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_explore_resources, container, false)
         setHasOptionsMenu(true)
 
+        model = ViewModelProviders.of(this).get(ExploreResourcesViewModel::class.java)
+        model.userId = FirebaseAuth.getInstance().currentUser?.uid
+
         // Initialize data
         filterView = view.findViewById(R.id.resources_filters) as MultiSelectToggleGroup
-        model = ViewModelProviders.of(this).get(ExploreResourcesViewModel::class.java)
         recyclerView = view.findViewById(R.id.explore_resources_recycler_view) as RecyclerView
         topicFilter = view.findViewById(R.id.order_resources_topic)
         ratingFilter = view.findViewById(R.id.order_resources_rating)
         timeFilter = view.findViewById(R.id.order_resources_time)
 
         setupRecyclerView()
+
         initializeObservers()
         initializeListeners()
 
@@ -223,6 +229,7 @@ class ExploreResourcesFragment : Fragment() {
                 Glide.with(context).load(imageUrl).priority(Priority.IMMEDIATE).crossFade().into(holder.imageIw)
             }
             else {
+                Glide.with(context).resumeRequests()
                 holder.imageIw.setImageResource(android.R.color.darker_gray)
             }
         }
@@ -261,20 +268,13 @@ class ExploreResourcesFragment : Fragment() {
                 }
             })
 
-            //Set Listeners
-            holder.addToLibraryBtn.setOnClickListener({ view ->
-                view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.resource_click))
-                try {
-                    val builder = CustomTabsIntent.Builder()
-                    val customTabsIntent = builder.build()
-                    customTabsIntent.launchUrl(context, Uri.parse(resource.link))
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                    val intent = Intent(context, WebViewActivity::class.java) // if there is no google chrome browser
-                    intent.putExtra("url", resource.link)
-                    context.startActivity(intent)
-                }
-            })
+            val userId = model.userId
+            if(userId!= null) {
+                holder.addToLibraryBtn.setOnClickListener({ view ->
+                    model.addResourceToLibrary(userId, resource.id).observe(activity, LibraryResponseObserver())
+                })
+            }
+
         }
 
         inner class ResourceViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -293,9 +293,26 @@ class ExploreResourcesFragment : Fragment() {
 
             init {
                 ratingImageArray = arrayOf(ratingLevel1, ratingLevel2, ratingLevel3, ratingLevel4, ratingLevel5)
-            }
 
+                if(model.userId == null) {
+                    addToLibraryBtn.visibility = View.GONE
+                }
+            }
         }
 
+        inner class LibraryResponseObserver : Observer<DalResponse> {
+            override fun onChanged(response: DalResponse?) {
+                if (response?.status == DalResponseStatus.SUCCESS) {
+                    Toast.makeText(activity.application, activity.getString(
+                            R.string.explore_resource_fragment_add_to_library_success_toast),
+                            Toast.LENGTH_LONG).show()
+                } else if (response?.status == DalResponseStatus.FAIL) {
+                    val mSnackbar = Snackbar.make(edit_goal_layout, activity.getString(
+                            R.string.explore_resource_fragment_add_to_library_fail_toast), Snackbar.LENGTH_SHORT)
+                    mSnackbar.view.background = AppCompatResources.getDrawable(activity, R.color.snackbarErrorColor)
+                    mSnackbar.show()
+                }
+            }
+        }
     }
 }

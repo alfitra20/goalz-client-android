@@ -31,7 +31,6 @@ class EditGoalActivity : AppCompatActivity() {
     private lateinit var descriptionEt: EditText
     private lateinit var deadlineEt: EditText
     private lateinit var datePicker:ImageButton
-    private lateinit var mSnackbar: Snackbar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,19 +83,13 @@ class EditGoalActivity : AppCompatActivity() {
                 val description = descriptionEt.text.toString()
                 val deadline = if (deadlineEt.text.toString() == "") null else stringToDate(deadlineEt.text.toString())
 
-                if(!areValidFields(title, topic, description)) {
+                if (!areValidFields(title, topic, description)) {
                     launchSnackbar(getString(R.string.create_goal_activity_invalid_fields_toast))
-                }else {
-                    try {
-                        //TODO : FIX this
-                        var date = dateFormat.parse(deadlineEt.text.toString())
-                    } catch (e: Exception) {
-                        //This block should be empty because if no date is given we proceed with null date
-                    }
-
-                    model.updateGoal(title, topic, description, deadline)?.observe(this, UpdateResponseObserver())
                     return true
                 }
+
+                model.updateGoal(title, topic, description, deadline)?.observe(this, UpdateResponseObserver())
+                return true
             }
             android.R.id.home -> {
                 onBackPressed()
@@ -112,9 +105,13 @@ class EditGoalActivity : AppCompatActivity() {
     }
 
     //Helper methods
-    private fun stringToDate(dateText : String?) : Date {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        return dateFormat.parse(dateText)
+    private fun stringToDate(dateText : String?) : Date? {
+        return try {
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            dateFormat.parse(dateText)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun dateToString(date : Date?) : String {
@@ -172,7 +169,7 @@ class EditGoalActivity : AppCompatActivity() {
     }
 
     private fun launchSnackbar(title: String) {
-        mSnackbar = Snackbar.make(edit_goal_layout, title, Snackbar.LENGTH_SHORT)
+        val mSnackbar = Snackbar.make(edit_goal_layout, title, Snackbar.LENGTH_SHORT)
         mSnackbar.view.background = AppCompatResources.getDrawable(this, R.color.snackbarErrorColor)
         mSnackbar.show()
     }
