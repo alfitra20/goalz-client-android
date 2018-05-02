@@ -31,10 +31,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         supportActionBar?.title = application.getString(R.string.login_activity_appbar_title)
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(application.getColor(R.color.greyColor)))
         supportActionBar?.elevation = 0F
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = application.getColor(R.color.greyColor)
 
         onboarding_login_button.setOnClickListener {login() }
     }
