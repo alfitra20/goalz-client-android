@@ -10,8 +10,9 @@
         android:id="@+id/goals_filters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
         android:visibility="gone"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/goals_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,8 +24,10 @@
             android:id="@+id/order_goals_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="65dp"
             android:text="Topic"
+            android:textColor="@color/colorPrimary"
+            app:tbgMarkerColor="@color/colorPrimary"
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
@@ -32,6 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Deadline"
+            android:textColor="@color/colorPrimary"
+            app:tbgMarkerColor="@color/colorPrimary"
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
@@ -39,6 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Resources"
+            android:textColor="@color/colorPrimary"
+            app:tbgMarkerColor="@color/colorPrimary"
             android:textSize="16sp" />
 
     </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
