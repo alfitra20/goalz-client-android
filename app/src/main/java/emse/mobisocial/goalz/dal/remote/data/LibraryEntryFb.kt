@@ -17,6 +17,7 @@ class LibraryEntryFb  constructor() : FirebaseData<LibraryEntry> {
     }
 
     override fun toEntity(id: String): LibraryEntry {
+
         return LibraryEntry(id, user_id!!, resource_id!!)
     }
 
