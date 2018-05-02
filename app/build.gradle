@@ -15,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //vectorDrawables.useSupportLibrary true
     }
     buildTypes {
         release {
@@ -46,6 +47,7 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:1.1.1"
     implementation 'android.arch.persistence.room:runtime:1.0.0'
     kapt "android.arch.persistence.room:compiler:1.0.0"
+
     //Firebase
     implementation 'com.google.firebase:firebase-core:15.0.0'
     implementation 'com.google.firebase:firebase-database:15.0.0'
@@ -58,10 +60,13 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    implementation 'com.squareup.picasso:picasso:2.71828' // meh
-    compile 'com.squareup.okhttp3:okhttp:3.10.0'
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-    compile 'com.google.code.gson:gson:2.8.1'
+    //implementation 'com.squareup.picasso:picasso:2.71828'
+    //compile 'com.squareup.okhttp3:okhttp:3.10.0'
+    //compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    //compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.android.support:customtabs:26.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+

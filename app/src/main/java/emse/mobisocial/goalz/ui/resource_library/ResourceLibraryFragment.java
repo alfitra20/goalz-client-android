@@ -3,7 +3,6 @@ package emse.mobisocial.goalz.ui.resource_library;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,19 +11,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import emse.mobisocial.goalz.R;
+import emse.mobisocial.goalz.model.Goal;
+import emse.mobisocial.goalz.model.Recommendation;
 import emse.mobisocial.goalz.model.Resource;
+import emse.mobisocial.goalz.ui.viewModels.CreateRecommendationViewModel;
+import emse.mobisocial.goalz.ui.viewModels.GoalsViewModel;
 import emse.mobisocial.goalz.ui.viewModels.ResourceLibraryViewModel;
 
 /**
@@ -37,7 +39,7 @@ import emse.mobisocial.goalz.ui.viewModels.ResourceLibraryViewModel;
  */
 public class ResourceLibraryFragment extends Fragment {
 
-    ResourceLibraryViewModel model;
+    ResourceLibraryViewModel resourceLibraryViewModel;
     RecyclerView mRecyclerView;
     ResourceLibraryAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -82,35 +84,31 @@ public class ResourceLibraryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // Let's pre-connect to Chrome
+        try {
+
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_resource_library, container, false);
-        model = ViewModelProviders.of(this).get(ResourceLibraryViewModel.class);
+        resourceLibraryViewModel = ViewModelProviders.of(this).get(ResourceLibraryViewModel.class);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.resource_library_recycler_view);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        // here user's Id will be taken from shared preferences
-        String userId = "1";
 
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) getActivity().finish();
+        String userId  = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        resourceLibraryViewModel.getResourceLibrary(userId);
         initializeObservers(userId);
         // temporary, above and below
         //List<Resource> meh = new ArrayList<>();
         //tempData(meh);
-
-        /*Gson gson = new Gson();
-        SharedPreferences prefs = getContext().getSharedPreferences("imgUrls", Context.MODE_PRIVATE);
-        String storedImgUrls = prefs.getString("imgUrls", "");
-        HashMap<String, String> imgUrls;
-        if(storedImgUrls.equals("")) {
-            imgUrls = new HashMap<String, String>();
-        } else {
-            java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>(){}.getType();
-            imgUrls = gson.fromJson(storedImgUrls, type);
-        }*/
-
         //mAdapter = new ResourceLibraryAdapter(getContext(), meh, new HashMap<String, String>());
         //mRecyclerView.setAdapter(mAdapter);
         return view;
@@ -156,9 +154,13 @@ public class ResourceLibraryFragment extends Fragment {
     }*/
 
     private void initializeObservers(String userId) {
-        model.resources.observe(this, resources -> {
-            mAdapter = new ResourceLibraryAdapter(getContext(), resources, new HashMap<>());
+        resourceLibraryViewModel.resources.observe(this, resources -> {
+            mAdapter = new ResourceLibraryAdapter(getContext(), resources, resourceLibraryViewModel,
+                    userId);
             mRecyclerView.setAdapter(mAdapter);
+        });
+        resourceLibraryViewModel.goals.observe(this, goals -> {
+            //List<Goal> meh = resourceLibraryViewModel.goals.getValue();
         });
     }
 

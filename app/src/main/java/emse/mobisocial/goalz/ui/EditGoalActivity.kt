@@ -88,6 +88,7 @@ class EditGoalActivity : AppCompatActivity() {
                     launchSnackbar(getString(R.string.create_goal_activity_invalid_fields_toast))
                 }else {
                     try {
+                        //TODO : FIX this
                         var date = dateFormat.parse(deadlineEt.text.toString())
                     } catch (e: Exception) {
                         //This block should be empty because if no date is given we proceed with null date

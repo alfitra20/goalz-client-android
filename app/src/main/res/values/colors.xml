@@ -7,9 +7,18 @@
     <color name="colorAccent">#FF4081</color>
     <color name="progressBarFG">#2a9aea</color>
     <color name="progressBarBG">#a6adb2</color>
+
+    <color name="colorPrimaryTextDefaultMaterialLight">#DE000000</color>
+    <color name="colorSecondaryTextDefaultMaterialLight">#8A000000</color>
+
+    <!--<color name="colorPrimaryTextDefaultMaterialDark">#FFFFFFFF</color>
+    <color name="colorSecondaryTextDefaultMaterialDark">#B3FFFFFF</color>-->
+
     <color name="snackbarErrorColor">#FF6347</color>
     <color name="snackbarActionColor">#FFFFFF</color>
-    <color name="greyColor">#CCCCCC</color>
+    <color name="greyColor">#cccccc</color>
     <color name="textHintNotActive">#A9A9A9</color>
+    <color name="colorSecondaryDark">#c68400</color>
+
 </resources>
 

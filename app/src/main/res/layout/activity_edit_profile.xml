@@ -9,114 +9,112 @@
     tools:layout_editor_absoluteY="81dp">
 
     <View
+        android:id="@+id/divider4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="#CCCC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout14" />
+
+    <View
         android:id="@+id/divider3"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:background="#CCCC"
-        app:layout_constraintBottom_toTopOf="@+id/textView16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/change_password_button" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="16dp"
         android:text="@string/edit_profile_activity_account_information_subtitle"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout14"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
     <TextView
         android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:text="@string/edit_profile_activity_personal_information_subtitle"
-        app:layout_constraintBottom_toTopOf="@+id/firstname_edit_text"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
     <TextView
         android:id="@+id/change_password_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/edit_profile_activity_edit_email_and_password_button"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout14" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
         android:text="@string/edit_profile_activity_gender_hint"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout17"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout16" />
+        app:layout_constraintTop_toTopOf="@+id/pick_gender" />
 
     <Spinner
         android:id="@+id/pick_gender"
-        android:layout_width="130dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout17"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toEndOf="@+id/textView24"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout16" />
 
     <ImageButton
         android:id="@+id/pickbirthdate_edit"
         android:layout_width="46dp"
-        android:layout_height="49dp"
-        android:layout_marginBottom="44dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
         android:background="@null"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout17"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout19"
-        app:layout_constraintVertical_bias="0.137"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout20"
         app:srcCompat="@drawable/calendar_grey" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout14"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/change_password_button"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/nickname_edit_text"
@@ -130,10 +128,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout16"
-        app:layout_constraintEnd_toStartOf="@+id/textInputLayout19"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16">
 
@@ -148,14 +145,11 @@
         android:id="@+id/textInputLayout19"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textInputLayout20"
-        app:layout_constraintTop_toBottomOf="@+id/textView16">
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout20">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/lastname_edit_text"
@@ -169,9 +163,7 @@
         android:layout_width="0dp"
         android:layout_height="53dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/pick_gender"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toStartOf="@+id/pickbirthdate_edit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout20">
@@ -187,14 +179,11 @@
         android:id="@+id/textInputLayout17"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="95dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView24">
+        app:layout_constraintTop_toBottomOf="@+id/pick_gender">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/website_edit_text"
@@ -203,5 +192,23 @@
             android:hint="@string/edit_profile_activity_website_hint"
             android:inputType="textUri" />
     </android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="60dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout14"
+        app:srcCompat="@drawable/bg_circle" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </android.support.constraint.ConstraintLayout>
