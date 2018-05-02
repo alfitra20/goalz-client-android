@@ -146,7 +146,7 @@
     <string name="signup_activity_nickname_required">Nickname required</string>
     <string name="signup_activity_enter_your_text">Enter your</string>
     <string name="signup_activity_nickname_heading">Nickname</string>
-    <string name="signup_activity_nickname_hint">Ex: mynickname</string>
+    <string name="signup_activity_nickname_hint">Ex. mynickname</string>
     <string name="signup_activity_next_button">NEXT</string>
     <string name="signup_activity_register_button">REGISTER</string>
     <string name="signup_activity_personal_information_heading">Personal Information</string>

@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/own_goal_card_title"
-            android:layout_width="0dp"
+            android:layout_width="215dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginEnd="8dp"
@@ -30,6 +30,7 @@
             android:textColor="#000000"
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/own_goal_card_expand_btn"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/own_goal_card_status_pb"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,9 +115,9 @@
         <ImageButton
             android:id="@+id/own_goal_card_expand_btn"
             android:layout_width="34dp"
-            android:layout_height="47dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="31dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="40dp"
             android:background="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

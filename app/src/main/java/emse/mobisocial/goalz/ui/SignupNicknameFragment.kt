@@ -8,6 +8,7 @@ import android.support.v7.content.res.AppCompatResources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.ui.viewModels.CreateGoalViewModel
@@ -39,6 +40,10 @@ class SignupNicknameFragment: Fragment() {
                 nickname = nickname_text.text.toString().trim()
                 val args = Bundle()
                 args.putString(NICKNAME_PARAM, nickname)
+                // hiding the keyboard
+                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+
                 val newFragment = SignupPersonalInfoFragment()
                 newFragment.arguments = args
                 val transaction = activity.supportFragmentManager.beginTransaction()
