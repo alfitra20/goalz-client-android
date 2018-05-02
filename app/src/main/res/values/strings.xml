@@ -32,15 +32,15 @@
 
 
     <!-- Create Goal Activity texts-->
-    <string name="create_goal_activity_appbar_title">Create Goal</string>
+    <string name="create_goal_activity_appbar_title">New Goal</string>
     <string name="create_goal_activity_invalid_fields_toast">Invalid Fields</string>
     <string name="create_goal_activity_success_toast">Goal Successfully Created</string>
     <string name="create_goal_activity_title_hint">Title</string>
-    <string name="create_goal_activity_topic_hint">Goal Topic</string>
+    <string name="create_goal_activity_topic_hint">Topic</string>
     <string name="create_goal_activity_description_hint">Description</string>
     <string name="create_goal_activity_deadline_hint">Deadline</string>
-    <string name="create_goal_activity_parent_hint">Create the goal under:</string>
-    <string name="create_goal_activity_button_text">Create Goal</string>
+    <string name="create_goal_activity_parent_hint">Parent goal</string>
+    <string name="create_goal_activity_button_text">Create</string>
 
 
     <!-- Create Resource Activity texts-->
