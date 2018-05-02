@@ -67,8 +67,8 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
             mSnackbar.setAction("Login") { startActivity(loginIntent) }
         }
 
-        val receivedRequest:Int? = intent.getIntExtra("position", 0)
-        if (receivedRequest != null) {
+        val receivedRequest : Int = intent.getIntExtra("position", -1)
+        if (receivedRequest != -1) {
             setRequestedFragment(receivedRequest)
         }else{
             setInitialFragment()

@@ -15,19 +15,21 @@ import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
 import com.nex3z.togglebuttongroup.button.LabelToggle
-import emse.mobisocial.goalz.GoalzApp
 
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.Recommendation
 import emse.mobisocial.goalz.ui.dialogs.GoalDeleteDialog
 import emse.mobisocial.goalz.ui.viewModels.MyGoalsViewModel
-import emse.mobisocial.goalz.util.IDialogResultListener
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MyGoalsFragment : Fragment() {
 
+    enum class Filter {NONE, TOPIC, DEADLINE, RESOURCES}
+
+    private lateinit var filterViewLayout : LinearLayout
     private lateinit var filterView: MultiSelectToggleGroup
     private lateinit var modelMy: MyGoalsViewModel
     private lateinit var recyclerView: RecyclerView
@@ -40,6 +42,7 @@ class MyGoalsFragment : Fragment() {
 
     private var filterOpen: Boolean = false
     private var userId: String? = null
+    private var selectedFilter = Filter.NONE
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,26 +53,33 @@ class MyGoalsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.goals_recycler_view) as RecyclerView
 
         userId = FirebaseAuth.getInstance().currentUser?.uid
-        if (userId != null) {
-            Log.e("GOALS FRAGMENT", "USER AUTHENTICATED:" + userId)
-
-            // Initialize data
-            filterView = view.findViewById(R.id.goals_filters) as MultiSelectToggleGroup
-
-            modelMy = ViewModelProviders.of(this).get(MyGoalsViewModel::class.java)
-            modelMy.initialize(userId!!)
-
-            deadlineFilter = view.findViewById(R.id.order_goals_deadline)
-            topicFilter = view.findViewById(R.id.order_goals_topic)
-            resourcesCountFilter = view.findViewById(R.id.order_goals_resources_count)
-
-            setupRecyclerView()
-            initializeObservers()
-            initializeListeners()
-
-        } else {
-            Log.e("GOALS FRAGMENT: ", "COULD NOT GET AUTHENTICATED USER")
+        if (userId == null) {
+            Log.d("TEST", "HERE")
+            activity.finish()
+            return null
         }
+
+        Log.d("TEST", "AND HERE")
+        // Initialize data
+        filterViewLayout = view.findViewById(R.id.goals_filters_layout) as LinearLayout
+        filterView = view.findViewById(R.id.goals_filters) as MultiSelectToggleGroup
+
+        modelMy = ViewModelProviders.of(this).get(MyGoalsViewModel::class.java)
+        modelMy.initialize(userId!!)
+
+        deadlineFilter = view.findViewById(R.id.order_goals_deadline)
+        topicFilter = view.findViewById(R.id.order_goals_topic)
+        resourcesCountFilter = view.findViewById(R.id.order_goals_resources_count)
+        deadlineFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        topicFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        resourcesCountFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        deadlineFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+        topicFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+        resourcesCountFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+
+        setupRecyclerView()
+        initializeObservers()
+        initializeListeners()
 
         return view
     }
@@ -85,7 +95,7 @@ class MyGoalsFragment : Fragment() {
     private fun initializeObservers() {
         modelMy.goalsList.observe(this, Observer<List<Goal>> { goals ->
             if (goals != null) {
-                recyclerViewAdapter.addGoals(goals)
+                recyclerViewAdapter.addGoals(goals, selectedFilter)
             }
         })
         modelMy.recommendationsList.observe(this, Observer<List<Recommendation>> { recommendations ->
@@ -96,26 +106,29 @@ class MyGoalsFragment : Fragment() {
     }
 
     private fun initializeListeners() {
-        filterView.setOnCheckedChangeListener(object: MultiSelectToggleGroup.OnCheckedStateChangeListener {
-            override fun onCheckedStateChanged(single: MultiSelectToggleGroup?, checkedId: Int, isChecked: Boolean) {
-                if (isChecked) {
-                    uncheckOthers(checkedId)
-                    recyclerViewAdapter.filterRecyclerView()
-                } else {
-                    modelMy.reset(userId!!)
+        filterView.setOnCheckedChangeListener { _, checkedId, isChecked ->
+            if (isChecked){
+                when(checkedId) {
+                    deadlineFilter.id -> {
+                        if(topicFilter.isChecked) {topicFilter.isChecked = false}
+                        if(resourcesCountFilter.isChecked) {resourcesCountFilter.isChecked = false}
+                        selectedFilter = Filter.DEADLINE
+                    }
+                    topicFilter.id -> {
+                        if(deadlineFilter.isChecked) {deadlineFilter.isChecked = false}
+                        if(resourcesCountFilter.isChecked) {resourcesCountFilter.isChecked = false}
+                        selectedFilter = Filter.TOPIC
+                    }
+                    resourcesCountFilter.id -> {
+                        if(topicFilter.isChecked) {topicFilter.isChecked = false}
+                        if(deadlineFilter.isChecked) {deadlineFilter.isChecked = false}
+                        selectedFilter = Filter.RESOURCES
+                    }
                 }
-            }
-        })
-    }
-
-    private fun uncheckOthers(checkId: Int) {
-        for (id: Int in filterView.getCheckedIds()) {
-            if (id != checkId) {
-                when(id) {
-                    resourcesCountFilter.id -> resourcesCountFilter.setChecked(false)
-                    topicFilter.id -> topicFilter.setChecked(false)
-                    deadlineFilter.id -> deadlineFilter.setChecked(false)
-                }
+                recyclerViewAdapter.sortRecyclerView(selectedFilter)
+            } else if (!isChecked && !topicFilter.isChecked && !deadlineFilter.isChecked && !resourcesCountFilter.isChecked) {
+                selectedFilter = Filter.NONE
+                recyclerViewAdapter.sortRecyclerView(selectedFilter)
             }
         }
     }
@@ -160,11 +173,11 @@ class MyGoalsFragment : Fragment() {
         filterItem.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener {
             override fun onMenuItemClick(p0: MenuItem?): Boolean {
                 if (!filterOpen) {
-                    filterView.visibility = View.VISIBLE
+                    filterViewLayout.visibility = View.VISIBLE
                     params.setMargins(0, 0, 0, 0)
                     recyclerView.setLayoutParams(params)
                 } else {
-                    filterView.visibility = View.GONE
+                    filterViewLayout.visibility = View.GONE
                     params.setMargins(0, topMarginPx, 0, 0)
                     recyclerView.setLayoutParams(params)
                 }
@@ -178,20 +191,11 @@ class MyGoalsFragment : Fragment() {
 
     inner class RecyclerViewAdapter(goalsParam: ArrayList<Goal>, recommendationsParam: ArrayList<Recommendation>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
         private var mGoals: List<Goal> = goalsParam
+        private var unsortedList: List<Goal> = goalsParam
         private var mRecommendations: List<Recommendation> = recommendationsParam
 
         override fun getItemCount(): Int {
             return mGoals.size
-        }
-
-        fun addGoals(newGoalsList: List<Goal>) {
-            this.mGoals = newGoalsList
-            notifyDataSetChanged()
-        }
-
-        fun addRecommendations(newRecommendationsList: List<Recommendation>) {
-            this.mRecommendations = newRecommendationsList
-            notifyDataSetChanged()
         }
 
         override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): GoalViewHolder {
@@ -250,49 +254,34 @@ class MyGoalsFragment : Fragment() {
             }
         }
 
-        fun countRecommendationsForGoal(goal_id: String): Int {
-            var count = 0
-            for (r in mRecommendations){
-                if (r.goalId == goal_id) {
-                    count++
-                }
+        fun addGoals(newGoalsList: List<Goal>, filter: Filter) {
+            this.unsortedList = newGoalsList
+            this.mGoals = sortItems(filter)
+            notifyDataSetChanged()
+        }
+
+        fun addRecommendations(newRecommendationsList: List<Recommendation>) {
+            this.mRecommendations = newRecommendationsList
+            notifyDataSetChanged()
+        }
+
+        fun sortRecyclerView(filter: Filter){
+            mGoals = sortItems(filter)
+            notifyDataSetChanged()
+        }
+
+        private fun countRecommendationsForGoal(goal_id: String): Int {
+            return mRecommendations.count { it.goalId == goal_id }
+        }
+
+        private fun sortItems(filter: Filter) : List<Goal> {
+            var newList : List<Goal> = ArrayList<Goal>(unsortedList)
+            when (filter) {
+                Filter.DEADLINE -> newList = ArrayList<Goal>(mGoals).sortedWith(compareBy<Goal,Long?>(nullsLast(), { it.deadline?.time }))
+                Filter.TOPIC -> (newList as ArrayList<Goal>).sortBy { goal -> goal.topic }
+                Filter.RESOURCES -> (newList as ArrayList<Goal>).sortBy { goal -> -countRecommendationsForGoal(goal.id) }
             }
-            return count
-        }
-
-        override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
-            super.onAttachedToRecyclerView(recyclerView)
-        }
-
-        fun filterRecyclerView() {
-            val checkedIds = filterView.getCheckedIds()
-            for (id: Int in checkedIds) {
-                when (id) {
-                    deadlineFilter.id -> filterByDeadline()
-                    topicFilter.id -> filterByTopic()
-                    resourcesCountFilter.id -> filterByResourcesCount()
-                }
-            }
-        }
-
-        fun filterByTopic() {
-            val filterdList = ArrayList<Goal>(mGoals)
-            filterdList.sortBy { goal -> goal.topic }
-            this.mGoals = filterdList
-            notifyDataSetChanged()
-        }
-
-        fun filterByDeadline() {
-            val filterdList = ArrayList<Goal>(mGoals).sortedWith(compareBy<Goal,Long?>(nullsLast(), { it.deadline?.time }))
-            this.mGoals = filterdList
-            notifyDataSetChanged()
-        }
-
-        fun filterByResourcesCount() {
-            val filterdList = ArrayList<Goal>(mGoals)
-            filterdList.sortBy { goal -> -countRecommendationsForGoal(goal.id) }
-            this.mGoals = filterdList
-            notifyDataSetChanged()
+            return newList
         }
 
         inner class GoalViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

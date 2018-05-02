@@ -27,11 +27,12 @@ import com.nex3z.togglebuttongroup.button.LabelToggle
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.DEFAULT_RESOURCE_AVG_TIME
-import emse.mobisocial.goalz.ui.resource_library.ResourceLibraryAdapter
 import emse.mobisocial.goalz.ui.resource_library.WebViewActivity
 import kotlinx.android.synthetic.main.activity_edit_goal.*
 
 class ExploreResourcesFragment : Fragment() {
+
+    enum class Filter {NONE, TOPIC, RATING, TIME}
 
     private lateinit var model : ExploreResourcesViewModel
     private lateinit var recyclerView: RecyclerView
@@ -40,10 +41,12 @@ class ExploreResourcesFragment : Fragment() {
 
     // filter variables and views
     private var filterOpen: Boolean = false
+    private lateinit var filterViewLayout : LinearLayout
     private lateinit var filterView: MultiSelectToggleGroup
     private lateinit var topicFilter: LabelToggle
     private lateinit var ratingFilter: LabelToggle
     private lateinit var timeFilter: LabelToggle
+    private var selectedFilter = Filter.NONE
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -55,10 +58,17 @@ class ExploreResourcesFragment : Fragment() {
 
         // Initialize data
         filterView = view.findViewById(R.id.resources_filters) as MultiSelectToggleGroup
+        filterViewLayout = view.findViewById(R.id.resources_filters_layout) as LinearLayout
         recyclerView = view.findViewById(R.id.explore_resources_recycler_view) as RecyclerView
         topicFilter = view.findViewById(R.id.order_resources_topic)
         ratingFilter = view.findViewById(R.id.order_resources_rating)
         timeFilter = view.findViewById(R.id.order_resources_time)
+        topicFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        ratingFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        timeFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        topicFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+        ratingFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+        timeFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
 
         setupRecyclerView()
 
@@ -79,32 +89,35 @@ class ExploreResourcesFragment : Fragment() {
     private fun initializeObservers() {
         model.resourcesList.observe(this, Observer<List<Resource>> { resources ->
             if (resources != null) {
-                recyclerViewAdapter.addItems(resources)
+                recyclerViewAdapter.addItems(resources, selectedFilter)
             }
         })
     }
 
     private fun initializeListeners() {
-        filterView.setOnCheckedChangeListener(object: MultiSelectToggleGroup.OnCheckedStateChangeListener {
-            override fun onCheckedStateChanged(single: MultiSelectToggleGroup?, checkedId: Int, isChecked: Boolean) {
-                if (isChecked) {
-                    uncheckOthers(checkedId)
-                    recyclerViewAdapter.filterRecyclerView()
-                } else {
-                    model.reset()
+        filterView.setOnCheckedChangeListener { _, checkedId, isChecked ->
+            if (isChecked){
+                when(checkedId) {
+                    topicFilter.id -> {
+                        if(timeFilter.isChecked) {timeFilter.isChecked = false}
+                        if(ratingFilter.isChecked) {ratingFilter.isChecked = false}
+                        selectedFilter = Filter.TOPIC
+                    }
+                    ratingFilter.id -> {
+                        if(topicFilter.isChecked) {topicFilter.isChecked = false}
+                        if(timeFilter.isChecked) {timeFilter.isChecked = false}
+                        selectedFilter = Filter.RATING
+                    }
+                    timeFilter.id -> {
+                        if(topicFilter.isChecked) {topicFilter.isChecked = false}
+                        if(ratingFilter.isChecked) {ratingFilter.isChecked = false}
+                        selectedFilter = Filter.TIME
+                    }
                 }
-            }
-        })
-    }
-
-    private fun uncheckOthers(checkId: Int) {
-        for (id: Int in filterView.getCheckedIds()) {
-            if (id != checkId) {
-                when(id) {
-                    ratingFilter.id -> ratingFilter.setChecked(false)
-                    topicFilter.id -> topicFilter.setChecked(false)
-                    timeFilter.id -> timeFilter.setChecked(false)
-                }
+                recyclerViewAdapter.sortRecyclerView(selectedFilter)
+            } else if (!isChecked && !topicFilter.isChecked && !topicFilter.isChecked && !timeFilter.isChecked) {
+                selectedFilter = Filter.NONE
+                recyclerViewAdapter.sortRecyclerView(selectedFilter)
             }
         }
     }
@@ -144,11 +157,11 @@ class ExploreResourcesFragment : Fragment() {
         filterItem.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener {
             override fun onMenuItemClick(p0: MenuItem?): Boolean {
                 if (!filterOpen) {
-                    filterView.visibility = View.VISIBLE
+                    filterViewLayout.visibility = View.VISIBLE
                     params.setMargins(0, 0, 0, 0)
                     recyclerView.setLayoutParams(params)
                 } else {
-                    filterView.visibility = View.GONE
+                    filterViewLayout.visibility = View.GONE
                     params.setMargins(0, topMarginPx, 0, 0)
                     recyclerView.setLayoutParams(params)
                 }
@@ -162,42 +175,27 @@ class ExploreResourcesFragment : Fragment() {
 
     inner class RecyclerViewAdapter(resourcesParams: ArrayList<Resource>) : RecyclerView.Adapter<RecyclerViewAdapter.ResourceViewHolder>() {
         private var mResources: List<Resource> = resourcesParams
+        private var unsortedList: List<Resource> = resourcesParams
 
-        fun addItems(newResourcesList: List<Resource>) {
-            this.mResources = newResourcesList
+        fun addItems(newResourcesList: List<Resource>, filter: Filter) {
+            this.unsortedList = newResourcesList
+            this.mResources = sortItems(filter)
             notifyDataSetChanged()
         }
 
-        fun filterRecyclerView() {
-            val checkedIds = filterView.getCheckedIds()
-            for (id: Int in checkedIds) {
-                when (id) {
-                    ratingFilter.id -> filterByRating()
-                    topicFilter.id -> filterByTopic()
-                    timeFilter.id -> filterByTime()
-                }
+        fun sortRecyclerView(filter: Filter){
+            mResources = sortItems(filter)
+            notifyDataSetChanged()
+        }
+
+        private fun sortItems(filter: Filter) : List<Resource> {
+            val newList = ArrayList<Resource>(unsortedList)
+            when (filter) {
+                Filter.TIME -> newList.sortBy { resource -> resource.avgReqTime }
+                Filter.TOPIC -> newList.sortBy { resource -> resource.topic }
+                Filter.RATING -> newList.sortBy { resource -> -resource.rating }
             }
-        }
-
-        private fun filterByTopic() {
-            val filterdList = ArrayList<Resource>(mResources)
-            filterdList.sortBy { resource -> resource.topic }
-            this.mResources = filterdList
-            notifyDataSetChanged()
-        }
-
-        private fun filterByRating() {
-            val filterdList = ArrayList<Resource>(mResources)
-            filterdList.sortBy { resource -> -resource.rating }
-            this.mResources = filterdList
-            notifyDataSetChanged()
-        }
-
-        private fun filterByTime() {
-            val filterdList = ArrayList<Resource>(mResources)
-            filterdList.sortBy { resource -> resource.avgReqTime }
-            this.mResources = filterdList
-            notifyDataSetChanged()
+            return newList
         }
 
         private fun formatAvgTime(time : Int) : String {

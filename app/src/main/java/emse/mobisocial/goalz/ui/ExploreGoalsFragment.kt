@@ -15,8 +15,6 @@ import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.ui.viewModels.ExploreGoalsViewModel
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Layout
-import android.util.Log
 import android.view.*
 import android.widget.*
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -81,8 +79,6 @@ class ExploreGoalsFragment : Fragment() {
         proximityFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
         statusFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
         topicFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
-
-
 
         setupRecyclerView()
         initializeObservers()

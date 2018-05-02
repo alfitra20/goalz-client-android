@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ExploreGoalsFragment"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context=".ui.ExploreGoalsFragment">
 
     <LinearLayout
         android:id="@+id/explore_goals_filters_layout"
@@ -33,9 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="Topic"
                 android:textSize="16sp"
-                android:visibility="visible">
-
-            </com.nex3z.togglebuttongroup.button.LabelToggle>
+                android:visibility="visible"/>
 
             <Space
                 android:layout_width="24dp"
@@ -47,9 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="Proximity"
                 android:textSize="16sp"
-                android:visibility="visible">
-
-            </com.nex3z.togglebuttongroup.button.LabelToggle>
+                android:visibility="visible"/>
 
             <Space
                 android:layout_width="24dp"
