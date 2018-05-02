@@ -2,6 +2,7 @@ package emse.mobisocial.goalz.ui
 
 import android.Manifest
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -31,6 +32,8 @@ import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.GoalzApp
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
+import emse.mobisocial.goalz.model.User
+import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
 import emse.mobisocial.goalz.util.IDialogResultListener
 
 open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener, IDialogResultListener {
@@ -38,6 +41,8 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
     private var loggedInUserId : String? = null
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var mSnackbar: Snackbar
+    private lateinit var model : UserProfileViewModel
+    private lateinit var sidebarNickname : TextView
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 
@@ -51,6 +56,9 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         Log.d("support", supportActionBar.toString())
 
         loggedInUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        model = ViewModelProviders.of(this).get(UserProfileViewModel::class.java)
+
 
         if(loggedInUserId == null) {
             mSnackbar = Snackbar.make(base_layout,
@@ -71,6 +79,16 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         toggle.syncState()
 
         ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),1)
+    }
+
+    private fun initializeObservers() {
+        model.getUser(loggedInUserId!!)
+        model.userData.observe(this, Observer<User> { user ->
+            Log.d("check", "check")
+            if (user != null) {
+                sidebarNickname.text = user.nickname
+            }
+        })
     }
 
     private fun setRequestedFragment(position: Int){
@@ -114,7 +132,7 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
         //Initialize profile menu from navigation view in Tabbed activity
         var header = nav_view.getHeaderView(0)
-        var sidebarNickname : TextView = header.findViewById(R.id.sidebar_nickname)
+        sidebarNickname  = header.findViewById(R.id.sidebar_nickname)
         var profileImage : ImageView = header.findViewById(R.id.profile_image)
 
         nav_view.itemIconTintList = null
@@ -123,9 +141,9 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         // When the user logged in the profile picture and nickname will redirect to user's profile
         // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
         if (loggedInUserId != null) {
+            initializeObservers()
             sidebarNickname.setOnClickListener {
                 val intent = Intent(this, UserActivity::class.java)
-
                 startActivity(intent)
             }
             profileImage.setOnClickListener {
