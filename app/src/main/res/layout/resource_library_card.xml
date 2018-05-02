@@ -159,7 +159,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="DELETE"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@android:color/holo_red_dark"
             app:layout_constraintTop_toTopOf="@+id/add_to_goal_button"
             app:layout_constraintStart_toEndOf="@+id/add_to_goal_button" />
 
