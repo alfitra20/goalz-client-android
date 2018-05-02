@@ -31,6 +31,14 @@
     <string name="title_activity_change_password">Change Account Password</string>
 
 
+    <!-- General -->
+    <string name="delete_goal_success_toast">Goal Successfully Removed</string>
+    <string name="delete_goal_fail_toast">Cannot Delete Goal</string>
+
+    <!-- Explore Resource fragment -->
+    <string name="explore_resource_fragment_add_to_library_success_toast">Resource successfully added</string>
+    <string name="explore_resource_fragment_add_to_library_fail_toast">Failed to add resource</string>
+
     <!-- Create Goal Activity texts-->
     <string name="create_goal_activity_appbar_title">New Goal</string>
     <string name="create_goal_activity_invalid_fields_toast">Invalid Fields</string>
@@ -81,8 +89,6 @@
     <string name="goal_activity_delete_dialog_positive">Confirm</string>
     <string name="goal_activity_delete_dialog_negative">Cancel</string>
     <string name="goal_activity_delete_dialog_tag">DELETE DIALOG</string>
-    <string name="goal_activity_delete_goal_success_toast">Goal Successfully Removed</string>
-    <string name="goal_activity_delete_goal_fail_toast">Cannot Delete Goal</string>
     <string name="goal_activity_progress_dialog_message">Set new progress value</string>
     <string name="goal_activity_progress_dialog_tag">PROGRESS DIALOG</string>
     <string name="goal_activity_update_status_success_toast">Status Successfully Updated</string>
@@ -174,13 +180,16 @@
     <string name="user_activity_website">Website:</string>
     <string name="user_activity_gender">Gender:</string>
 
-
-
-
-
     <!-- Notification -->
     <string name="notification_new_recommendation_title">New Recommendation</string>
 
     <!-- Goals Activity -->
     <string name="goals_activity_appbar_title">\'s goals</string>
+
+    <!-- Own goals card -->
+    <string name="own_goals_card_deadline_text">Deadline:&#160;</string>
+    <string name="own_goals_card_resources_text">Resources:&#160;</string>
+    <string name="own_goals_card_add_resource_btn_text">Add resource</string>
+    <string name="own_goals_card_update_btn_text">Update</string>
+    <string name="own_goals_card_delete_btn_text">Delete</string>
 </resources>

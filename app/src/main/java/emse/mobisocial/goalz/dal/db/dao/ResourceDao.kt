@@ -22,7 +22,7 @@ abstract class ResourceDao {
     abstract fun loadResourceForDelete(id : String): Resource?
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("SELECT resources.resource_id, resources.user_id, link, resources.title, topic, resources.rating, resources.recommendation_no, avg_req_time FROM resources " +
+    @Query("SELECT resources.resource_id, resources.user_id, link, resources.image_url, resources.title, topic, resources.rating, resources.recommendation_no, avg_req_time FROM resources " +
             "JOIN user_library ON resources.resource_id = user_library.resource_id " +
             "WHERE user_library.user_id = :userId")
     abstract fun loadLibraryForUser(userId : String) : LiveData<List<Resource>>

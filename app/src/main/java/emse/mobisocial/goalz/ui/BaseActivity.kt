@@ -1,6 +1,7 @@
 package emse.mobisocial.goalz.ui
 
 import android.Manifest
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -24,11 +25,15 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.content.res.AppCompatResources
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
 import emse.mobisocial.goalz.GoalzApp
+import emse.mobisocial.goalz.dal.DalResponse
+import emse.mobisocial.goalz.dal.DalResponseStatus
+import emse.mobisocial.goalz.util.IDialogResultListener
 
-open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener {
+open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener, IDialogResultListener {
 
     private var loggedInUserId : String? = null
     private lateinit var toggle: ActionBarDrawerToggle
@@ -226,6 +231,31 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         when (item.itemId) {
             R.id.action_settings -> return true
             else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    //Method from IDialog Result Listener
+    override fun callback(tag: String, result: IDialogResultListener.DialogResult, value: Any?) {
+        val deleteDialog = getString(R.string.goal_activity_delete_dialog_tag)
+
+        if (result == IDialogResultListener.DialogResult.CONFIRM) {
+            if (tag == deleteDialog) {
+                val goalRepository = (application as GoalzApp).goalRepository
+                goalRepository.deleteGoal(value as String).observe(this,DeleteResponseObserver())
+            }
+        }
+    }
+
+    //Observers
+    inner class DeleteResponseObserver : Observer<DalResponse> {
+        override fun onChanged(response: DalResponse?) {
+            if (response?.status == DalResponseStatus.SUCCESS) {
+                Toast.makeText(application, application.getString(R.string.delete_goal_success_toast),
+                        Toast.LENGTH_LONG).show()
+            } else if (response?.status == DalResponseStatus.FAIL) {
+                Toast.makeText(application, application.getString(R.string.delete_goal_fail_toast),
+                        Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz.ui
+package emse.mobisocial.goalz.ui.dialogs
 
 import android.app.Dialog
 import android.app.DialogFragment
@@ -10,20 +10,22 @@ import emse.mobisocial.goalz.util.IDialogResultListener
 /**
  * Created by MobiSocial EMSE Team on 4/28/2018.
  */
-class GoalActivityDeleteDialog constructor(): DialogFragment() {
+class GoalDeleteDialog constructor(): DialogFragment() {
 
     private lateinit var resultListener : IDialogResultListener
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         resultListener = activity as IDialogResultListener
 
+        val goalId = arguments.getString("goal_id")
+
         val builder = AlertDialog.Builder(activity)
 
         builder.setMessage(R.string.goal_activity_delete_dialog_messages)
                 .setPositiveButton(R.string.goal_activity_delete_dialog_positive, { _, _ ->
-                    resultListener.callback(tag, IDialogResultListener.DialogResult.CONFIRM, null)
+                    resultListener.callback(tag, IDialogResultListener.DialogResult.CONFIRM, goalId)
                 }).setNegativeButton(R.string.goal_activity_delete_dialog_negative, { _, id ->
-                    resultListener.callback(tag, IDialogResultListener.DialogResult.CANCEL, null)
+                    resultListener.callback(tag, IDialogResultListener.DialogResult.CANCEL, goalId)
                 })
         return builder.create()
     }

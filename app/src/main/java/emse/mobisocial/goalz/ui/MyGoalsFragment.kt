@@ -2,26 +2,27 @@ package emse.mobisocial.goalz.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.constraint.Guideline
 import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.*
-import android.widget.SearchView
-import android.widget.TextView
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
 import com.nex3z.togglebuttongroup.button.LabelToggle
+import emse.mobisocial.goalz.GoalzApp
 
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.Recommendation
+import emse.mobisocial.goalz.ui.dialogs.GoalDeleteDialog
 import emse.mobisocial.goalz.ui.viewModels.MyGoalsViewModel
+import emse.mobisocial.goalz.util.IDialogResultListener
 import java.util.*
 
 
@@ -175,16 +176,6 @@ class MyGoalsFragment : Fragment() {
         super.onCreateOptionsMenu(menu,inflater)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-
-    }
-
     inner class RecyclerViewAdapter(goalsParam: ArrayList<Goal>, recommendationsParam: ArrayList<Recommendation>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
         private var mGoals: List<Goal> = goalsParam
         private var mRecommendations: List<Recommendation> = recommendationsParam
@@ -208,19 +199,54 @@ class MyGoalsFragment : Fragment() {
             return GoalViewHolder(v)
         }
 
-
         override fun onBindViewHolder(goalViewHolder: GoalViewHolder, i: Int) {
             // The data from the goal modelMy is retrieved and bound to the card View here.
-            val deadline = mGoals[i].deadline
-            val recommendations_count = countRecommendationsForGoal(mGoals[i].id)
-            goalViewHolder.goalTitle.text = mGoals[i].title
-            goalViewHolder.goalTopic.text = mGoals[i].topic
-            goalViewHolder.goalRecommendationsCount.text = recommendations_count.toString()
-            if (deadline != null) {
-                val formattedDate = DateFormat.format("dd MMM yyyy", deadline) as String
-                goalViewHolder.goalDeadline.text = formattedDate
-            } else {
-                goalViewHolder.goalDeadline.text = "Not specified"
+            val goal = mGoals[i]
+
+            var deadline = "Not specified"
+            if (goal.deadline != null) {
+                deadline = DateFormat.format("dd MMM yyyy", goal.deadline) as String
+            }
+
+            goalViewHolder.titleTw.text = goal.title
+            goalViewHolder.topicTw.text = goal.topic
+            goalViewHolder.deadlineTw.text = "${getString(R.string.own_goals_card_deadline_text)}$deadline"
+            goalViewHolder.resourcesTw.text = "${getString(R.string.own_goals_card_resources_text)}${countRecommendationsForGoal(goal.id)}"
+            goalViewHolder.descriptionTw.text = goal.description
+            goalViewHolder.statusPb.progress = goal.status
+            goalViewHolder.statusTw.text = goal.status.toString() + getString(R.string.goal_activity_status_template)
+
+            goalViewHolder.addResourceBtn.visibility = View.GONE
+            goalViewHolder.updateBtn.visibility = View.GONE
+            goalViewHolder.deleteBtn.visibility = View.GONE
+            goalViewHolder.guideline.visibility = View.INVISIBLE
+            goalViewHolder.descriptionTw.maxLines = 2
+            goalViewHolder.expandBtn.setImageResource(R.drawable.ic_expand_more_black_36dp)
+
+            goalViewHolder.itemView.setOnClickListener {
+                val goalId = goal.id
+                val intent = Intent(activity, GoalActivity::class.java)
+                intent.putExtra("goal_id", goalId)
+                startActivity(intent)
+            }
+            goalViewHolder.addResourceBtn.setOnClickListener {
+                val intent = Intent(activity, CreateRecommendationActivity::class.java)
+                intent.putExtra("goal_id", goal.id)
+                startActivity(intent)
+            }
+            goalViewHolder.updateBtn.setOnClickListener {
+                val intent = Intent(activity, EditGoalActivity::class.java)
+                intent.putExtra("goal_id", goal.id)
+                startActivity(intent)
+            }
+            goalViewHolder.deleteBtn.setOnClickListener {
+                val dialogFragment = GoalDeleteDialog()
+                val args = Bundle()
+
+                args.putString("goal_id", goal.id)
+                dialogFragment.arguments = args
+
+                dialogFragment.show(activity.fragmentManager, getString(R.string.goal_activity_delete_dialog_tag))
             }
         }
 
@@ -270,24 +296,50 @@ class MyGoalsFragment : Fragment() {
         }
 
         inner class GoalViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            internal var goalCard: CardView
-            internal var goalTitle: TextView
-            internal var goalTopic: TextView
-            internal var goalDeadline: TextView
-            internal var goalRecommendationsCount: TextView
+            private var isExpanded : Boolean = false
+
+            internal var titleTw: TextView = itemView.findViewById(R.id.own_goal_card_title)
+            internal var topicTw: TextView = itemView.findViewById(R.id.own_goal_card_topic)
+            internal var deadlineTw: TextView = itemView.findViewById(R.id.own_goal_card_deadline)
+            internal var resourcesTw: TextView = itemView.findViewById(R.id.own_goal_card_resources)
+            internal var descriptionTw: TextView = itemView.findViewById(R.id.own_goal_card_description)
+            internal var statusPb: ProgressBar = itemView.findViewById(R.id.own_goal_card_status_pb)
+            internal var statusTw: TextView = itemView.findViewById(R.id.own_goal_card_status_tw)
+            internal var addResourceBtn: Button = itemView.findViewById(R.id.own_goal_card_add_resource_btn)
+            internal var updateBtn: Button = itemView.findViewById(R.id.own_goal_card_update_btn)
+            internal var deleteBtn: Button = itemView.findViewById(R.id.own_goal_card_delete_btn)
+            internal var expandBtn: ImageButton = itemView.findViewById(R.id.own_goal_card_expand_btn)
+            internal var guideline : Guideline = itemView.findViewById(R.id.own_goal_card_guideline) as Guideline
 
             init {
-                goalCard = itemView.findViewById<View>(R.id.own_goal_card_view) as CardView
-                goalTitle = itemView.findViewById<View>(R.id.own_goal_title) as TextView
-                goalTopic = itemView.findViewById<View>(R.id.own_goal_topic) as TextView
-                goalDeadline = itemView.findViewById<View>(R.id.own_goal_deadline) as TextView
-                goalRecommendationsCount = itemView.findViewById(R.id.own_goal_recommendations_count) as TextView
+                descriptionTw.maxLines = 2
+                addResourceBtn.visibility = View.GONE
+                updateBtn.visibility = View.GONE
+                deleteBtn.visibility = View.GONE
+                guideline.visibility = View.INVISIBLE
+                expandBtn.setImageResource(R.drawable.ic_expand_more_black_36dp)
 
-                itemView.setOnClickListener {
-                    val goalId = mGoals[adapterPosition].id
-                    val intent = Intent(activity, GoalActivity::class.java)
-                    intent.putExtra("goal_id", goalId)
-                    startActivity(intent)
+                expandBtn.setOnClickListener {
+                    Log.d("CARD","Click occurred")
+                    isExpanded = !isExpanded
+
+                    if (isExpanded) {
+                        descriptionTw.maxLines = 50
+                        guideline.visibility = View.GONE
+                        expandBtn.setImageResource(R.drawable.ic_expand_less_black_36dp)
+
+                        addResourceBtn.visibility = View.VISIBLE
+                        updateBtn.visibility = View.VISIBLE
+                        deleteBtn.visibility = View.VISIBLE
+                    }
+                    else{
+                        descriptionTw.maxLines = 2
+                        addResourceBtn.visibility = View.GONE
+                        updateBtn.visibility = View.GONE
+                        deleteBtn.visibility = View.GONE
+                        guideline.visibility = View.INVISIBLE
+                        expandBtn.setImageResource(R.drawable.ic_expand_more_black_36dp)
+                    }
                 }
             }
         }

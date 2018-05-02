@@ -21,6 +21,8 @@ import java.util.*
 import android.widget.Toast
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
+import emse.mobisocial.goalz.ui.dialogs.GoalDeleteDialog
+import emse.mobisocial.goalz.ui.dialogs.GoalProgressDialog
 import emse.mobisocial.goalz.util.IDialogResultListener
 
 class GoalActivity : AppCompatActivity(), IDialogResultListener {
@@ -118,7 +120,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
                 return true
             }
             R.id.goal_activity_delete_menu_item -> {
-                val dialogFragment = GoalActivityDeleteDialog()
+                val dialogFragment = GoalDeleteDialog()
                 dialogFragment.show(fragmentManager, getString(R.string.goal_activity_delete_dialog_tag))
                 return true
             }
@@ -187,7 +189,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
 
     inner class StatusBarOnClickListener : View.OnClickListener {
         override fun onClick(view: View) {
-            val dialogFragment = GoalActivityProgressDialog()
+            val dialogFragment = GoalProgressDialog()
             val args = Bundle()
 
             args.putInt("progress_value", statusPb.progress)
@@ -219,11 +221,11 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
     inner class DeleteResponseObserver : Observer<DalResponse> {
         override fun onChanged(response: DalResponse?) {
             if (response?.status == DalResponseStatus.SUCCESS) {
-                Toast.makeText(application, application.getString(R.string.goal_activity_delete_goal_success_toast),
+                Toast.makeText(application, application.getString(R.string.delete_goal_success_toast),
                         Toast.LENGTH_LONG).show()
                 finish()
             } else if (response?.status == DalResponseStatus.FAIL) {
-                Toast.makeText(application, application.getString(R.string.goal_activity_delete_goal_fail_toast),
+                Toast.makeText(application, application.getString(R.string.delete_goal_fail_toast),
                         Toast.LENGTH_LONG).show()
             }
         }

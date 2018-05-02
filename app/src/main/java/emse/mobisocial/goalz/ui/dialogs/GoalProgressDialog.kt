@@ -1,4 +1,4 @@
-package emse.mobisocial.goalz.ui
+package emse.mobisocial.goalz.ui.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -14,7 +14,7 @@ import emse.mobisocial.goalz.util.IDialogResultListener
 /**
  * Created by MobiSocial EMSE Team on 4/28/2018.
  */
-class GoalActivityProgressDialog constructor(): DialogFragment() {
+class GoalProgressDialog constructor(): DialogFragment() {
 
     private lateinit var resultListener : IDialogResultListener
 

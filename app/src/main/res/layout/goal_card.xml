@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="2"
@@ -64,11 +64,11 @@
             android:text="This is a long text whiche allows me to see how the card looks like when the text excedes the two raw limit and hence needs to be wrapped"
             android:textColor="#000000"
             android:textSize="12sp"
+            app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toTopOf="@+id/goal_card_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/goal_card_status_pb"
-            app:layout_constrainedHeight="true"/>
+            app:layout_constraintTop_toBottomOf="@+id/goal_card_status_pb" />
 
         <ProgressBar
             android:id="@+id/goal_card_status_pb"
@@ -90,7 +90,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
             android:background="@android:color/white"
             android:elevation="0dp"
             android:text="Contribute"
@@ -105,7 +104,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:background="@android:color/white"
             android:elevation="0dp"
             android:text="Clone"
