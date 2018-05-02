@@ -10,10 +10,8 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v7.content.res.AppCompatResources
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
@@ -24,12 +22,12 @@ import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
 import emse.mobisocial.goalz.util.Gender
-import kotlinx.android.synthetic.main.activity_create_goal.*
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import java.util.*
 
 private const val GENDER_MALE = "MALE"
 private const val GENDER_FEMALE = "FEMALE"
+private const val GENDER_UNDEFINED = "NOT SPECIFIED"
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var model : UserProfileViewModel
@@ -50,12 +48,14 @@ class EditProfileActivity : AppCompatActivity() {
         initializeObservers()
 
         birthdate_edit_text.isEnabled = false
-        pickDateListener()
+        initializeDatePicker()
 
         change_password_button.setOnClickListener {
-            val intent = Intent(this, ChangeEmailPasswordActivity::class.java)
+            Toast.makeText(this, getString(R.string.edit_profile_activity_unavailable_function_toast),
+                    Toast.LENGTH_LONG).show()
+            /*val intent = Intent(this, ChangeEmailPasswordActivity::class.java)
             intent.putExtra("user_id", userId.toString())
-            startActivity(intent)
+            startActivity(intent)*/
         }
     }
 
@@ -91,10 +91,11 @@ class EditProfileActivity : AppCompatActivity() {
         lastname_edit_text.setText(user.lastName)
         website_edit_text.setText(user.website)
 
-        val spinnerArray = arrayOfNulls<String>(2)
+        val spinnerArray = arrayOfNulls<String>(3)
 
         spinnerArray[0] = GENDER_FEMALE
         spinnerArray[1] = GENDER_MALE
+        spinnerArray[2] = GENDER_UNDEFINED
 
         val adapter = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -138,11 +139,12 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun getGender(position:Int) :Gender{
-        if (position== 0){
-            return Gender.valueOf(GENDER_FEMALE)
-        }else{
-            return Gender.valueOf(GENDER_MALE)
+        when (position) {
+            0 -> return Gender.FEMALE
+            1 -> return Gender.MALE
+            2 -> return Gender.UNDEFINED
         }
+        return Gender.UNDEFINED
     }
 
     private fun getAge(Year:Int):Int{
@@ -151,12 +153,14 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun getGenderPosition(gender: Gender): Int{
-        if (gender.toString() == GENDER_MALE) {
-            return 1
-        } else return 2
+        return when (gender){
+            Gender.FEMALE -> 0
+            Gender.MALE -> 1
+            Gender.UNDEFINED -> 2
+        }
     }
 
-    private fun pickDateListener(){
+    private fun initializeDatePicker(){
         pickbirthdate_edit.setOnClickListener {
             val calendar: Calendar = Calendar.getInstance()
             val year:Int = calendar.get(Calendar.YEAR)

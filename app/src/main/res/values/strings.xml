@@ -44,7 +44,7 @@
 
 
     <!-- Create Resource Activity texts-->
-    <string name="create_resource_activity_appbar_title">Create Resource</string>
+    <string name="create_resource_activity_appbar_title">New Resource</string>
     <string name="create_resource_activity_invalid_fields_toast">Invalid Fields</string>
     <string name="create_resource_activity_invalid_uri_toast">Invalid URL</string>
     <string name="create_resource_activity_success_toast">Resource Successfully Created</string>
@@ -52,12 +52,12 @@
     <string name="create_resource_activity_title_hint">Title</string>
     <string name="create_resource_activity_topic_hint">Topic</string>
     <string name="create_resource_activity_url_hint">URL</string>
-    <string name="create_resource_activity_button_text">Create Resource</string>
+    <string name="create_resource_activity_button_text">Create</string>
 
     <!-- Create Recommendation Activity texts-->
-    <string name="create_recommendation_activity_appbar_title">Create Recommendation</string>
+    <string name="create_recommendation_activity_appbar_title">Post Recommendation</string>
     <string name="create_recommendation_activity_title_hint">Title</string>
-    <string name="create_recommendation_activity_required_time_hint">Required Time (in minures)</string>
+    <string name="create_recommendation_activity_required_time_hint">Required Time (minutes)</string>
     <string name="create_recommendation_activity_resource_tw_text">Resource</string>
     <string name="create_recommendation_activity_description_hint">Description</string>
     <string name="create_recommendation_activity_post_btn_text">Post</string>
@@ -93,9 +93,10 @@
     <string name="edit_goal_activity_update_goal_success_toast">Goal Successfully Updated</string>
     <string name="edit_goal_activity_update_goal_fail_toast">Cannot Update Goal</string>
     <string name="edit_goal_activity_title_hint">Title</string>
-    <string name="edit_goal_activity_topic_hint">Goal Topic</string>
+    <string name="edit_goal_activity_topic_hint">Topic</string>
     <string name="edit_goal_activity_deadline_hint">Deadline</string>
     <string name="edit_goal_activity_description_hint">Description</string>
+    <string name="edit_goal_activity_goal_information_section_heading">Additional Information</string>
 
     <!-- Edit Profile Activity texts-->
     <string name="edit_profile_activity_appbar_title">Edit Profile</string>
@@ -112,6 +113,8 @@
     <string name="edit_profile_activity_birthdate_hint">Birth Date</string>
     <string name="edit_profile_activity_gender_hint">Gender :</string>
     <string name="edit_profile_activity_website_hint">Website</string>
+    <string name="edit_profile_activity_unavailable_function_toast">Currently not available</string>
+
 
     <!-- Login Activity texts-->
     <string name="login_activity_appbar_title">Login</string>

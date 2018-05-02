@@ -11,11 +11,12 @@
 
     <ImageView
         android:id="@+id/create_recommendation_activity_logo_iw"
-        android:layout_width="108dp"
-        android:layout_height="76dp"
+        android:layout_width="120dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout23"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +27,12 @@
         android:id="@+id/create_recommendation_activity_resource_sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#808080"
-        android:textColor="#FFFF"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout25"
+        android:spinnerMode="dialog"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/create_recommendation_activity_resource_tw"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout24" />
@@ -39,17 +40,16 @@
     <Button
         android:id="@+id/create_recommendation_activity_submit_btn"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="70dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:backgroundTint="#0099ff"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/colorSecondary"
+        android:backgroundTint="@color/colorSecondary"
         android:shadowColor="@color/colorPrimary"
         android:text="@string/create_recommendation_activity_post_btn_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout25" />
@@ -58,44 +58,49 @@
         android:id="@+id/create_recommendation_activity_resource_tw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
         android:text="@string/create_recommendation_activity_resource_tw_text"
-        android:textColor="#FFFF"
+        android:textColor="@color/greyColor"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout24" />
+        app:layout_constraintTop_toTopOf="@+id/create_recommendation_activity_resource_sp" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout23"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout24"
+        android:layout_height="59dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/greyColor"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_logo_iw">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/create_recommendation_activity_title_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/create_recommendation_activity_title_hint" />
+            android:hint="@string/create_recommendation_activity_title_hint"
+            android:inputType="text"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/greyColor" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout24"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_resource_sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:textColorHint="@color/greyColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout23">
 
@@ -104,17 +109,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="@string/Numeric_only"
-            android:hint="@string/create_recommendation_activity_required_time_hint" />
+            android:hint="@string/create_recommendation_activity_required_time_hint"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/greyColor" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout25"
         android:layout_width="0dp"
-        android:layout_height="78dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/create_recommendation_activity_submit_btn"
+        android:textColorHint="@color/greyColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_recommendation_activity_resource_sp">
@@ -124,7 +134,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/create_recommendation_activity_description_hint"
-            android:maxLines="2" />
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/greyColor" />
     </android.support.design.widget.TextInputLayout>
 
 

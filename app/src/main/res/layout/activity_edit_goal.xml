@@ -12,42 +12,41 @@
     <ImageView
         android:id="@+id/edit_goal_activity_logo_iw"
         android:layout_width="77dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout15"
         app:srcCompat="@drawable/goal_grey" />
 
     <ImageButton
         android:id="@+id/edit_goal_activity_pick_date_ib"
         android:layout_width="50dp"
-        android:layout_height="67dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
         android:layout_weight="1"
         android:background="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout21"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout18"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout21"
         app:srcCompat="@drawable/calendar_grey" />
 
     <View
         android:id="@+id/edit_goal_activity_divider"
         android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:background="?android:attr/listDivider"
-        android:backgroundTint="@color/colorPrimary"
-        android:foreground="@color/colorPrimary"
+        android:backgroundTint="@color/greyColor"
+        android:foreground="@color/greyColor"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_logo_iw" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout15" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -62,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/edit_goal_activity_logo_iw"
         app:layout_constraintTop_toTopOf="parent">
@@ -71,36 +70,37 @@
             android:id="@+id/edit_goal_activity_title_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_goal_activity_title_hint" />
+            android:hint="@string/edit_goal_activity_title_hint"
+            android:inputType="text"
+            android:maxLength="50"
+            android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout18"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_divider">
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edit_goal_activity_topic_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_goal_activity_topic_hint" />
+            android:hint="@string/edit_goal_activity_topic_hint"
+            android:maxLength="25"
+            android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout21"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout22"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toStartOf="@+id/edit_goal_activity_pick_date_ib"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout18">
@@ -116,11 +116,8 @@
         android:id="@+id/textInputLayout22"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="230dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout21">
@@ -131,6 +128,19 @@
             android:layout_height="wrap_content"
             android:hint="@string/edit_goal_activity_description_hint" />
     </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/edit_goal_activity_goal_information_section_heading"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_goal_activity_divider" />
 
 
 </android.support.constraint.ConstraintLayout>
