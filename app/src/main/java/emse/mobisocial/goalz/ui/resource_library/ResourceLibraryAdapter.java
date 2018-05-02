@@ -140,11 +140,9 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
     public void onBindViewHolder(ResourceViewHolder holder, int position) {
         Glide.with(context).pauseRequests(); //doesn't make sense to me but it solves the problem, at least partly
         Glide.clear(holder.image); // because fckin magic!
-        //holder.image.setImageResource(null);
+        holder.image.setImageResource(R.drawable.goal_grey);
         holder.topic.setText(resources.get(position).getTopic());
         holder.title.setText(resources.get(position).getTitle());
-
-
 
         /*String link = resources.get(position).getLink();
         int i1 = link.indexOf("//")+2;
@@ -179,7 +177,6 @@ public class ResourceLibraryAdapter extends RecyclerView.Adapter<ResourceLibrary
             holder.avgReqTime.setText("  "+String.valueOf(avgReqTime) + " hr");
             holder.timeIcon.setImageResource(R.drawable.clock_outline2);
         }
-
 
         // setting rating:
         int rating = (int) Math.round(resources.get(position).getRating());

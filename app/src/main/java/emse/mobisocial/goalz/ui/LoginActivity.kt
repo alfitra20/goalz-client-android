@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
                                 .putBoolean(WITHOUT_LOGIN, false)
                                 .apply()
                         val intent = Intent(this, BaseActivity::class.java)
+
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     } else {

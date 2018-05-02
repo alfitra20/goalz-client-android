@@ -9,6 +9,7 @@ import android.support.v7.content.res.AppCompatResources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import emse.mobisocial.goalz.R
 import kotlinx.android.synthetic.main.fragment_signup_personal_info.*
@@ -55,27 +56,37 @@ class SignupPersonalInfoFragment : Fragment() {
         pickBirthdate = view.findViewById(R.id.pickBirthDate) as ImageButton
 
         birthdateText.isEnabled = false
-        pickDateListener()
-        button.setOnClickListener { registerUser() }
+        birthdateText.isClickable = true
+        pickBirthdate.setOnClickListener(PickDateOnClickListener())
+        birthdateText.setOnClickListener(PickDateOnClickListener())
+        button.setOnClickListener {
+            // hiding the keyboard
+            //val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            //imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            registerUser()
+        }
         return view
     }
 
-    private fun pickDateListener(){
-        pickBirthdate.setOnClickListener {
-            val calendar: Calendar = Calendar.getInstance()
+    inner class DateListener : DatePickerDialog.OnDateSetListener {
+        override fun onDateSet(datePicker : DatePicker, year : Int, month : Int, day : Int ) {
+            age = year
+            val datePicked = day.toString()+"/"+month.toString()+"/"+year.toString()
+            birthdate_text.setText(datePicked)
+        }
+    }
+
+    inner class PickDateOnClickListener : View.OnClickListener {
+        override fun onClick(view: View) {
+            val calendar:Calendar = Calendar.getInstance()
             val year:Int = calendar.get(Calendar.YEAR)
             val month:Int = calendar.get(Calendar.MONTH)
             val day:Int = calendar.get(Calendar.DAY_OF_MONTH)
 
-            val dialog = DatePickerDialog (
-                    context, R.style.ThemeOverlay_AppCompat_Dialog, mDateListener, year, month, day)
+            val dialog = DatePickerDialog (context, R.style.ThemeOverlay_AppCompat_Dialog,
+                    DateListener(), year, month, day)
             dialog.datePicker.maxDate = System.currentTimeMillis()-1000
             dialog.show()
-        }
-        mDateListener = DatePickerDialog.OnDateSetListener { _: DatePicker, year:Int, month:Int, day:Int ->
-            age = year
-            val datePicked = day.toString()+"/"+month.toString()+"/"+year.toString()
-            birthdate_text.setText(datePicked)
         }
     }
 

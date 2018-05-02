@@ -54,7 +54,8 @@
         </activity>
         <activity
             android:name=".ui.SignupActivity"
-            android:label="@string/title_activity_signup">
+            android:label="@string/title_activity_signup"
+            android:configChanges="keyboardHidden|orientation">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.OnboardingActivity" />
