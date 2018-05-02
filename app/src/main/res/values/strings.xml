@@ -172,6 +172,8 @@
     <string name="signup_activity_email_registered_snackbar">Email already Registered</string>
 
     <!-- User Activity texts-->
+    <string name="user_activity_title_template">\'s profile</string>
+
     <string name="user_activity_points_needed">Points to the next level</string>
     <string name="user_activity_goals_created">Goals Created</string>
     <string name="user_activity_goals_completed">Goals Completed</string>

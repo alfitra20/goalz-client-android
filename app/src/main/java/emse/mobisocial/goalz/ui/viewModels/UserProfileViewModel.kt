@@ -26,15 +26,9 @@ class UserProfileViewModel(application: Application): AndroidViewModel(applicati
     lateinit var usersGoal: LiveData<List<Goal>>
     lateinit var usersResource: LiveData<List<Resource>>
 
-    fun getUsersGoal(userId: String){
+    fun initialize(userId: String){
         usersGoal = goalRepository.getGoalsForUser(userId)
-    }
-
-    fun getUsersResource(userId: String){
         usersResource = resourceRepository.getLibraryForUser(userId)
-    }
-
-    fun getUser(userId: String){
         userData = userRepository.getUser(userId)
     }
 

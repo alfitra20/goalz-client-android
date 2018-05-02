@@ -44,7 +44,8 @@ class EditProfileActivity : AppCompatActivity() {
 
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: finish()
 
-        model.getUser(userId.toString())
+        model.initialize(userId.toString())
+
         initializeObservers()
 
         birthdate_edit_text.isEnabled = false
@@ -69,6 +70,10 @@ class EditProfileActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.action_save_edit_profile -> {
                 updateUserData()
+                return true
+            }
+            android.R.id.home -> {
+                onBackPressed()
                 return true
             }
         }

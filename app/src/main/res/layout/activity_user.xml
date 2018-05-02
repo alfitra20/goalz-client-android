@@ -9,150 +9,153 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageView"
-        android:layout_width="94dp"
-        android:layout_height="88dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:src="@android:drawable/sym_def_app_icon"
         app:civ_border_color="#CCCC"
         app:civ_border_width="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.078" />
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/website_text"
-        tools:layout_editor_absoluteX="-4dp">
-
-        <TextView
-            android:id="@+id/goal_created_text_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="22dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/user_activity_goals_created"
-            android:textColor="@color/colorSecondary"
-            app:layout_constraintBaseline_toBaselineOf="@+id/goal_completed_text_button"
-            app:layout_constraintEnd_toStartOf="@+id/goal_completed_text_button"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/goal_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="0"
-            android:textColor="@color/colorSecondary"
-            android:textSize="18sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/goal_completed_count_text"
-            app:layout_constraintEnd_toEndOf="@+id/goal_created_text_button"
-            app:layout_constraintStart_toStartOf="@+id/goal_created_text_button" />
-
-        <TextView
-            android:id="@+id/goal_completed_text_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/user_activity_goals_completed"
-            android:textColor="@color/colorSecondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/goal_completed_count_text" />
-
-        <TextView
-            android:id="@+id/goal_completed_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="0"
-            android:textColor="@color/colorSecondary"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/goal_completed_text_button"
-            app:layout_constraintStart_toStartOf="@+id/goal_completed_text_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.04000002" />
-
-        <TextView
-            android:id="@+id/resource_text_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="44dp"
-            android:text="@string/user_activity_resources"
-            android:textColor="@color/colorSecondary"
-            app:layout_constraintBaseline_toBaselineOf="@+id/goal_completed_text_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/goal_completed_text_button" />
-
-        <TextView
-            android:id="@+id/resource_count_text"
-            android:layout_width="10dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="0"
-            android:textColor="@color/colorSecondary"
-            android:textSize="18sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/goal_completed_count_text"
-            app:layout_constraintEnd_toEndOf="@+id/resource_text_button"
-            app:layout_constraintStart_toStartOf="@+id/resource_text_button" />
-
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/full_name_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/user_activity_nickname_tw"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
         android:text="None"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#CCCC"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="29dp"
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/user_activity_age"
-        app:layout_constraintBaseline_toBaselineOf="@+id/age_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.317"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/user_activity_goal_completed_no_tw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="3/10"
+        android:textColor="@color/colorSecondary"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_coal_completed_tw" />
+
+    <TextView
+        android:id="@+id/user_activity_coal_completed_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/user_activity_goals_completed"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toStartOf="@+id/user_activity_goal_completed_no_tw"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <TextView
+        android:id="@+id/user_activity_resource_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/user_activity_resources"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <TextView
+        android:id="@+id/user_activity_resource_no_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="5"
+        android:textColor="@color/colorSecondary"
+        app:layout_constraintStart_toEndOf="@+id/user_activity_resource_tw"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_resource_tw" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#CCCC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_activity_goal_completed_no_tw" />
+
+    <TextView
+        android:id="@+id/user_activity_personal_information"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/edit_profile_activity_personal_information_subtitle"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="114dp" />
+
+    <TextView
+        android:id="@+id/user_activity_age_label_tw"
+        android:layout_width="29dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_activity_full_name_label_tw" />
+
+    <TextView
+        android:id="@+id/user_activity_website_label_tw"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="@string/user_activity_website"
-        app:layout_constraintStart_toStartOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        android:text="Website"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_activity_gender_label_tw" />
 
 
     <ImageView
-        android:id="@+id/image_ranking"
+        android:id="@+id/user_activity_ranking_iw"
         android:layout_width="67dp"
         android:layout_height="67dp"
         android:layout_marginBottom="8dp"
@@ -161,22 +164,22 @@
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/rangkingProgress"
-        app:layout_constraintEnd_toEndOf="@+id/rangkingProgress"
+        app:layout_constraintBottom_toBottomOf="@+id/user_activity_ranking_pb"
+        app:layout_constraintEnd_toEndOf="@+id/user_activity_ranking_pb"
         app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintStart_toStartOf="@+id/rangkingProgress"
-        app:layout_constraintTop_toTopOf="@+id/rangkingProgress"
+        app:layout_constraintStart_toStartOf="@+id/user_activity_ranking_pb"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_ranking_pb"
         app:layout_constraintVertical_bias="0.2"
         app:srcCompat="@drawable/level_1" />
 
     <ProgressBar
-        android:id="@+id/rangkingProgress"
+        android:id="@+id/user_activity_ranking_pb"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="131dp"
         android:layout_height="123dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/circle_shape"
         android:indeterminate="false"
         android:max="100"
@@ -184,64 +187,69 @@
         android:progressDrawable="@drawable/circular_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
     <TextView
-        android:id="@+id/point_needed_description_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/user_activity_level_remaining_points_tw"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/alef_bold"
         android:text="@string/user_activity_points_needed"
-        app:layout_constraintBaseline_toBaselineOf="@+id/point_needed_text"
-        app:layout_constraintStart_toEndOf="@+id/point_needed_text" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_activity_level_tw"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_activity_level_tw" />
 
     <TextView
-        android:id="@+id/age_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/user_activity_age_tw"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="24dp"
-        android:text=".."
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/full_name_text" />
+        android:layout_marginEnd="16dp"
+        android:text="24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_age_label_tw" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/user_activity_gender_label_tw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:text="@string/user_activity_gender"
-        app:layout_constraintBaseline_toBaselineOf="@+id/age_text"
-        app:layout_constraintStart_toEndOf="@+id/age_text" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Gender"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_activity_age_label_tw" />
 
     <TextView
-        android:id="@+id/gender_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/user_activity_gender_tw"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginEnd="16dp"
         android:text="........"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView18"
-        app:layout_constraintStart_toEndOf="@+id/textView18" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_gender_label_tw" />
 
     <TextView
-        android:id="@+id/website_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/user_activity_website_tw"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginEnd="16dp"
         android:clickable="true"
         android:ellipsize="marquee"
         android:focusable="true"
+
+
         android:maxLength="15"
         android:singleLine="true"
-        android:text="................"
-
-
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
-        app:layout_constraintStart_toEndOf="@+id/textView8" />
+        android:text="not specified"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_website_label_tw" />
 
     <TextView
-        android:id="@+id/user_point_text"
+        android:id="@+id/user_activity_ranking_tw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -249,26 +257,61 @@
         android:layout_marginStart="8dp"
         android:text="0"
         android:textColor="#000"
-        app:layout_constraintBottom_toBottomOf="@+id/rangkingProgress"
-        app:layout_constraintEnd_toEndOf="@+id/rangkingProgress"
+        app:layout_constraintBottom_toBottomOf="@+id/user_activity_ranking_pb"
+        app:layout_constraintEnd_toEndOf="@+id/user_activity_ranking_pb"
         app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/rangkingProgress"
-        app:layout_constraintTop_toTopOf="@+id/rangkingProgress"
+        app:layout_constraintStart_toStartOf="@+id/user_activity_ranking_pb"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_ranking_pb"
         app:layout_constraintVertical_bias="0.864" />
 
 
     <TextView
-        android:id="@+id/point_needed_text"
+        android:id="@+id/user_activity_full_name_tw"
+        android:layout_width="219dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_full_name_label_tw" />
+
+    <TextView
+        android:id="@+id/user_activity_full_name_label_tw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="0"
-        android:textColor="#000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.297"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Full Name"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rangkingProgress" />
+        app:layout_constraintTop_toBottomOf="@+id/user_activity_personal_information" />
+
+    <TextView
+        android:id="@+id/user_activity_level_label_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Level"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_activity_website_label_tw" />
+
+    <TextView
+        android:id="@+id/user_activity_level_tw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="5"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/user_activity_level_label_tw" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#CCCC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_activity_level_label_tw" />
 
 </android.support.constraint.ConstraintLayout>
