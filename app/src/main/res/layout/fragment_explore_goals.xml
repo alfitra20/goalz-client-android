@@ -10,7 +10,8 @@
         android:id="@+id/explore_goals_filters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="58dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/explore_goals_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,8 +24,10 @@
             android:id="@+id/order_explore_goals_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="65dp"
             android:text="Topic"
+            android:textColor="@color/colorPrimary"
+            app:tbgMarkerColor="@color/colorPrimary"
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
@@ -32,6 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Status"
+            android:textColor="@color/colorPrimary"
+            app:tbgMarkerColor="@color/colorPrimary"
             android:textSize="16sp" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
@@ -39,6 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Proximity"
+            android:textColor="@color/colorPrimary"
+            app:tbgMarkerColor="@color/colorPrimary"
             android:textSize="16sp" />
 
     </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>

@@ -8,6 +8,7 @@ import android.location.Location
 import android.os.Bundle
 import android.support.constraint.Guideline
 import android.support.v4.app.Fragment
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.CardView
 
 import emse.mobisocial.goalz.R
@@ -96,8 +97,10 @@ class ExploreGoalsFragment : Fragment() {
         filterView.setOnCheckedChangeListener(object: MultiSelectToggleGroup.OnCheckedStateChangeListener {
             override fun onCheckedStateChanged(single: MultiSelectToggleGroup?, checkedId: Int, isChecked: Boolean) {
                   if (isChecked) {
-                    uncheckOthers(checkedId)
-                    recyclerViewAdapter.filterRecyclerView()
+
+                      setCheckedColor(checkedId)
+                      uncheckOthers(checkedId)
+                      recyclerViewAdapter.filterRecyclerView()
                 } else {
                     model.reset()
                 }
@@ -105,13 +108,35 @@ class ExploreGoalsFragment : Fragment() {
         })
     }
 
+
+    private fun setCheckedColor(checkId: Int){
+        for (id: Int in filterView.checkedIds) {
+            if (id == checkId) {
+                when(id) {
+                    proximityFilter.id -> proximityFilter.setTextColor(R.color.colorSecondary)
+                    topicFilter.id -> topicFilter.setTextColor(R.color.colorSecondary)
+                    statusFilter.id -> statusFilter.setTextColor(R.color.colorSecondary)
+                }
+            }
+        }
+    }
+
     private fun uncheckOthers(checkId: Int) {
-        for (id: Int in filterView.getCheckedIds()) {
+        for (id: Int in filterView.checkedIds) {
             if (id != checkId) {
                 when(id) {
-                    proximityFilter.id -> proximityFilter.setChecked(false)
-                    topicFilter.id -> topicFilter.setChecked(false)
-                    statusFilter.id -> statusFilter.setChecked(false)
+                    proximityFilter.id -> {
+                        proximityFilter.isChecked = false
+                        proximityFilter.setTextColor(R.color.colorPrimary)
+                    }
+                    topicFilter.id -> {
+                        topicFilter.isChecked = false
+                        topicFilter.setTextColor(R.color.colorPrimary)
+                    }
+                    statusFilter.id -> {
+                        statusFilter.isChecked = false
+                        statusFilter.setTextColor(R.color.colorPrimary)
+                    }
                 }
             }
         }
