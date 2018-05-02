@@ -4,18 +4,18 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.location.Location
 import android.os.Bundle
 import android.support.constraint.Guideline
 import android.support.v4.app.Fragment
-import android.support.v7.content.res.AppCompatResources
-import android.support.v7.widget.CardView
 
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.ui.viewModels.ExploreGoalsViewModel
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Layout
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -27,6 +27,8 @@ import com.nex3z.togglebuttongroup.button.LabelToggle
 
 class ExploreGoalsFragment : Fragment() {
 
+    enum class Filter {NONE, TOPIC, PROXIMITY, STATUS}
+
     private lateinit var model : ExploreGoalsViewModel
 
     private lateinit var recyclerView: RecyclerView
@@ -35,10 +37,12 @@ class ExploreGoalsFragment : Fragment() {
 
     // filter variables and views
     private var filterOpen: Boolean = false
+    private lateinit var filterViewLayout : LinearLayout
     private lateinit var filterView: MultiSelectToggleGroup
     private lateinit var proximityFilter: LabelToggle
     private lateinit var topicFilter: LabelToggle
     private lateinit var statusFilter: LabelToggle
+    private var selectedFilter = Filter.NONE
 
     // Location
     private lateinit var client: FusedLocationProviderClient
@@ -64,11 +68,21 @@ class ExploreGoalsFragment : Fragment() {
         }
 
         // Initialize data
+        filterViewLayout = view.findViewById(R.id.explore_goals_filters_layout) as LinearLayout
         filterView = view.findViewById(R.id.explore_goals_filters) as MultiSelectToggleGroup
+        filterViewLayout.visibility = View.GONE
         recyclerView = view.findViewById(R.id.explore_goals_recycler_view) as RecyclerView
         proximityFilter = view.findViewById(R.id.order_explore_goals_proximity)
         topicFilter = view.findViewById(R.id.order_explore_goals_topic)
         statusFilter = view.findViewById(R.id.order_explore_goals_status)
+        statusFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        proximityFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        topicFilter.setTextColor(activity.resources.getColor(R.color.colorPrimary))
+        proximityFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+        statusFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+        topicFilter.markerColor = activity.resources.getColor(R.color.colorSecondary)
+
+
 
         setupRecyclerView()
         initializeObservers()
@@ -88,56 +102,35 @@ class ExploreGoalsFragment : Fragment() {
     private fun initializeObservers() {
         model.goalsList.observe(this, Observer<List<Goal>> { goals ->
             if (goals != null) {
-                recyclerViewAdapter.addItems(goals)
+                recyclerViewAdapter.addItems(goals, selectedFilter)
             }
         })
     }
 
     private fun initializeListeners() {
-        filterView.setOnCheckedChangeListener(object: MultiSelectToggleGroup.OnCheckedStateChangeListener {
-            override fun onCheckedStateChanged(single: MultiSelectToggleGroup?, checkedId: Int, isChecked: Boolean) {
-                  if (isChecked) {
-
-                      setCheckedColor(checkedId)
-                      uncheckOthers(checkedId)
-                      recyclerViewAdapter.filterRecyclerView()
-                } else {
-                    model.reset()
-                }
-            }
-        })
-    }
-
-
-    private fun setCheckedColor(checkId: Int){
-        for (id: Int in filterView.checkedIds) {
-            if (id == checkId) {
-                when(id) {
-                    proximityFilter.id -> proximityFilter.setTextColor(R.color.colorSecondary)
-                    topicFilter.id -> topicFilter.setTextColor(R.color.colorSecondary)
-                    statusFilter.id -> statusFilter.setTextColor(R.color.colorSecondary)
-                }
-            }
-        }
-    }
-
-    private fun uncheckOthers(checkId: Int) {
-        for (id: Int in filterView.checkedIds) {
-            if (id != checkId) {
-                when(id) {
+        filterView.setOnCheckedChangeListener { _, checkedId, isChecked ->
+            if (isChecked){
+                when(checkedId) {
                     proximityFilter.id -> {
-                        proximityFilter.isChecked = false
-                        proximityFilter.setTextColor(R.color.colorPrimary)
+                        if(topicFilter.isChecked) {topicFilter.isChecked = false}
+                        if(statusFilter.isChecked) {statusFilter.isChecked = false}
+                        selectedFilter = Filter.PROXIMITY
                     }
                     topicFilter.id -> {
-                        topicFilter.isChecked = false
-                        topicFilter.setTextColor(R.color.colorPrimary)
+                        if(proximityFilter.isChecked) {proximityFilter.isChecked = false}
+                        if(statusFilter.isChecked) {statusFilter.isChecked = false}
+                        selectedFilter = Filter.TOPIC
                     }
                     statusFilter.id -> {
-                        statusFilter.isChecked = false
-                        statusFilter.setTextColor(R.color.colorPrimary)
+                        if(topicFilter.isChecked) {topicFilter.isChecked = false}
+                        if(proximityFilter.isChecked) {proximityFilter.isChecked = false}
+                        selectedFilter = Filter.STATUS
                     }
                 }
+                recyclerViewAdapter.sortRecyclerView(selectedFilter)
+            } else if (!isChecked && !topicFilter.isChecked && !statusFilter.isChecked && !proximityFilter.isChecked) {
+                selectedFilter = Filter.NONE
+                recyclerViewAdapter.sortRecyclerView(selectedFilter)
             }
         }
     }
@@ -177,11 +170,11 @@ class ExploreGoalsFragment : Fragment() {
         filterItem.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener {
             override fun onMenuItemClick(p0: MenuItem?): Boolean {
                 if (!filterOpen) {
-                    filterView.visibility = View.VISIBLE
+                    filterViewLayout.visibility = View.VISIBLE
                     params.setMargins(0, 0, 0, 0)
                     recyclerView.setLayoutParams(params)
                 } else {
-                    filterView.visibility = View.GONE
+                    filterViewLayout.visibility = View.GONE
                     params.setMargins(0, topMarginPx, 0, 0)
                     recyclerView.setLayoutParams(params)
                 }
@@ -195,13 +188,15 @@ class ExploreGoalsFragment : Fragment() {
 
     inner class RecyclerViewAdapter(goalsParam: ArrayList<Goal>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
         private var mGoals: List<Goal> = goalsParam
+        private var unsortedList: List<Goal> = goalsParam
 
         override fun getItemCount(): Int {
             return mGoals.size
         }
 
-        fun addItems(newGoalsList: List<Goal>) {
-            this.mGoals = newGoalsList
+        fun addItems(newGoalsList: List<Goal>, filter: ExploreGoalsFragment.Filter) {
+            this.unsortedList = newGoalsList
+            this.mGoals = sortItems(filter)
             notifyDataSetChanged()
         }
 
@@ -247,36 +242,19 @@ class ExploreGoalsFragment : Fragment() {
             }
         }
 
-        fun filterRecyclerView() {
-            val checkedIds = filterView.getCheckedIds()
-            for (id: Int in checkedIds) {
-                when (id) {
-                    proximityFilter.id -> filterByProximity()
-                    topicFilter.id -> filterByTopic()
-                    statusFilter.id -> filterByStatus()
-                }
+        fun sortRecyclerView(filter: Filter){
+            mGoals = sortItems(filter)
+            notifyDataSetChanged()
+        }
+
+        private fun sortItems(filter: Filter) : List<Goal> {
+            val newList = ArrayList<Goal>(unsortedList)
+            when (filter) {
+                Filter.PROXIMITY -> newList.sortBy { goal -> goal.location.distanceTo(currentLocation) }
+                Filter.TOPIC -> newList.sortBy { goal -> goal.topic }
+                Filter.STATUS -> newList.sortBy { goal -> -goal.status }
             }
-        }
-
-        private fun filterByTopic() {
-            val filterdList = ArrayList<Goal>(mGoals)
-            filterdList.sortBy { goal -> goal.topic }
-            this.mGoals = filterdList
-            notifyDataSetChanged()
-        }
-
-        private fun filterByProximity() {
-            val filterdList = ArrayList<Goal>(mGoals)
-            filterdList.sortBy { goal -> goal.location.distanceTo(currentLocation) }
-            this.mGoals = filterdList
-            notifyDataSetChanged()
-        }
-
-        private fun filterByStatus() {
-            val filterdList = ArrayList<Goal>(mGoals)
-            filterdList.sortBy { goal -> -goal.status }
-            this.mGoals = filterdList
-            notifyDataSetChanged()
+            return newList
         }
 
         inner class GoalViewHolder internal constructor(itemView: View, goal : Goal) : RecyclerView.ViewHolder(itemView) {
@@ -301,7 +279,6 @@ class ExploreGoalsFragment : Fragment() {
                 expandBtn.setImageResource(R.drawable.ic_expand_more_black_36dp)
 
                 expandBtn.setOnClickListener {
-                    Log.d("CARD","Click occurred")
                     isExpanded = !isExpanded
 
                     if (isExpanded) {

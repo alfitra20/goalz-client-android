@@ -6,49 +6,66 @@
     tools:context=".ui.ExploreGoalsFragment"
     tools:layout_editor_absoluteY="81dp">
 
-    <com.nex3z.togglebuttongroup.MultiSelectToggleGroup
-        android:id="@+id/explore_goals_filters"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/explore_goals_filters_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="58dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/explore_goals_recycler_view"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="56dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tbgChildSpacing="30dp">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_explore_goals_topic"
+        <com.nex3z.togglebuttongroup.MultiSelectToggleGroup
+            android:id="@+id/explore_goals_filters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="65dp"
-            android:text="Topic"
-            android:textColor="@color/colorPrimary"
-            app:tbgMarkerColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:visibility="visible">
 
-        <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_explore_goals_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status"
-            android:textColor="@color/colorPrimary"
-            app:tbgMarkerColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            <com.nex3z.togglebuttongroup.button.LabelToggle
+                android:id="@+id/order_explore_goals_topic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Topic"
+                android:textSize="16sp"
+                android:visibility="visible">
 
-        <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/order_explore_goals_proximity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Proximity"
-            android:textColor="@color/colorPrimary"
-            app:tbgMarkerColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            </com.nex3z.togglebuttongroup.button.LabelToggle>
 
-    </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content" />
+
+            <com.nex3z.togglebuttongroup.button.LabelToggle
+                android:id="@+id/order_explore_goals_proximity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proximity"
+                android:textSize="16sp"
+                android:visibility="visible">
+
+            </com.nex3z.togglebuttongroup.button.LabelToggle>
+
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content" />
+
+            <com.nex3z.togglebuttongroup.button.LabelToggle
+                android:id="@+id/order_explore_goals_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+
+        </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/explore_goals_recycler_view"
@@ -60,6 +77,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/explore_goals_filters" />
+        app:layout_constraintTop_toBottomOf="@+id/explore_goals_filters_layout" />
 
 </android.support.constraint.ConstraintLayout>
