@@ -12,45 +12,29 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/appCompatTextView2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="70dp"
-            android:text="@string/signup_activity_enter_your_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/appCompatTextView3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/appCompatTextView3"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/signup_activity_personal_information_heading"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textSize="28sp"
-            app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.22000003" />
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/pickBirthDate"
             android:layout_width="59dp"
             android:layout_height="54dp"
-            android:layout_marginBottom="31dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:background="@null"
-            app:layout_constraintBottom_toTopOf="@+id/next_in_personal_info"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout5"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout5"
             app:srcCompat="@drawable/calendar_grey" />
 
@@ -59,29 +43,23 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="32dp"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/source_sans_pro_bold"
             android:text="@string/signup_activity_next_button"
             android:textColor="#FFF"
             android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/pickBirthDate"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayout4"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="18dp"
-            app:layout_constraintBottom_toTopOf="@+id/textInputLayout5"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3">
@@ -91,17 +69,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/signup_activity_firstname_hint"
+                android:backgroundTint="@color/colorSecondary"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayout5"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="51dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/pickBirthDate"
+            android:theme="@style/TextLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
@@ -110,26 +89,26 @@
                 android:id="@+id/lastname_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorSecondary"
                 android:hint="@string/signup_activity_lastname_hint"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayout6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="213dp"
+            android:layout_height="59dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="40dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/next_in_personal_info"
+            android:theme="@style/TextLabel"
             app:layout_constraintEnd_toStartOf="@+id/pickBirthDate"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/birthdate_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorSecondary"
                 android:hint="@string/signup_activity_birthdate_hint" />
         </android.support.design.widget.TextInputLayout>
 

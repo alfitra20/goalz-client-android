@@ -100,6 +100,7 @@
         <service
             android:name=".dal.remote.FirebaseConnectionService"
             android:exported="false" />
+
         <service android:name=".notification.NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

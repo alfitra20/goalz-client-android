@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_user.*
 
 class UserActivity : AppCompatActivity() {
     private lateinit var model : UserProfileViewModel
-    private var userId:String? = null
     private var isOwnProfile = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -33,7 +32,8 @@ class UserActivity : AppCompatActivity() {
         isOwnProfile = (authUserId != null && userId == authUserId)
 
         model = ViewModelProviders.of(this).get(UserProfileViewModel::class.java)
-        initializeModel(userId as String)
+
+        initializeModel(userId.toString())
 
         setContentView(R.layout.activity_user)
 
