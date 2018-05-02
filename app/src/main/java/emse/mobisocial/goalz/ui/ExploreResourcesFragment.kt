@@ -2,7 +2,10 @@ package emse.mobisocial.goalz.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 
@@ -13,10 +16,17 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.ImageView
 import android.view.*
+import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.SearchView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
 import com.nex3z.togglebuttongroup.button.LabelToggle
+import emse.mobisocial.goalz.model.DEFAULT_RESOURCE_AVG_TIME
+import emse.mobisocial.goalz.ui.resource_library.ResourceLibraryAdapter
+import emse.mobisocial.goalz.ui.resource_library.WebViewActivity
 
 class ExploreResourcesFragment : Fragment() {
 
@@ -147,63 +157,9 @@ class ExploreResourcesFragment : Fragment() {
     inner class RecyclerViewAdapter(resourcesParams: ArrayList<Resource>) : RecyclerView.Adapter<RecyclerViewAdapter.ResourceViewHolder>() {
         private var mResources: List<Resource> = resourcesParams
 
-        override fun getItemCount(): Int {
-            return mResources.size
-        }
-
         fun addItems(newResourcesList: List<Resource>) {
             this.mResources = newResourcesList
             notifyDataSetChanged()
-        }
-
-        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ResourceViewHolder {
-            val v = LayoutInflater.from(viewGroup.context).inflate(R.layout.resource_card, viewGroup, false)
-            return ResourceViewHolder(v)
-        }
-
-        override fun onBindViewHolder(resourceViewHolder: ResourceViewHolder, i: Int) {
-            // The data from the resource model is retrieved and bound to the card View here.
-            resourceViewHolder.resourceTitle.text = mResources[i].title
-            resourceViewHolder.resourceTopic.text = mResources[i].topic
-            resourceViewHolder.resourceUrl.text = mResources[i].link
-
-            var rating = mResources[i].rating.toInt()
-            var pictureFill  = 0
-            var pictureBlank = 0
-
-            if (rating >= 0) {
-                pictureFill = R.drawable.thumbs_up
-                pictureBlank = R.drawable.thumbs_up_blank
-            }else{
-                pictureFill = R.drawable.thumbs_down
-                pictureBlank = R.drawable.thumbs_down_blank
-            }
-
-            resourceViewHolder.ratingLevel1.setImageResource(pictureBlank)
-            resourceViewHolder.ratingLevel2.setImageResource(pictureBlank)
-            resourceViewHolder.ratingLevel3.setImageResource(pictureBlank)
-            resourceViewHolder.ratingLevel4.setImageResource(pictureBlank)
-            resourceViewHolder.ratingLevel5.setImageResource(pictureBlank)
-            if(rating>=1) {
-                resourceViewHolder.ratingLevel1.setImageResource(pictureFill)
-            }
-            if(rating>=2) {
-                resourceViewHolder.ratingLevel2.setImageResource(pictureFill)
-            }
-            if(rating>=3){
-                resourceViewHolder.ratingLevel3.setImageResource(pictureFill)
-            }
-            if(rating>=4){
-                resourceViewHolder.ratingLevel4.setImageResource(pictureFill)
-            }
-            if(rating>4){
-                resourceViewHolder.ratingLevel5.setImageResource(pictureFill)
-            }
-
-        }
-
-        override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
-            super.onAttachedToRecyclerView(recyclerView)
         }
 
         fun filterRecyclerView() {
@@ -217,53 +173,128 @@ class ExploreResourcesFragment : Fragment() {
             }
         }
 
-        fun filterByTopic() {
+        private fun filterByTopic() {
             val filterdList = ArrayList<Resource>(mResources)
             filterdList.sortBy { resource -> resource.topic }
             this.mResources = filterdList
             notifyDataSetChanged()
         }
 
-        fun filterByRating() {
+        private fun filterByRating() {
             val filterdList = ArrayList<Resource>(mResources)
             filterdList.sortBy { resource -> -resource.rating }
             this.mResources = filterdList
             notifyDataSetChanged()
         }
 
-        fun filterByTime() {
+        private fun filterByTime() {
             val filterdList = ArrayList<Resource>(mResources)
             filterdList.sortBy { resource -> resource.avgReqTime }
             this.mResources = filterdList
             notifyDataSetChanged()
         }
 
-        inner class ResourceViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            internal var resourceCard: CardView
-            internal var resourceTitle: TextView
-            internal var resourceTopic: TextView
-            internal var resourceUrl: TextView
-            internal var ratingLevel1: ImageView
-            internal var ratingLevel2: ImageView
-            internal var ratingLevel3: ImageView
-            internal var ratingLevel4: ImageView
-            internal var ratingLevel5: ImageView
+        private fun formatAvgTime(time : Int) : String {
+            return when {
+                time == DEFAULT_RESOURCE_AVG_TIME -> "Unknown"
+                time < 60 -> "${time} min"
+                else -> "${time / 60} hr"
+            }
+        }
 
+        private fun formatRecommendationNo(recNo : Int) : String {
+            return if (recNo == 1) "$recNo review" else "$recNo reviews"
+        }
+
+        private fun loadRatingImages(rating : Int, holder: ResourceViewHolder){
+            when (rating) {
+                in 1..5 -> { for (pos in 1..rating) { holder.ratingImageArray[pos - 1].setImageResource(R.drawable.thumbs_up) } }
+                0 -> { for (pos in 0..4) { holder.ratingImageArray[pos].setImageResource(R.drawable.thumbs_down_blank) } }
+                else -> {
+                    for (pos in rating..-1) { holder.ratingImageArray[pos * (-1) - 1].setImageResource(R.drawable.thumbs_down) }
+                    for (pos in -5..(rating - 1)) { holder.ratingImageArray[pos * (-1) - 1].setImageResource(R.drawable.thumbs_down_blank) }
+                }
+            }
+        }
+
+        private fun loadUrlImage(imageUrl : String?, holder : ResourceViewHolder ){
+            if (imageUrl != null) {
+                Glide.with(context).resumeRequests()
+                Glide.with(context).load(imageUrl).priority(Priority.IMMEDIATE).crossFade().into(holder.imageIw)
+            }
+            else {
+                holder.imageIw.setImageResource(android.R.color.darker_gray)
+            }
+        }
+
+        override fun getItemCount(): Int {
+            return mResources.size
+        }
+
+        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ResourceViewHolder {
+            val v = LayoutInflater.from(viewGroup.context).inflate(R.layout.resource_card, viewGroup, false)
+            return ResourceViewHolder(v)
+        }
+
+        override fun onBindViewHolder(holder: ResourceViewHolder, i: Int) {
+            val resource = mResources[i]
+
+            holder.titleTw.text = resource.title
+            holder.topicTw.text = resource.topic
+            holder.timeTw.text = formatAvgTime(resource.avgReqTime)
+            holder.ratingCountTw.text = formatRecommendationNo(resource.recommendation_no)
+            loadRatingImages(resource.rating.toInt(), holder)
+            loadUrlImage(resource.imageUrl, holder)
+
+            //Set Listeners
+            holder.imageIw.setOnClickListener({ view ->
+                view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.resource_click))
+                try {
+                    val builder = CustomTabsIntent.Builder()
+                    val customTabsIntent = builder.build()
+                    customTabsIntent.launchUrl(context, Uri.parse(resource.link))
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                    val intent = Intent(context, WebViewActivity::class.java) // if there is no google chrome browser
+                    intent.putExtra("url", resource.link)
+                    context.startActivity(intent)
+                }
+            })
+
+            //Set Listeners
+            holder.addToLibraryBtn.setOnClickListener({ view ->
+                view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.resource_click))
+                try {
+                    val builder = CustomTabsIntent.Builder()
+                    val customTabsIntent = builder.build()
+                    customTabsIntent.launchUrl(context, Uri.parse(resource.link))
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                    val intent = Intent(context, WebViewActivity::class.java) // if there is no google chrome browser
+                    intent.putExtra("url", resource.link)
+                    context.startActivity(intent)
+                }
+            })
+        }
+
+        inner class ResourceViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            internal var imageIw: ImageView = itemView.findViewById(R.id.explore_resource_image)
+            internal var titleTw: TextView = itemView.findViewById(R.id.explore_resource_title)
+            internal var ratingLevel1: ImageView = itemView.findViewById(R.id.explore_resource_rating_level_1)
+            internal var ratingLevel2: ImageView = itemView.findViewById(R.id.explore_resource_rating_level_2)
+            internal var ratingLevel3: ImageView = itemView.findViewById(R.id.explore_resource_rating_level_3)
+            internal var ratingLevel4: ImageView = itemView.findViewById(R.id.explore_resource_rating_level_4)
+            internal var ratingLevel5: ImageView = itemView.findViewById(R.id.explore_resource_rating_level_5)
+            internal var ratingCountTw: TextView = itemView.findViewById(R.id.explore_resource_rating_count)
+            internal var topicTw: TextView = itemView.findViewById(R.id.explore_resource_topic)
+            internal var timeTw: TextView = itemView.findViewById(R.id.explore_resource_time)
+            internal var addToLibraryBtn: Button = itemView.findViewById(R.id.explore_resource_add_to_library)
+            internal var ratingImageArray : Array<ImageView>
 
             init {
-                resourceCard = itemView.findViewById<View>(R.id.resource_card_view) as CardView
-                resourceTitle = itemView.findViewById<View>(R.id.resource_title) as TextView
-                resourceTopic = itemView.findViewById<View>(R.id.resource_topic) as TextView
-                resourceUrl = itemView.findViewById<View>(R.id.resource_url) as TextView
-                ratingLevel1 = itemView.findViewById<View>(R.id.resource_rating_level_1) as ImageView
-                ratingLevel2 = itemView.findViewById<View>(R.id.resource_rating_level_2) as ImageView
-                ratingLevel3 = itemView.findViewById<View>(R.id.resource_rating_level_3) as ImageView
-                ratingLevel4 = itemView.findViewById<View>(R.id.resource_rating_level_4) as ImageView
-                ratingLevel5 = itemView.findViewById<View>(R.id.resource_rating_level_5) as ImageView
-
-
-
+                ratingImageArray = arrayOf(ratingLevel1, ratingLevel2, ratingLevel3, ratingLevel4, ratingLevel5)
             }
+
         }
 
     }
