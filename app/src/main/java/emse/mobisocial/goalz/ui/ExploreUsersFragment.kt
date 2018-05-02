@@ -127,10 +127,10 @@ class ExploreUsersFragment : Fragment() {
             userViewHolder.userNickname.text = mUsers[i].nickname
             val rating = mUsers[i].rating
             when(rating){
-                in 0..10 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_1)
-                in 11..50 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_2)
-                in 51..200 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_3)
-                else -> userViewHolder.ratingImage.setImageResource(R.drawable.level_4)
+                in 0..10 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_1_cropped)
+                in 11..50 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_2_cropped)
+                in 51..200 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_3_cropped)
+                else -> userViewHolder.ratingImage.setImageResource(R.drawable.level_4_cropped)
             }
             userViewHolder.rating.text = rating.toString()
 
