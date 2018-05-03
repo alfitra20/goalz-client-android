@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import emse.mobisocial.goalz.GoalzApp
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.IGoalRepository
+import emse.mobisocial.goalz.dal.IRecommendationRepository
 
 /**
  * Created by MobiSocial EMSE Team on 4/27/2018.
@@ -17,9 +18,11 @@ class GoalViewModel(application: Application, val goalId : String): AndroidViewM
     enum class State { UNAUTH, AUTH_UNAUTHORIZED, AUTH_AUTHORIZE}
 
     private val goalRepository: IGoalRepository = (application as GoalzApp).goalRepository
+    private val recommendationRepository: IRecommendationRepository = (application as GoalzApp).recommendationRepository
 
     val goal = goalRepository.getGoal(goalId)
     val subgoals = goalRepository.getSubgoals(goalId)
+    val recommendations = recommendationRepository.getRecommendationsForGoal(goalId)
 
     val state : MutableLiveData<State> = MutableLiveData<State>()
 
@@ -40,5 +43,9 @@ class GoalViewModel(application: Application, val goalId : String): AndroidViewM
         updateState.status = newStatus
 
         return goalRepository.updateGoal(updateState)
+    }
+
+    fun rateRecommendation(recommendationId : String, rating : Int)  : LiveData<DalResponse> {
+        return recommendationRepository.rateRecommendation(recommendationId, rating.toDouble())
     }
 }

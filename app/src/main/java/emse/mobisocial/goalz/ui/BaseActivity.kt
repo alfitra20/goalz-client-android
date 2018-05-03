@@ -26,6 +26,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.content.res.AppCompatResources
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
@@ -33,6 +34,7 @@ import emse.mobisocial.goalz.GoalzApp
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.User
+import emse.mobisocial.goalz.ui.viewModels.BaseActivityViewModel
 import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
 import emse.mobisocial.goalz.util.IDialogResultListener
 
@@ -41,13 +43,11 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
     private var loggedInUserId : String? = null
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var mSnackbar: Snackbar
-    private lateinit var model : UserProfileViewModel
+    private lateinit var model : BaseActivityViewModel
     private lateinit var sidebarNickname : TextView
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-
-    override fun onFragmentInteraction(uri: Uri) {
-    }
+    override fun onFragmentInteraction(uri: Uri) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +57,8 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
 
         loggedInUserId = FirebaseAuth.getInstance().currentUser?.uid
 
-        model = ViewModelProviders.of(this).get(UserProfileViewModel::class.java)
-
+        model = ViewModelProviders.of(this).get(BaseActivityViewModel::class.java)
+        model.initialize(loggedInUserId)
 
         if(loggedInUserId == null) {
             mSnackbar = Snackbar.make(base_layout,
@@ -67,8 +67,8 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
             mSnackbar.setAction("Login") { startActivity(loginIntent) }
         }
 
-        val receivedRequest:Int? = intent.getIntExtra("position", 0)
-        if (receivedRequest != null) {
+        val receivedRequest : Int = intent.getIntExtra("position", -1)
+        if (receivedRequest != -1) {
             setRequestedFragment(receivedRequest)
         }else{
             setInitialFragment()
@@ -79,12 +79,8 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         toggle.syncState()
 
         ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),1)
-    }
 
-    private fun initializeObservers() {
-        model.getUser(loggedInUserId!!)
-        model.userData.observe(this, Observer<User> { user ->
-            Log.d("check", "check")
+        model.userData?.observe(this, Observer<User> { user ->
             if (user != null) {
                 sidebarNickname.text = user.nickname
             }
@@ -141,9 +137,9 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         // When the user logged in the profile picture and nickname will redirect to user's profile
         // if user using the app without login, it will only show Goalz there instead of nickname (as for now)
         if (loggedInUserId != null) {
-            initializeObservers()
             sidebarNickname.setOnClickListener {
                 val intent = Intent(this, UserActivity::class.java)
+                intent.putExtra("user_id", loggedInUserId)
                 startActivity(intent)
             }
             profileImage.setOnClickListener {
@@ -164,7 +160,9 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         else {
             nav_view.menu.clear()
             nav_view.inflateMenu(R.menu.without_login_base_drawer)
-            sidebarNickname.text = getString(R.string.app_name)
+            //sidebarNickname.text = getString(R.string.app_name)
+            sidebarNickname.visibility = View.INVISIBLE
+            profileImage.visibility = View.INVISIBLE
             fab.hideMenuButton(true)
         }
 

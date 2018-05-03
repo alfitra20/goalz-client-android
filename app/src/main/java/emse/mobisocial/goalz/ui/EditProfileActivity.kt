@@ -44,14 +44,15 @@ class EditProfileActivity : AppCompatActivity() {
 
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: finish()
 
-        model.getUser(userId.toString())
+        model.initialize(userId.toString())
+
         initializeObservers()
 
         birthdate_edit_text.isEnabled = false
         initializeDatePicker()
 
         change_password_button.setOnClickListener {
-            Toast.makeText(this, getString(R.string.edit_profile_activity_unavailable_function_toast),
+            Toast.makeText(this, getString(R.string.unavailable_function_toast),
                     Toast.LENGTH_LONG).show()
             /*val intent = Intent(this, ChangeEmailPasswordActivity::class.java)
             intent.putExtra("user_id", userId.toString())
@@ -69,6 +70,10 @@ class EditProfileActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.action_save_edit_profile -> {
                 updateUserData()
+                return true
+            }
+            android.R.id.home -> {
+                onBackPressed()
                 return true
             }
         }
