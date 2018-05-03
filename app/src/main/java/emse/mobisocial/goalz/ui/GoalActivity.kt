@@ -180,7 +180,6 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
         return getString(R.string.goal_activity_deadline_no_set)
     }
 
-
     //Control listener
     inner class TabChangeListener : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab) {
@@ -198,13 +197,15 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
 
     inner class StatusBarOnClickListener : View.OnClickListener {
         override fun onClick(view: View) {
-            val dialogFragment = GoalProgressDialog()
-            val args = Bundle()
+            if (model.state.value == GoalViewModel.State.AUTH_AUTHORIZE) {
+                val dialogFragment = GoalProgressDialog()
+                val args = Bundle()
 
-            args.putInt("progress_value", statusPb.progress)
-            dialogFragment.arguments = args
+                args.putInt("progress_value", statusPb.progress)
+                dialogFragment.arguments = args
 
-            dialogFragment.show(fragmentManager, getString(R.string.goal_activity_progress_dialog_tag))
+                dialogFragment.show(fragmentManager, getString(R.string.goal_activity_progress_dialog_tag))
+            }
         }
     }
 
