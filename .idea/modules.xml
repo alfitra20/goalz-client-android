@@ -4,7 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Goalz.iml" filepath="$PROJECT_DIR$/Goalz.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\Documents\Projects\AndroidProjects\Goalz\goalz-client-android.iml" filepath="E:\Documents\Projects\AndroidProjects\Goalz\goalz-client-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goalz-client-android.iml" filepath="$PROJECT_DIR$/goalz-client-android.iml" />
+      <module fileurl="file://E:/Documents/Projects/AndroidProjects/Goalz/goalz-client-android.iml" filepath="E:/Documents/Projects/AndroidProjects/Goalz/goalz-client-android.iml" />
     </modules>
   </component>
 </project>

@@ -40,15 +40,13 @@ class OnboardingActivity : AppCompatActivity() {
 
         networkInfo = isNetworkAvailable()
 
-        launchSnackbar(application.getString(R.string.onboarding_activity_not_connected))
-
         if (!networkInfo){
-            mSnackbar.show()
             onboarding_login_button.isEnabled = false
             onboarding_login_button.background = AppCompatResources.getDrawable(this, R.color.greyColor)
             signup_button.isEnabled = false
             signup_button.background = AppCompatResources.getDrawable(this, R.color.greyColor)
             without_login_button.isEnabled = false
+            launchSnackbar(application.getString(R.string.onboarding_activity_not_connected))
         }
 
 
