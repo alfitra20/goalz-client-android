@@ -4,7 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="app_bar_explore">Explore</string>
-    <string name="app_bar_goals">Goals</string>
+    <string name="app_bar_goals">My Goals</string>
     <string name="app_bar_users_library">Resource Library</string>
 
     <string name="title_activity_base">BaseActivity</string>

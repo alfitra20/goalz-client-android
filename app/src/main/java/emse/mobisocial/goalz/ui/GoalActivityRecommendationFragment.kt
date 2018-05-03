@@ -86,7 +86,7 @@ class GoalActivityRecommendationFragment : Fragment() {
             }
             else {
                 Glide.with(context).resumeRequests()
-                holder.recImage.setImageResource(android.R.color.darker_gray)
+                holder.recImage.setImageResource(R.drawable.goal_grey)
             }
         }
 

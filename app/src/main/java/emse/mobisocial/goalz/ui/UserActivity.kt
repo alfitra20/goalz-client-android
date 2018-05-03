@@ -165,7 +165,7 @@ class UserActivity : AppCompatActivity() {
     private fun setCompletedGoal(goals:List<Goal>){
         var completed = 0
         goals.filter { it.status == 100 }.forEach { completed+=1 }
-        goalsTw.text = "${goals.count()}/$completed"
+        goalsTw.text = "$completed/${goals.count()}"
     }
 
 }

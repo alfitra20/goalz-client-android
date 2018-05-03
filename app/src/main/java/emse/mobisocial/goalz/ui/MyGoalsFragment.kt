@@ -60,6 +60,7 @@ class MyGoalsFragment : Fragment() {
         }
 
         Log.d("TEST", "AND HERE")
+
         // Initialize data
         filterViewLayout = view.findViewById(R.id.goals_filters_layout) as LinearLayout
         filterView = view.findViewById(R.id.goals_filters) as MultiSelectToggleGroup

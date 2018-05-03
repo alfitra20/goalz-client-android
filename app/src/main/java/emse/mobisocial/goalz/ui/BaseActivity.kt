@@ -37,6 +37,7 @@ import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.ui.viewModels.BaseActivityViewModel
 import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
 import emse.mobisocial.goalz.util.IDialogResultListener
+import emse.mobisocial.goalz.util.getAvatarImageResource
 
 open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmentInteractionListener, IDialogResultListener {
 
@@ -45,6 +46,7 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
     private lateinit var mSnackbar: Snackbar
     private lateinit var model : BaseActivityViewModel
     private lateinit var sidebarNickname : TextView
+    private lateinit var profileImage : ImageView
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onFragmentInteraction(uri: Uri) { }
@@ -83,6 +85,7 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         model.userData?.observe(this, Observer<User> { user ->
             if (user != null) {
                 sidebarNickname.text = user.nickname
+                profileImage.setImageResource(getAvatarImageResource(user.avatar))
             }
         })
     }
@@ -107,11 +110,12 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
     }
 
     private fun setInitialFragment() {
+        // We will keep the default fragment to explore for now
         if (loggedInUserId != null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.content_frame, MyGoalsFragment())
+            transaction.replace(R.id.content_frame, ExploreFragment())
             transaction.commit()
-            supportActionBar?.title = getString(R.string.app_bar_goals)
+            supportActionBar?.title = getString(R.string.app_bar_explore)
         } else {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.content_frame, ExploreFragment())
@@ -129,7 +133,7 @@ open class BaseActivity : AppCompatActivity(), ResourceLibraryFragment.OnFragmen
         //Initialize profile menu from navigation view in Tabbed activity
         var header = nav_view.getHeaderView(0)
         sidebarNickname  = header.findViewById(R.id.sidebar_nickname)
-        var profileImage : ImageView = header.findViewById(R.id.profile_image)
+        profileImage = header.findViewById(R.id.profile_image)
 
         nav_view.itemIconTintList = null
 

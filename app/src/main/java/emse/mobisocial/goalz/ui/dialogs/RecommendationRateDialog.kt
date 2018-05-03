@@ -27,7 +27,12 @@ class RecommendationRateDialog constructor(): DialogFragment() {
 
         resultListener = activity as IDialogResultListener
 
-        val initialProgress = arguments.getInt("old_rating") + 5
+        var initialProgress = arguments.getInt("old_rating") + 5
+        if(initialProgress < -5){
+            //We are in the default case
+            initialProgress = 5
+        }
+
         val recommendationId = arguments.getString("recommendation_id")
 
         val inflater = activity.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater

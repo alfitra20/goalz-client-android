@@ -1,5 +1,6 @@
 package emse.mobisocial.goalz.dal.remote.data
 
+import android.util.Log
 import emse.mobisocial.goalz.dal.remote.FirebaseData
 import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.model.UserTemplate
@@ -12,7 +13,7 @@ import java.util.*
 class UserFb constructor() : FirebaseData<User> {
 
     var nickname : String? = null
-    var rating : Double = 0.0
+    var rating : Double? = 0.0
     var website : String? = null
     var registrationDate : Long = Date().time / 1000
     var firstname : String? = null
@@ -20,7 +21,7 @@ class UserFb constructor() : FirebaseData<User> {
     var email : String? = null
     var age : Int? = null
     var gender : String? = null
-    var avatar : Int = 0
+    var avatar : Int? = 0
 
     constructor(template: UserTemplate) : this() {
         nickname = template.nickname
@@ -30,11 +31,30 @@ class UserFb constructor() : FirebaseData<User> {
         email = template.email
         age = template.age
         gender = template.gender?.name
+        avatar = rand(0, 3)
     }
 
     override fun toEntity(id: String): User {
-        return User(id, nickname!!, rating, website, Date(registrationDate*1000), firstname!!
-                , lastname!!, email!!, age, Gender.valueOf(gender!!), avatar)
+        Log.d("TEST", "Nickname " + nickname)
+        Log.d("TEST", "rating " + rating)
+        Log.d("TEST", "website " + website)
+        Log.d("TEST", "registrationDate " + registrationDate)
+        Log.d("TEST", "firstname " + firstname)
+        Log.d("TEST", "lastname " + lastname)
+        Log.d("TEST", "email " + email)
+        Log.d("TEST", "age " + age)
+        Log.d("TEST", "gender " + gender)
+        Log.d("TEST", "avatar " + avatar)
+
+
+        return User(id, nickname!!, rating!!, website, Date(registrationDate*1000), firstname!!
+                , lastname!!, email!!, age, Gender.valueOf(gender!!), avatar!!)
+    }
+
+
+
+    fun rand(from: Int, to: Int) : Int {
+        return Random().nextInt(to - from) + from
     }
 
 }

@@ -14,7 +14,11 @@ class GenericChildEventListener<T, K : FirebaseData<T>>(
     : ChildEventListener {
 
     override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-        repository.addData(parseData(dataSnapshot))
+        try{
+            repository.addData(parseData(dataSnapshot))
+        }catch (e : Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {

@@ -228,7 +228,7 @@ class ExploreResourcesFragment : Fragment() {
             }
             else {
                 Glide.with(context).resumeRequests()
-                holder.imageIw.setImageResource(android.R.color.darker_gray)
+                holder.imageIw.setImageResource(R.drawable.goal_grey)
             }
         }
 
