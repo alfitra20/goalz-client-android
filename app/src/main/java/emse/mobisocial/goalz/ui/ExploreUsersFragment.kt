@@ -3,10 +3,8 @@ package emse.mobisocial.goalz.ui
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -20,6 +18,7 @@ import android.widget.TextView
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.model.UserMinimal
 import emse.mobisocial.goalz.ui.viewModels.ExploreUsersViewModel
+import emse.mobisocial.goalz.util.getAvatarImageResource
 
 class ExploreUsersFragment : Fragment() {
 
@@ -125,6 +124,7 @@ class ExploreUsersFragment : Fragment() {
         override fun onBindViewHolder(userViewHolder: UserViewHolder, i: Int) {
             // The data from the user model is retrieved and bound to the card View here.
             userViewHolder.userNickname.text = mUsers[i].nickname
+            userViewHolder.userProfileImg.setImageResource(getAvatarImageResource(mUsers[i].avatar))
             val rating = mUsers[i].rating
             when(rating){
                 in 0..10 -> userViewHolder.ratingImage.setImageResource(R.drawable.level_1_cropped)
@@ -150,6 +150,7 @@ class ExploreUsersFragment : Fragment() {
         }
 
         inner class UserViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            internal var userProfileImg: ImageView = itemView.findViewById<View>(R.id.profile_image) as ImageView
             internal var userNickname: TextView = itemView.findViewById<View>(R.id.user_nickname) as TextView
             internal var ratingImage:ImageView = itemView.findViewById(R.id.rating_icon) as ImageView
             internal var rating:TextView = itemView.findViewById<View>(R.id.rating_text) as TextView
