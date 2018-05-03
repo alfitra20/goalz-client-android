@@ -41,7 +41,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         // changing the nav bar color
         if (Build.VERSION.SDK_INT >= 21)
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.accent_material_dark))
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.primary_dark_material_dark))
 
 
         networkInfo = isNetworkAvailable()
