@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -38,6 +39,11 @@ class OnboardingActivity : AppCompatActivity() {
         supportActionBar?.hide()
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
+        // changing the nav bar color
+        if (Build.VERSION.SDK_INT >= 21)
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.accent_material_dark))
+
+
         networkInfo = isNetworkAvailable()
 
         if (!networkInfo){
@@ -48,7 +54,6 @@ class OnboardingActivity : AppCompatActivity() {
             without_login_button.isEnabled = false
             launchSnackbar(application.getString(R.string.onboarding_activity_not_connected))
         }
-
 
         onboarding_login_button.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
