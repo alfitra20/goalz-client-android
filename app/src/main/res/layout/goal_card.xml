@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/goal_card_title"
-            android:layout_width="215dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginEnd="8dp"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/goal_card_title"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="8dp"
             android:autoSizeMinTextSize="12sp"
             android:ellipsize="end"
             android:fontFamily="@font/catamaran_semibold"
@@ -116,11 +116,10 @@
             android:id="@+id/goal_card_expand_btn"
             android:layout_width="34dp"
             android:layout_height="26dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginEnd="8dp"
             android:background="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/goal_card_title"
             app:srcCompat="@drawable/ic_expand_more_black_36dp" />
 
         <android.support.constraint.Guideline

@@ -42,6 +42,10 @@ class GoalActivitySubgoalsFragment : Fragment() {
         recyclerViewAdapter.addItems(subgoalsList)
     }
 
+    fun updateState(isAuth : Boolean) {
+        this.isAuth = isAuth
+    }
+
     inner class RecyclerViewAdapter(values : List<Goal>) : RecyclerView.Adapter<RecyclerViewAdapter.GoalViewHolder>() {
         private var values: List<Goal> = values
 

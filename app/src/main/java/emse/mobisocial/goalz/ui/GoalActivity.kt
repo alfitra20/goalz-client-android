@@ -12,6 +12,7 @@ import android.support.v4.app.*
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.widget.ProgressBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -21,8 +22,10 @@ import java.util.*
 import android.widget.Toast
 import emse.mobisocial.goalz.dal.DalResponse
 import emse.mobisocial.goalz.dal.DalResponseStatus
+import emse.mobisocial.goalz.model.Recommendation
 import emse.mobisocial.goalz.ui.dialogs.GoalDeleteDialog
 import emse.mobisocial.goalz.ui.dialogs.GoalProgressDialog
+import emse.mobisocial.goalz.ui.dialogs.RecommendationRateDialog
 import emse.mobisocial.goalz.util.IDialogResultListener
 
 class GoalActivity : AppCompatActivity(), IDialogResultListener {
@@ -31,7 +34,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
     private var user: FirebaseUser? = null
 
     private lateinit var subgoalFragment: GoalActivitySubgoalsFragment
-    private lateinit var recommendationFragment: GoalActivitySubgoalsFragment
+    private lateinit var recommendationFragment: GoalActivityRecommendationFragment
     private lateinit var goalInfoVp: ViewPager
     private lateinit var tabLayout: TabLayout
     private lateinit var tabToFragmentMap: HashMap<Int, Fragment>
@@ -57,7 +60,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
 
         //Initialize subFragments
         subgoalFragment = GoalActivitySubgoalsFragment()
-        recommendationFragment = GoalActivitySubgoalsFragment()
+        recommendationFragment = GoalActivityRecommendationFragment()
         tabToFragmentMap = hashMapOf(1 to subgoalFragment, 2 to recommendationFragment)
 
         //Initialize views
@@ -87,6 +90,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
         model.state.observe(this, GoalStateObserver())
         model.goal.observe(this, GoalInfoObserver())
         model.subgoals.observe(this, SubgoalsListObserver())
+        model.recommendations.observe(this, RecommendationListObserver())
 
         //Set action observers
         statusPb.setOnClickListener (StatusBarOnClickListener())
@@ -142,6 +146,7 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
     override fun callback(tag: String, result: IDialogResultListener.DialogResult, value: Any?) {
         val progressDialog = getString(R.string.goal_activity_progress_dialog_tag)
         val deleteDialog = getString(R.string.goal_activity_delete_dialog_tag)
+        val rateDialog = getString(R.string.goal_activity_rate_dialog_tag)
 
         if (result == IDialogResultListener.DialogResult.CONFIRM) {
             when (tag) {
@@ -151,6 +156,10 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
                 }
                 deleteDialog -> {
                     model.deleteGoal().observe(this, DeleteResponseObserver())
+                }
+                rateDialog -> {
+                    val load = value as RecommendationRateDialog.Load
+                    model.rateRecommendation(load.id, load.rating).observe(this, RateResponseObserver())
                 }
             }
         }
@@ -243,15 +252,29 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
         }
     }
 
+    inner class RateResponseObserver() : Observer<DalResponse> {
+        override fun onChanged(response: DalResponse?) {
+            if (response?.status == DalResponseStatus.SUCCESS) {
+                Toast.makeText(application, application.getString(R.string.goal_activity_rate_success_toast),
+                        Toast.LENGTH_LONG).show()
+            } else if (response?.status == DalResponseStatus.FAIL) {
+                Toast.makeText(application, application.getString(R.string.goal_activity_rate_fail_toast),
+                        Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     inner class GoalStateObserver : Observer<GoalViewModel.State> {
         override fun onChanged(state: GoalViewModel.State?) {
             when (state) {
-                GoalViewModel.State.UNAUTH -> menuToChoose = R.menu.menu_goal
-                GoalViewModel.State.AUTH_UNAUTHORIZED -> menuToChoose = R.menu.menu_goal_auth
-                GoalViewModel.State.AUTH_AUTHORIZE -> menuToChoose = R.menu.menu_goal_autorized
+                GoalViewModel.State.UNAUTH -> { menuToChoose = R.menu.menu_goal }
+                GoalViewModel.State.AUTH_UNAUTHORIZED -> { menuToChoose = R.menu.menu_goal_auth }
+                GoalViewModel.State.AUTH_AUTHORIZE -> { menuToChoose = R.menu.menu_goal_autorized }
             }
-
             invalidateOptionsMenu()
+
+            recommendationFragment.updateState(state == GoalViewModel.State.AUTH_AUTHORIZE)
+            subgoalFragment.updateState(state != GoalViewModel.State.UNAUTH)
         }
     }
 
@@ -281,7 +304,16 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
     inner class SubgoalsListObserver : Observer<List<Goal>> {
         override fun onChanged(goals: List<Goal>?) {
             if (goals != null) {
-                subgoalFragment.updateContent(goals, model.state != GoalViewModel.State.UNAUTH)
+                subgoalFragment.updateContent(goals, model.state.value != GoalViewModel.State.UNAUTH)
+            }
+        }
+    }
+
+    inner class RecommendationListObserver : Observer<List<Recommendation>> {
+        override fun onChanged(recommendations: List<Recommendation>?) {
+            if (recommendations != null) {
+                Log.d("TEST", "MODEL STATE " + model.state.value.toString())
+                recommendationFragment.updateContent(recommendations, model.state.value == GoalViewModel.State.AUTH_AUTHORIZE)
             }
         }
     }

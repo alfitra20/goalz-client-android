@@ -52,7 +52,7 @@ class EditProfileActivity : AppCompatActivity() {
         initializeDatePicker()
 
         change_password_button.setOnClickListener {
-            Toast.makeText(this, getString(R.string.edit_profile_activity_unavailable_function_toast),
+            Toast.makeText(this, getString(R.string.unavailable_function_toast),
                     Toast.LENGTH_LONG).show()
             /*val intent = Intent(this, ChangeEmailPasswordActivity::class.java)
             intent.putExtra("user_id", userId.toString())

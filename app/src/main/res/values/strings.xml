@@ -34,6 +34,7 @@
     <!-- General -->
     <string name="delete_goal_success_toast">Goal Successfully Removed</string>
     <string name="delete_goal_fail_toast">Cannot Delete Goal</string>
+    <string name="unavailable_function_toast">Currently not available</string>
 
     <!-- Explore Resource fragment -->
     <string name="explore_resource_fragment_add_to_library_success_toast">Resource successfully added</string>
@@ -93,6 +94,10 @@
     <string name="goal_activity_progress_dialog_tag">PROGRESS DIALOG</string>
     <string name="goal_activity_update_status_success_toast">Status Successfully Updated</string>
     <string name="goal_activity_update_status_fail_toast">Cannot Update Status</string>
+    <string name="activity_goal_rate_rec_dialog_message">Rate recommendation</string>
+    <string name="goal_activity_rate_dialog_tag">RATE DIALOG</string>
+    <string name="goal_activity_rate_success_toast">Successfully Rated</string>
+    <string name="goal_activity_rate_fail_toast">Failed to rate</string>
 
     <!-- Edit Goal Activity texts-->
     <string name="edit_goal_activity_done_menu_item_title">Done</string>
@@ -119,7 +124,6 @@
     <string name="edit_profile_activity_birthdate_hint">Birth Date</string>
     <string name="edit_profile_activity_gender_hint">Gender :</string>
     <string name="edit_profile_activity_website_hint">Website</string>
-    <string name="edit_profile_activity_unavailable_function_toast">Currently not available</string>
 
 
     <!-- Login Activity texts-->
