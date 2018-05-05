@@ -19,6 +19,7 @@ import emse.mobisocial.goalz.model.Goal
 import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
+import emse.mobisocial.goalz.util.getAvatarImageResource
 import kotlinx.android.synthetic.main.activity_user.*
 
 class UserActivity : AppCompatActivity() {
@@ -38,6 +39,7 @@ class UserActivity : AppCompatActivity() {
     private lateinit var goalsLabelTw : TextView
     private lateinit var goalsTw : TextView
     private lateinit var resourcesTw : TextView
+    private lateinit var avatarIw : ImageView
 
     private lateinit var rankingImgArray : Array<Int>
     private lateinit var rankingLevelsMax : Array<Int>
@@ -72,6 +74,7 @@ class UserActivity : AppCompatActivity() {
         goalsLabelTw = findViewById(R.id.user_activity_coal_completed_tw)
         goalsTw = findViewById(R.id.user_activity_goal_completed_no_tw)
         resourcesTw = findViewById(R.id.user_activity_resource_no_tw)
+        avatarIw = findViewById(R.id.user_activity_profile_picture)
 
         initializeObservers()
 
@@ -140,6 +143,7 @@ class UserActivity : AppCompatActivity() {
         websiteTw.text = if (user.website == null) "none" else user.website
         genderTw.text = user.gender.toString()
         rankingTw.text = user.rating.toString()
+        avatarIw.setImageResource(getAvatarImageResource(user.avatar))
 
         var level = when(user.rating){
             in 0..10 -> { 1 }
@@ -150,7 +154,7 @@ class UserActivity : AppCompatActivity() {
         levelTw.text = level.toString()
 
         rankingIw.setImageResource(rankingImgArray[level-1])
-        pointsToLevelTw.text = if (level == 4) "-" else (rankingLevelsMax[level-1] - user.rating).toString()
+        pointsToLevelTw.text = if (level == 4) "-" else "${(rankingLevelsMax[level-1] - user.rating)} ${getString(R.string.user_activity_points_needed)}"
         if(level != 4) {
             rankingPb.progress = user.rating.toInt()
             rankingPb.max = rankingLevelsMax[level-1]

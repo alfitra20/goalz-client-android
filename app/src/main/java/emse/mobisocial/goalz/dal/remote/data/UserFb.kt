@@ -35,16 +35,6 @@ class UserFb constructor() : FirebaseData<User> {
     }
 
     override fun toEntity(id: String): User {
-        Log.d("TEST", "Nickname " + nickname)
-        Log.d("TEST", "rating " + rating)
-        Log.d("TEST", "website " + website)
-        Log.d("TEST", "registrationDate " + registrationDate)
-        Log.d("TEST", "firstname " + firstname)
-        Log.d("TEST", "lastname " + lastname)
-        Log.d("TEST", "email " + email)
-        Log.d("TEST", "age " + age)
-        Log.d("TEST", "gender " + gender)
-        Log.d("TEST", "avatar " + avatar)
 
 
         return User(id, nickname!!, rating!!, website, Date(registrationDate*1000), firstname!!

@@ -22,6 +22,7 @@ import emse.mobisocial.goalz.dal.DalResponseStatus
 import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.ui.viewModels.UserProfileViewModel
 import emse.mobisocial.goalz.util.Gender
+import emse.mobisocial.goalz.util.getAvatarImageResource
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import java.util.*
 
@@ -95,7 +96,8 @@ class EditProfileActivity : AppCompatActivity() {
         firstname_edit_text.setText(user.firstName)
         lastname_edit_text.setText(user.lastName)
         website_edit_text.setText(user.website)
-
+        user_profile_picture.setImageResource(getAvatarImageResource(user.avatar))
+        
         val spinnerArray = arrayOfNulls<String>(3)
 
         spinnerArray[0] = GENDER_FEMALE
@@ -122,8 +124,6 @@ class EditProfileActivity : AppCompatActivity() {
             } else {
                 model.modifyUserData(nickname, firstName, lastName, birthYear!!, website, gender!!)?.observe(this, Observer<DalResponse> { response ->
                     if (response?.status == DalResponseStatus.SUCCESS) {
-                        val intent = Intent(this, UserActivity::class.java)
-                        startActivity(intent)
                         Toast.makeText(application, application.getString(R.string.edit_profile_update_profile_success_toast),
                                 Toast.LENGTH_LONG).show()
                         finish()

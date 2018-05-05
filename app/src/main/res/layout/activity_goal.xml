@@ -52,7 +52,8 @@
                 android:max="100"
                 android:progress="65"
                 android:progressDrawable="@drawable/circular_progress_bar"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/goal_activity_status_tw"
@@ -78,12 +79,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:ellipsize="end"
                 android:hint="Title"
+                android:maxLines="2"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
                 android:textSize="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/goal_activity_status_pb" />
+                app:layout_constraintStart_toEndOf="@+id/goal_activity_status_pb"
+                app:layout_constraintTop_toTopOf="@+id/goal_activity_status_pb" />
 
             <TextView
                 android:id="@+id/goal_activity_topic_tw"
