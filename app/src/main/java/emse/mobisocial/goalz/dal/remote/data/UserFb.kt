@@ -1,5 +1,6 @@
 package emse.mobisocial.goalz.dal.remote.data
 
+import android.util.Log
 import emse.mobisocial.goalz.dal.remote.FirebaseData
 import emse.mobisocial.goalz.model.User
 import emse.mobisocial.goalz.model.UserTemplate
@@ -12,7 +13,7 @@ import java.util.*
 class UserFb constructor() : FirebaseData<User> {
 
     var nickname : String? = null
-    var rating : Double = 0.0
+    var rating : Double? = 0.0
     var website : String? = null
     var registrationDate : Long = Date().time / 1000
     var firstname : String? = null
@@ -20,6 +21,7 @@ class UserFb constructor() : FirebaseData<User> {
     var email : String? = null
     var age : Int? = null
     var gender : String? = null
+    var avatar : Int? = 0
 
     constructor(template: UserTemplate) : this() {
         nickname = template.nickname
@@ -28,14 +30,21 @@ class UserFb constructor() : FirebaseData<User> {
         lastname = template.lastname
         email = template.email
         age = template.age
-        gender = template.gender.name
+        gender = template.gender?.name
+        avatar = rand(0, 3)
     }
 
     override fun toEntity(id: String): User {
-        var date : Date? = if (registrationDate != null) Date(registrationDate!!*1000) else null
 
-        return User(id, nickname!!, rating, website, date, firstname!!, lastname!!,
-                email!!, age!!, Gender.valueOf(gender!!))
+
+        return User(id, nickname!!, rating!!, website, Date(registrationDate*1000), firstname!!
+                , lastname!!, email!!, age, Gender.valueOf(gender!!), avatar!!)
+    }
+
+
+
+    fun rand(from: Int, to: Int) : Int {
+        return Random().nextInt(to - from) + from
     }
 
 }

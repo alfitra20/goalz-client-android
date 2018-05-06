@@ -39,6 +39,14 @@ class GoalRepository(
         return goalDao.loadGoals()
     }
 
+    override fun searchGoals(formattedQuery: String): LiveData<List<Goal>> {
+        return goalDao.searchGoals(formattedQuery)
+    }
+
+    override fun searchGoalsForUser(formattedQuery: String, userId: String): LiveData<List<Goal>> {
+        return goalDao.searchGoalsForUser(formattedQuery, userId)
+    }
+
     override fun getSubgoals(parentId: String): LiveData<List<Goal>> {
         return goalDao.loadSubgoals(parentId)
     }
@@ -88,6 +96,7 @@ class GoalRepository(
             updateInfo["description"] = goal.description
             updateInfo["latitude"] = goal.location.latitude
             updateInfo["longitude"] = goal.location.longitude
+            updateInfo["status"] = goal.status
             var deadlineTmp = goal.deadline
             var newDeadline = if (deadlineTmp != null) deadlineTmp.time / 1000 else null
             updateInfo["deadline"] = newDeadline

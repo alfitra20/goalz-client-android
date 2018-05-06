@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.google.firebase.auth.FirebaseAuth
 
 import emse.mobisocial.goalz.R
 import emse.mobisocial.goalz.dal.DalResponse
@@ -28,6 +29,8 @@ class TestResourceFragment : Fragment() {
     private lateinit var insertBtn : Button
     private lateinit var clearBtn : Button
     private lateinit var filterBtn : Button
+    private lateinit var addLibraryEntryBtn : Button
+    private lateinit var deleteLibraryEntryBtn : Button
 
     private lateinit var resourceList: ArrayList<Resource>
     private lateinit var listAdapter : ArrayAdapter<Resource>
@@ -49,6 +52,9 @@ class TestResourceFragment : Fragment() {
         insertBtn = view.findViewById(R.id.resource_test_fragment_insert_btn)
         clearBtn = view.findViewById(R.id.resource_test_fragment_for_user_btn)
         filterBtn = view.findViewById(R.id.resource_test_fragment_filter_btn)
+        addLibraryEntryBtn = view.findViewById(R.id.resource_test_fragment_add_to_library_btn)
+        deleteLibraryEntryBtn = view.findViewById(R.id.resource_test_fragment_delete_library_btn)
+
 
         initializeObservers()
         initializeEventListeners()
@@ -86,6 +92,30 @@ class TestResourceFragment : Fragment() {
                     DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT","Fail")
                 }
             })
+        }
+        addLibraryEntryBtn.setOnClickListener {
+            val id = FirebaseAuth.getInstance().currentUser?.uid
+            if (id != null) {
+                model.addResourceToLibrary(id, deleteIdEt.text.toString()).observe(this, Observer<DalResponse> { response ->
+                    when (response?.status) {
+                        DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT", "InProgress")
+                        DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT", "Success")
+                        DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT", "Fail")
+                    }
+                })
+            }
+        }
+        deleteLibraryEntryBtn.setOnClickListener {
+            val id = FirebaseAuth.getInstance().currentUser?.uid
+            if (id != null) {
+                model.deleteResourceToLibrary(id, deleteIdEt.text.toString()).observe(this, Observer<DalResponse> { response ->
+                    when (response?.status) {
+                        DalResponseStatus.INPROGRESS -> Log.i("GOAL_FRAGMENT", "InProgress")
+                        DalResponseStatus.SUCCESS -> Log.i("GOAL_FRAGMENT", "Success")
+                        DalResponseStatus.FAIL -> Log.i("GOAL_FRAGMENT", "Fail")
+                    }
+                })
+            }
         }
     }
 }

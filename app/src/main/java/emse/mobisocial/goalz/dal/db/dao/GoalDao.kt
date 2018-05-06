@@ -31,6 +31,11 @@ abstract class GoalDao {
     @Query("SELECT * FROM goals WHERE topic = :topic")
     abstract fun loadGoalsByTopic(topic : String): LiveData<List<Goal>>
 
+    @Query("SELECT * FROM goals WHERE title LIKE :formattedQuery OR topic LIKE :formattedQuery OR description LIKE :formattedQuery")
+    abstract fun searchGoals(formattedQuery: String): LiveData<List<Goal>>
+
+    @Query("SELECT * FROM goals WHERE user_id = :userId AND (title LIKE :formattedQuery OR topic LIKE :formattedQuery OR description LIKE :formattedQuery)")
+    abstract fun searchGoalsForUser(formattedQuery: String, userId: String): LiveData<List<Goal>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertGoal(goal: Goal)
@@ -42,4 +47,7 @@ abstract class GoalDao {
 
     @Delete
     abstract fun deleteGoal(goal: Goal)
+
+    @Query("DELETE FROM goals")
+    abstract fun invalidateData()
 }

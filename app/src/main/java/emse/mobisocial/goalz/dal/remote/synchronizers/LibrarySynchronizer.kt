@@ -12,6 +12,10 @@ class LibrarySynchronizer(
         private var libraryDao: LibraryDao,
         private var diskExecutor: Executor) : ISynchronizer<LibraryEntry> {
 
+    init {
+        diskExecutor.execute { libraryDao.invalidateData() }
+    }
+
     override fun addData(t: LibraryEntry) {
         diskExecutor.execute { libraryDao.insertLibraryEntry(t) }
     }

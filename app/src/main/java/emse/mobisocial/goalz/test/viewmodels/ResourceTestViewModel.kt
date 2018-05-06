@@ -12,7 +12,7 @@ import emse.mobisocial.goalz.model.Resource
 import emse.mobisocial.goalz.model.ResourceTemplate
 
 private val NEW_RESOURCE_INFO = ResourceTemplate(
-        "testUserId",
+        "to2mdRC0eXUvPRVTHL1QJk57Aro2",
         "www.link.org",
         "new",
         "New resource"
@@ -46,6 +46,14 @@ class ResourceTestViewModel (application: Application) : AndroidViewModel(applic
 
     fun deleteResource(id : String) : LiveData<DalResponse> {
         return resourceRepository.deleteResource(id)
+    }
+
+    fun addResourceToLibrary(userId : String, resourceId : String) : LiveData<DalResponse> {
+        return resourceRepository.addResourceToLibrary(userId, resourceId)
+    }
+
+    fun deleteResourceToLibrary(userId : String, resourceId : String) : LiveData<DalResponse> {
+        return resourceRepository.deleteResourceFromLibrary(userId, resourceId)
     }
 
     fun createResource() : LiveData<DalResponse> {

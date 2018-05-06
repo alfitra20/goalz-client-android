@@ -22,4 +22,6 @@ data class UserMinimal(
         @ColumnInfo(name = "website")
         var website : String?,
         @ColumnInfo(name = "registrationDate")
-        var registrationDate : Date? ) //DO NOT UPDATE
+        var registrationDate : Date,
+        @ColumnInfo(name = "avatar")
+        var avatar : Int ) //DO NOT UPDATE

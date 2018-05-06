@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginEnd="3dp"
+    android:id="@+id/goal_card_view"
+    app:cardElevation="2dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/goal_card_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="hsihishhshdkhalksdh"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/goal_card_expand_btn"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/goal_card_status_pb"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/goal_card_topic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/goal_card_title"
+            android:layout_marginEnd="8dp"
+            android:autoSizeMinTextSize="12sp"
+            android:ellipsize="end"
+            android:fontFamily="@font/catamaran_semibold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="test descriotion"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/goal_card_expand_btn"
+            app:layout_constraintStart_toEndOf="@+id/goal_card_status_pb"
+            app:layout_constraintTop_toBottomOf="@+id/goal_card_title" />
+
+        <TextView
+            android:id="@+id/goal_card_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:text="This is a long text whiche allows me to see how the card looks like when the text excedes the two raw limit and hence needs to be wrapped"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toTopOf="@+id/goal_card_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goal_card_status_pb" />
+
+        <ProgressBar
+            android:id="@+id/goal_card_status_pb"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="82dp"
+            android:layout_height="69dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/circle_shape_fat"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="65"
+            android:progressDrawable="@drawable/circular_progress_bar_fat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/goal_card_contribute_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@android:color/white"
+            android:elevation="0dp"
+            android:text="Contribute"
+            android:textColor="?attr/colorPrimary"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goal_card_description" />
+
+        <Button
+            android:id="@+id/goal_card_clone_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/white"
+            android:elevation="0dp"
+            android:text="Clone"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/goal_card_contribute_btn"
+            app:layout_constraintTop_toBottomOf="@+id/goal_card_description" />
+
+        <ImageButton
+            android:id="@+id/goal_card_expand_btn"
+            android:layout_width="34dp"
+            android:layout_height="26dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/goal_card_title"
+            app:srcCompat="@drawable/ic_expand_more_black_36dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/goal_card_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="132dp" />
+
+        <TextView
+            android:id="@+id/goal_card_status_tw"
+            android:layout_width="28dp"
+            android:layout_height="19dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="65%"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/goal_card_status_pb"
+            app:layout_constraintEnd_toEndOf="@+id/goal_card_status_pb"
+            app:layout_constraintStart_toStartOf="@+id/goal_card_status_pb"
+            app:layout_constraintTop_toTopOf="@+id/goal_card_status_pb" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

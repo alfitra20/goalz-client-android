@@ -1,18 +1,22 @@
 package emse.mobisocial.goalz
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import emse.mobisocial.goalz.dal.IGoalRepository
 import emse.mobisocial.goalz.dal.IRecommendationRepository
 import emse.mobisocial.goalz.dal.IResourceRepository
 import emse.mobisocial.goalz.dal.IUserRepository
 import emse.mobisocial.goalz.dal.repositories.UserRepository
 import emse.mobisocial.goalz.dal.db.AppDatabase
+import emse.mobisocial.goalz.dal.remote.FirebaseConnectionService
 import emse.mobisocial.goalz.dal.repositories.GoalRepository
 import emse.mobisocial.goalz.dal.repositories.RecommendationRepository
 import emse.mobisocial.goalz.dal.repositories.ResourceRepository
 import emse.mobisocial.goalz.dal.remote.ISynchronizer
 import emse.mobisocial.goalz.dal.remote.synchronizers.*
 import emse.mobisocial.goalz.model.*
+import emse.mobisocial.goalz.notification.NotificationRegistrationService
 
 
 /**
@@ -66,5 +70,7 @@ class GoalzApp : Application() {
         super.onCreate()
 
         appExecutors = AppExecutors()
+        startService(Intent(this, FirebaseConnectionService::class.java))
+        startService(Intent(this, NotificationRegistrationService::class.java))
     }
 }

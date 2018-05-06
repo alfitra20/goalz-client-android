@@ -2,17 +2,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="emse.mobisocial.goalz">
 
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".GoalzApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/goalz_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/goalz_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".test.TestActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".ui.BaseActivity"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.UserActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.BaseActivity" />
+        </activity>
+        <activity android:name=".ui.CreateGoalActivity" />
+        <activity android:name=".ui.CreateResourceActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.BaseActivity" />
+        </activity>
+        <activity
+            android:name=".ui.GoalActivity"
+            android:label="@string/title_activity_goal"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.OnboardingActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +47,72 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.OnboardingActivity" />
+        </activity>
+        <activity
+            android:name=".ui.SignupActivity"
+            android:label="@string/title_activity_signup"
+            android:configChanges="keyboardHidden|orientation">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.OnboardingActivity" />
+        </activity>
+        <activity
+            android:name=".ui.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.UserActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ChangeEmailPasswordActivity"
+            android:label="@string/title_activity_change_password">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.EditProfileActivity" />
+        </activity>
+        <activity android:name=".ui.resource_library.WebViewActivity" />
+        <activity android:name=".ui.EditGoalActivity" />
+        <activity android:name=".ui.CreateRecommendationActivity" />
+        <activity android:name=".ui.GoalsActivity"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <!--
+             Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_mode_comment_white_48dp" />
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
 
         <service
-            android:name="emse.mobisocial.goalz.dal.remote.FirebaseConnectionService"
-            android:exported="false"/>
+            android:name=".dal.remote.FirebaseConnectionService"
+            android:exported="false" />
+
+        <service android:name=".notification.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".notification.NotificationRegistrationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

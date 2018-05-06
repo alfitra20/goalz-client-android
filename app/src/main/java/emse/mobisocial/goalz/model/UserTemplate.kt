@@ -13,7 +13,7 @@ data class UserTemplate(
         var firstname : String,
         var lastname : String,
         var email : String,
-        var age : Int,
-        var website : String,
-        var gender : Gender = Gender.UNDEFINED
+        var age : Int? = null,
+        var website : String? = null,
+        var gender : Gender? = Gender.UNDEFINED
 )

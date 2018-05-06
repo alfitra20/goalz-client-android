@@ -18,7 +18,7 @@ data class User(
         @ColumnInfo(name = "website")
         var website : String?,
         @ColumnInfo(name = "registrationDate")
-        var registrationDate : Date?, //DO NOT UPDATE
+        var registrationDate : Date, //DO NOT UPDATE
         @ColumnInfo(name = "first_name")
         var firstName : String,
         @ColumnInfo(name = "last_name")
@@ -26,12 +26,14 @@ data class User(
         @ColumnInfo(name = "email")
         var email : String, //DO NOT UPDATE
         @ColumnInfo(name = "age")
-        var age : Int,
+        var age : Int?,
         @ColumnInfo(name = "gender")
-        var gender : Gender){
+        var gender : Gender,
+        @ColumnInfo(name = "avatar")
+        var avatar : Int ){
 
         fun getUserMinimal() : UserMinimal {
-                return UserMinimal(id, nickname, rating, website, registrationDate)
+                return UserMinimal(id, nickname, rating, website, registrationDate, avatar)
         }
 
         fun getUserDetails() : UserDetails {

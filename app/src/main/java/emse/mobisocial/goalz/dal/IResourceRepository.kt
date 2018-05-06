@@ -15,6 +15,8 @@ interface IResourceRepository {
 
     fun getResources(): LiveData<List<Resource>>
 
+    fun searchResources(formattedQuery: String): LiveData<List<Resource>>
+
     fun getResourcesByTopic(topic : String): LiveData<List<Resource>>
 
     fun getLibraryForUser(userId : String): LiveData<List<Resource>>
@@ -23,6 +25,8 @@ interface IResourceRepository {
     fun addResource(template: ResourceTemplate) : LiveData<DalResponse>
 
     fun addResourceToLibrary(user_id : String, resource_id : String): LiveData<DalResponse>
+
+    fun deleteResourceFromLibrary(user_id : String, resource_id : String): LiveData<DalResponse>
 
     /* Delete
      *
