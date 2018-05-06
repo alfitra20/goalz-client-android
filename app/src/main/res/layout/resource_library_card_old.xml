@@ -1,0 +1,155 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="230dp"
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginEnd="3dp"
+    app:cardCornerRadius="5dp"
+    android:id="@+id/resource_library_card_view_old">
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/resource_title"
+            android:layout_width="342dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:fontFamily="@font/source_sans_pro_bold"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            android:textSize="19sp"/>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_marginTop="10dp"
+            android:layout_width="3dp"
+            android:layout_height="74dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="25dp"
+            android:background="#acf6f8f9" />
+
+        <LinearLayout
+            android:id="@+id/resource_topic_and_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/resource_title"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp">
+            <TextView
+                android:id="@+id/resource_topic"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/catamaran_semibold"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="15sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:fontFamily="@font/source_sans_pro_bold"
+                android:textSize="13sp"
+                android:layout_marginRight="2dp"/>
+            <TextView
+                android:id="@+id/resource_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/source_sans_pro_bold"
+                android:textSize="16sp"
+                android:textColor="#24248f"/>
+
+            <TextView
+                android:id="@+id/resource_time_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/catamaran_semibold"
+                android:textSize="13sp"
+                android:text="hours"
+                android:textColor="#24248f"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/resource_frame"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_below="@+id/resource_topic_and_time">
+            <ImageView
+                android:id="@+id/resource_image"
+                android:src="@drawable/light"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_height="130dp"/>
+            <ImageView
+                android:id="@+id/arrow"
+                android:src="@drawable/click4"
+                android:alpha="0.4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_gravity="top|end"
+                android:elevation="2dp"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/resource_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resource_frame"
+            android:fontFamily="@font/catamaran_semibold"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="10dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resource_frame"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/resource_rating_level_1"
+                android:layout_width="22dp"
+                android:layout_height="27dp"
+                app:srcCompat="@drawable/thumbs_up_blank" />
+
+            <ImageView
+                android:id="@+id/resource_rating_level_2"
+                android:layout_width="22dp"
+                android:layout_height="27dp"
+                app:srcCompat="@drawable/thumbs_up_blank" />
+
+            <ImageView
+                android:id="@+id/resource_rating_level_3"
+                android:layout_width="22dp"
+                android:layout_height="27dp"
+                app:srcCompat="@drawable/thumbs_up_blank" />
+
+            <ImageView
+                android:id="@+id/resource_rating_level_4"
+                android:layout_width="22dp"
+                android:layout_height="27dp"
+                app:srcCompat="@drawable/thumbs_up_blank" />
+
+            <ImageView
+                android:id="@+id/resource_rating_level_5"
+                android:layout_width="22dp"
+                android:layout_height="27dp"
+                app:srcCompat="@drawable/thumbs_up_blank" />
+        </LinearLayout>
+
+    </RelativeLayout>-->
+</android.support.v7.widget.CardView>

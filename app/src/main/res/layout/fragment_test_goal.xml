@@ -1,0 +1,102 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="emse.mobisocial.goalz.test.fragments.TestGoalFragment"
+    tools:layout_editor_absoluteY="81dp">
+
+    <ListView
+        android:id="@+id/goal_test_fragment_goal_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_test_fragment_update_btn"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/goal_test_fragment_delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/goal_test_fragment_update_btn"
+        app:layout_constraintTop_toBottomOf="@+id/goal_test_fragment_by_topic_btn" />
+
+    <Button
+        android:id="@+id/goal_test_fragment_update_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="UPDATE"
+        app:layout_constraintEnd_toStartOf="@+id/goal_test_fragment_delete_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/goal_test_fragment_insert_btn"
+        app:layout_constraintTop_toBottomOf="@+id/goal_test_fragment_for_user_btn" />
+
+    <Button
+        android:id="@+id/goal_test_fragment_insert_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="INSERT"
+        app:layout_constraintEnd_toStartOf="@+id/goal_test_fragment_update_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_test_fragment_subgoal_btn" />
+
+    <EditText
+        android:id="@+id/goal_test_fragment_search_value_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Filter value"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/goal_test_fragment_subgoal_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Subgoals"
+        app:layout_constraintEnd_toStartOf="@+id/goal_test_fragment_for_user_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_test_fragment_search_value_et" />
+
+    <Button
+        android:id="@+id/goal_test_fragment_for_user_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="For User"
+        app:layout_constraintEnd_toStartOf="@+id/goal_test_fragment_by_topic_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/goal_test_fragment_subgoal_btn"
+        app:layout_constraintTop_toBottomOf="@+id/goal_test_fragment_search_value_et" />
+
+    <Button
+        android:id="@+id/goal_test_fragment_by_topic_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/goal_test_fragment_for_user_btn"
+        app:layout_constraintTop_toBottomOf="@+id/goal_test_fragment_search_value_et" />
+</android.support.constraint.ConstraintLayout>

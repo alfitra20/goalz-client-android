@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_explore"
+            android:icon="@drawable/explore_icon"
+            android:title="Explore" />
+        <item
+            android:id="@+id/nav_goals"
+            android:icon="@drawable/goal_color"
+            android:title="Goals" />
+        <item
+            android:id="@+id/nav_library"
+            android:icon="@drawable/resource_color"
+            android:title="Resources Library" />
+    </group>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout_icon"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>
