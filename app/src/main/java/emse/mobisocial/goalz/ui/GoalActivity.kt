@@ -125,7 +125,13 @@ class GoalActivity : AppCompatActivity(), IDialogResultListener {
             }
             R.id.goal_activity_delete_menu_item -> {
                 val dialogFragment = GoalDeleteDialog()
+                val args = Bundle()
+
+                args.putString("goal_id", model.goalId)
+                dialogFragment.arguments = args
+
                 dialogFragment.show(fragmentManager, getString(R.string.goal_activity_delete_dialog_tag))
+
                 return true
             }
             R.id.goal_activity_clone_menu_item -> {
